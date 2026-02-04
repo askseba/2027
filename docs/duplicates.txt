@@ -1,0 +1,36 @@
+# Duplicate names: HeroSection.tsx, page.tsx, layout.tsx
+# (Multiple locations — decide Keep vs Archive)
+
+HeroSection.tsx:
+  src\components\landing\HeroSection.tsx     <- KEEP (production)
+  docs\ui-snapshot\src\components\landing\HeroSection.tsx   <- ARCHIVE (snapshot)
+
+page.tsx (24 files):
+  src\app\page.tsx                           <- KEEP (home)
+  src\app\login\page.tsx
+  src\app\register\page.tsx
+  src\app\quiz\page.tsx
+  src\app\quiz\step1-favorites\page.tsx
+  src\app\quiz\step2-disliked\page.tsx
+  src\app\quiz\step3-allergy\page.tsx
+  src\app\pricing\page.tsx
+  src\app\pricing\success\page.tsx
+  src\app\dashboard\page.tsx
+  src\app\profile\page.tsx
+  src\app\settings\page.tsx
+  src\app\faq\page.tsx
+  src\app\feedback\page.tsx
+  src\app\about\page.tsx
+  src\app\results\page.tsx
+  src\app\privacy\page.tsx
+  src\app\notifications\page.tsx
+  src\app\test-header\page.tsx
+  src\app\test-input\page.tsx
+  docs\ui-snapshot\src\app\page.tsx          <- ARCHIVE (snapshot)
+  docs\ui-snapshot\src\app\login\page.tsx
+  docs\ui-snapshot\src\app\register\page.tsx
+  8files-manus\page.tsx                      <- Manual/scratch (Archive or delete)
+
+layout.tsx:
+  src\app\layout.tsx                         <- KEEP (production)
+  docs\ui-snapshot\src\app\layout.tsx        <- ARCHIVE (snapshot)

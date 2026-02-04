@@ -1,0 +1,13 @@
+# Files that reference HeroSection | page.tsx | layout.tsx | CTASection (src/)
+# rg --files-with-matches "(HeroSection|page\.tsx|layout\.tsx|CTASection)" src/
+
+src\app\page.tsx
+src\components\landing\CTASection.tsx
+src\components\landing\HeroSection.tsx
+src\components\ResultsGrid.tsx
+src\components\landing\HeroSection.tsx.old
+src\app\pricing\page.tsx
+src\components\installation_instructions_v23.md
+src\components\ui\HEADER_README.md
+
+Note: HeroSection.tsx.old is NOT imported by app (only HeroSection.tsx is).

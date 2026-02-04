@@ -1,0 +1,25 @@
+/* متغيرات CSS المستخرجة من ملف HTML الأصلي */
+:root {
+    /* Colors - Champagne Gold & Muted Bronze Palette */
+    --cream: #FAF8F5;
+    --gold: #B39D7D;  /* Champagne Gold */
+    --gold-hover: #9A846A;  /* Muted Bronze on hover */
+    --gold-active: #8A7760;  /* Darker Bronze on click */
+    --dark-brown: #5B4233;
+    --medium-brown: #8B7355;
+    --light-brown: #A89B8C;
+    --white: #FFFFFF;
+    --border: rgba(91, 66, 51, 0.12);
+    --shadow: rgba(91, 66, 51, 0.08);
+    --shadow-medium: rgba(91, 66, 51, 0.15);
+    
+    /* Typography */
+    --font-arabic: 'Noto Sans Arabic', sans-serif;
+    --font-logo: 'Cormorant Garamond', serif;
+    
+    /* Spacing */
+    --section-spacing: 80px;
+    --component-spacing: 32px;
+}
+
+/* إضافة هذه المتغيرات إلى ملف globals.css الخاص بالمشروع */

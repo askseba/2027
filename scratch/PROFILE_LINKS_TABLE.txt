@@ -1,0 +1,29 @@
+| Label | href/target | preventDefault؟ | File:Line |
+|-------|-------------|-----------------|-----------|
+| قصتنا (عن صبا) | /about | نعم (شرطي - lines 176-182) | src/app/profile/page.tsx:169-197 |
+| تساؤلات تهمك | /faq | نعم (شرطي - lines 176-182) | src/app/profile/page.tsx:169-197 |
+| الخصوصية والأمان | /privacy | نعم (شرطي - lines 176-182) | src/app/profile/page.tsx:169-197 |
+
+---
+
+## مقطع الكود (10 أسطر حول الروابط):
+
+```tsx
+167|        <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-sm border border-brown/10 overflow-hidden">
+168|          {menuItems.map((item, index) => (
+169|            <a
+170|              key={item.id}
+171|              href={item.href}
+172|              className={cn(
+173|                "flex items-center justify-between p-5 hover:bg-amber-50/50 transition-all group relative group",
+174|                index !== menuItems.length - 1 && "border-b border-brown/5"
+175|              )}
+176|              onClick={(e) => {
+177|                // Modal fallback إذا الصفحة غير موجودة
+178|                if (!window.location.pathname.includes(item.href)) {
+179|                  e.preventDefault();
+180|                  // افتح modal أو toast "قريباً..."
+181|                }
+182|              }}
+183|            >
+```

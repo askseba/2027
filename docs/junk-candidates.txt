@@ -1,0 +1,21 @@
+# Junk candidates (bak, old, backup, pho_*.html, test*)
+# Generated 2026-02-01
+
+*.bak / *.old / *.backup:
+src\app\globals.css.backup
+src\app\layout.tsx.backup
+src\components\landing\HeroSection.tsx.old
+src\middleware.backup
+next.config.ts.backup
+tailwind.config.ts.backup
+prisma\schema.prisma.backup_20260123_162103
+prisma\seed.ts.bak_20260123_163532
+
+pho_*.html: (none found)
+
+Root test/dev files (candidates for archive/delete):
+test-auth.ts
+ts-errors.txt
+lighthouse-accessibility-after-cta-fix.html
+lighthouse-accessibility-report.html
+lighthouse-report.json

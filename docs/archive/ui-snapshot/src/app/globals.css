@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* Landing / manus – Champagne Gold & Muted Bronze */
+  --cream: #FAF8F5;
+  --gold: #B39D7D;
+  --gold-hover: #9A846A;
+  --gold-active: #8A7760;
+  --dark-brown: #5B4233;
+  --medium-brown: #8B7355;
+  --light-brown: #A89B8C;
+  --white: #FFFFFF;
+  --border: rgba(91, 66, 51, 0.12);
+  --shadow: rgba(91, 66, 51, 0.08);
+  --shadow-medium: rgba(91, 66, 51, 0.15);
+  --font-arabic: 'Noto Sans Arabic', sans-serif;
+  --font-logo: 'Cormorant Garamond', serif;
+  --section-spacing: 80px;
+  --component-spacing: 32px;
+}
+
+@theme inline {
+  /* Semantic tokens (light) – RGB space-separated for Tailwind rgb() */
+  --color-surface: 255 255 255;
+  --color-surface-elevated: 255 255 255;
+  --color-surface-muted: 248 250 252;
+  --color-background: 255 255 255;
+  --color-border-subtle: 228 228 231;
+  --color-text-primary: 17 24 39;
+  --color-text-secondary: 107 114 128;
+  --color-text-muted: 148 163 184;
+  --color-accent-primary: 218 168 79; /* gold */
+  --font-sans: var(--font-arabic), Tahoma, Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+}
+
+/* Override semantic tokens when .dark is on root – utilities use var() so they pick these up */
+.dark {
+  --color-surface: 15 23 42;
+  --color-surface-elevated: 10 10 10;
+  --color-surface-muted: 30 41 59;
+  --color-background: 5 5 5;
+  --color-border-subtle: 51 65 85;
+  --color-text-primary: 241 245 249;
+  --color-text-secondary: 148 163 184;
+  --color-text-muted: 107 114 128;
+  --color-accent-primary: 251 191 36; /* brighter gold */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-arabic), sans-serif;
+}
+
+/* Accordion Animations */
+@keyframes slideDown {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+[data-state="open"] {
+  animation: slideDown 300ms ease-out;
+}
+
+[data-state="closed"] {
+  animation: slideUp 300ms ease-out;
+}
+
+/* 2026 Focus – ring with offset, respects dark mode */
+*:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px rgb(var(--color-background)),
+    0 0 0 5px rgb(var(--color-accent-primary) / 0.6);
+}
+
+.dark *:focus-visible {
+  box-shadow:
+    0 0 0 2px rgb(var(--color-background)),
+    0 0 0 5px rgb(var(--color-accent-primary) / 0.7);
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.text-secondary {
+  color: #8B7355;
+}
+
+.min-touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}

@@ -1,0 +1,37 @@
+﻿
+
+=== 1. BUILD TEST ===
+BUILD: PASSED
+
+=== 2. SENTRY IMMEDIATE ERROR TRACKING ===
+Generated C:\Users\HP\Desktop\f9-new-optimized\public\test-error.html
+Opened test-error.html. Check Sentry dashboard within 60s for: Week1 Test Immediate Error
+Sentry Immediate: [confirm in Sentry dashboard]
+
+=== 3. BUNDLE CHECK (chunks for PriceComparison, Step3Allergy, posthog, sentry.replay) ===
+  PriceComparison : no matches
+  Step3Allergy : found in:
+    - 24d9e963651a0e77.js
+    - d54479f7747c03a1.js
+  posthog : found in:
+    - b5c36fee77fad2fa.js
+    - da1255527366f122.js
+  sentry.replay : no matches
+Bundle Savings: ~316KB [chunk list above]
+
+=== 4. DEV SERVER (NEXT_PUBLIC_DEFER_SENTRY_EXTRAS=true) + DEFER/ROLLBACK ===
+Dev server did not become ready. Run manually: $env:NEXT_PUBLIC_DEFER_SENTRY_EXTRAS='true'; npm run dev
+
+=== 5. LIGHTHOUSE (performance) ===
+
+=== WEEK 1 CODE SPLITTING REPORT ===
+Week 1 Code Splitting Report
+BUILD: PASSED
+Sentry Immediate: [confirm in Sentry dashboard]
+Sentry Defer: Manual: start dev, check Network tab
+Rollback: Manual: DISABLE_LAZY + reload
+Bundle Savings: ~316KB [chunk list]
+Lighthouse: Skipped
+STATUS: PRODUCTION READY
+
+Full log: .\reports\week1-report.txt

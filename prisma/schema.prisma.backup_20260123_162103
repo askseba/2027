@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Suggestion {
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  category     String   @default("general")
+  status       String   @default("pending")
+  publicStatus String?  @default("planned")
+  userId       String   @map("user_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  votes        Vote[]
+  user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("suggestions")
+}
+
+model Vote {
+  id           String     @id @default(cuid())
+  suggestionId String     @map("suggestion_id")
+  userId       String     @map("user_id")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  suggestion   Suggestion @relation(fields: [suggestionId], references: [id], onDelete: Cascade)
+
+  @@unique([suggestionId, userId], name: "suggestionId_userId")
+  @@map("votes")
+}
+
+model Perfume {
+  id              String   @id @default(cuid())
+  name            String
+  brand           String
+  image           String
+  description     String?
+  price           Float?
+  baseScore       Int      @default(50)
+  scentPyramid    String?  @map("scent_pyramid")
+  families        String   @default("[]")
+  ingredients     String   @default("[]")
+  symptomTriggers String   @default("[]") @map("symptom_triggers")
+  isSafe          Boolean  @default(true)
+  status          String   @default("safe")
+  variant         String?
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  prices Price[]
+
+  @@map("perfumes")
+}
+
+model UserPreference {
+  id               String   @id @default(cuid())
+  sessionId        String   @unique @map("session_id")
+  likedPerfumes    String   @default("[]") @map("liked_perfumes")
+  dislikedPerfumes String   @default("[]") @map("disliked_perfumes")
+  allergyProfile   String   @default("{}") @map("allergy_profile")
+  scentDNA         String?  @map("scent_dna")
+  isComplete       Boolean  @default(false) @map("is_complete")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@map("user_preferences")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  password      String   // Hashed password
+  name          String?
+  image         String?
+  bio           String?
+  role          String   @default("user")
+  statsVerified Boolean  @default(false) @map("stats_verified")
+  emailVerified DateTime? @map("email_verified")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  favorites   UserFavorite[]
+  suggestions Suggestion[]
+
+  @@map("users")
+}
+
+model UserFavorite {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  perfumeId String   @map("perfume_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, perfumeId], name: "userId_perfumeId")
+  @@map("user_favorites")
+}
+
+model Store {
+  id           Int      @id @default(autoincrement())
+  name         String
+  slug         String   @unique
+  affiliateUrl String
+  commission   Float
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  prices Price[]
+
+  @@map("stores")
+}
+
+model Price {
+  id        Int      @id @default(autoincrement())
+  perfumeId String   @map("perfume_id")
+  storeId   Int      @map("store_id")
+  price     Float
+  currency  String   @default("SAR")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  perfume Perfume @relation(fields: [perfumeId], references: [id], onDelete: Cascade)
+  store   Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([perfumeId, storeId])
+  @@map("prices")
+}
+
+model FragellaPerfume {
+  id         String   @id @default(cuid())
+  fragellaId String   @unique
+  name       String
+  brandName  String?
+  payloadJson Json
+  fetchedAt  DateTime
+  expiresAt  DateTime
+  
+  @@index([fragellaId])
+  @@index([name])
+  @@map("fragella_perfumes")
+}
+
+model FragellaCache {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  data      Json
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  @@index([key])
+  @@index([expiresAt])
+  @@map("fragella_cache")
+}
