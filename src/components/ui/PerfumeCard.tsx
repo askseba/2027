@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import Image from 'next/image'
-import { ShieldCheck, ArrowRightLeft, Star, TrendingUp, AlertCircle } from 'lucide-react'
+import { ShieldCheck, ArrowRightLeft, Star, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/classnames'
 import { Button } from './button'
 
@@ -67,7 +67,7 @@ export function PerfumeCard({
       <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-start pointer-events-none">
         <div className="flex flex-col gap-2 pointer-events-auto">
           {isSafe && (
-            <div className="bg-safe-green/90 dark:bg-green-600 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1 shadow-sm">
+            <div className="bg-safe-green/90 dark:bg-green-600 backdrop-blur-md !text-white opacity-100 px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1 shadow-sm">
               <ShieldCheck className="w-3 h-3" />
               آمن تماماً
             </div>
@@ -82,7 +82,7 @@ export function PerfumeCard({
         
         <div className="bg-white/90 dark:bg-surface/90 backdrop-blur-md p-2 rounded-2xl shadow-sm border border-primary/10 dark:border-border-subtle flex flex-col items-center pointer-events-auto">
           <span className={cn("text-lg font-black leading-none", getScoreColor(displayScore), getScoreColorDark(displayScore))}>{displayScore}%</span>
-          <span className="text-[8px] font-bold text-text-secondary dark:text-text-muted uppercase tracking-tighter">تطابق</span>
+          <span className="text-[8px] font-bold text-text-secondary dark:text-text-muted dark:text-slate-300 uppercase tracking-tighter">تطابق</span>
         </div>
       </div>
 
@@ -112,19 +112,14 @@ export function PerfumeCard({
           {description || "توليفة عطرية ساحرة تم اختيارها بناءً على تفضيلاتك الشخصية لتمنحك تجربة فريدة."}
         </p>
 
-        {/* Social Proof / Urgency */}
-        <div className="flex items-center gap-4 mb-6 py-3 border-y border-primary/5 dark:border-border-subtle">
-          <div className="flex items-center gap-1.5">
-            <TrendingUp className="w-4 h-4 text-safe-green dark:text-green-400" />
-            <span className="text-[10px] font-bold text-text-primary dark:text-text-primary">طلب 12 مرة اليوم</span>
-          </div>
-          {stockStatus === 'low-stock' && (
+        {stockStatus === 'low-stock' && (
+          <div className="flex items-center gap-4 mb-6 py-3 border-y border-primary/5 dark:border-border-subtle">
             <div className="flex items-center gap-1.5">
               <AlertCircle className="w-4 h-4 text-danger-red dark:text-red-400" />
               <span className="text-[10px] font-bold text-danger-red dark:text-red-400">كمية محدودة جداً</span>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Actions */}
         <div className="flex gap-2">

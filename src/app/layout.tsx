@@ -142,8 +142,10 @@ export default async function RootLayout({
   const HOTJAR_ID = process.env.NEXT_PUBLIC_HOTJAR_ID;
   const locale = await getLocale();
   const messages = await getMessages();
+  const direction = locale === 'ar' ? 'rtl' : 'ltr';
+  const lang = locale === 'ar' ? 'ar' : 'en';
   return (
-    <html lang="ar" dir="rtl" suppressHydrationWarning className={`${notoSansArabic.variable} ${manrope.variable} ${cormorantGaramond.variable} ${notoSansArabic.className} antialiased`}>
+    <html lang={lang} dir={direction} suppressHydrationWarning className={`${notoSansArabic.variable} ${manrope.variable} ${cormorantGaramond.variable} ${notoSansArabic.className} antialiased`}>
       <head>
         <StructuredData />
         {/* Google Analytics */}
@@ -193,10 +195,6 @@ export default async function RootLayout({
                     {children}
                   </ConditionalLayout>
                 </NextIntlClientProvider>
-                {/* HARDCODED TEST: red=light, blue=dark – remove after verifying */}
-                <div className="bg-red-500 dark:bg-blue-500 h-20 w-20 fixed bottom-4 left-4 z-50 flex items-center justify-center text-white text-xs font-bold p-1 text-center rounded-lg shadow-lg">
-                  HARDCODED TEST
-                </div>
                 <Toaster 
                   position="top-center" 
                   richColors={false}

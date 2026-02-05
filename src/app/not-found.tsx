@@ -1,60 +1,55 @@
 import { AlertTriangle } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import DarkModeToggle from "@/components/DarkModeToggle"
 
 export default function NotFound() {
   return (
     <div
       dir="rtl"
-      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-orange-50 px-4"
+      className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-amber-50 to-orange-50 dark:from-background dark:to-surface px-4"
     >
+      <div className="absolute top-4 left-4">
+        <DarkModeToggle />
+      </div>
       <div className="text-center max-w-md mx-auto">
-        {/* Icon */}
         <div className="mb-6 flex justify-center">
-          <AlertTriangle className="w-20 h-20 text-red-600" />
+          <AlertTriangle className="w-20 h-20 text-red-600 dark:text-red-400" />
         </div>
-
-        {/* Title */}
-        <h1 className="text-4xl font-bold text-brown-text mb-4">
+        <h1 className="text-4xl font-bold text-brown-text dark:text-text-primary mb-4">
           الصفحة غير موجودة
         </h1>
-
-        {/* Description */}
-        <p className="text-brown-text/70 mb-8 text-lg leading-relaxed">
+        <p className="text-brown-text/70 dark:text-text-secondary mb-8 text-lg leading-relaxed">
           عذراً، الصفحة التي تبحث عنها غير موجودة أو تم حذفها.
         </p>
-
-        {/* Buttons */}
         <div className="flex flex-col gap-4 mb-8">
           <Button asChild variant="primary" size="lg" className="w-full">
-            <Link href="/">العودة للرئيسية</Link>
+            <Link href="/ar">العودة للرئيسية</Link>
           </Button>
           <Button asChild variant="outline" size="lg" className="w-full">
-            <Link href="/quiz/step1-favorites">تصفح العطور</Link>
+            <Link href="/ar/quiz/step1-favorites">تصفح العطور</Link>
           </Button>
         </div>
-
-        {/* Quick Links */}
-        <div className="pt-6 border-t border-brown-text/10">
-          <p className="text-sm text-brown-text/60 mb-4">روابط سريعة:</p>
+        <div className="pt-6 border-t border-brown-text/10 dark:border-border-subtle">
+          <p className="text-sm text-brown-text/60 dark:text-text-muted mb-4">روابط سريعة:</p>
           <div className="flex flex-wrap gap-2 justify-center items-center">
             <Link
-              href="/"
-              className="text-sm text-brown-text/60 hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded px-2 py-1"
+              href="/ar"
+              className="text-sm text-brown-text/60 dark:text-text-muted hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded px-2 py-1"
             >
               الرئيسية
             </Link>
-            <span className="text-brown-text/40">•</span>
+            <span className="text-brown-text/40 dark:text-text-muted">•</span>
             <Link
-              href="/quiz/step1-favorites"
-              className="text-sm text-brown-text/60 hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded px-2 py-1"
+              href="/ar/quiz/step1-favorites"
+              className="text-sm text-brown-text/60 dark:text-text-muted hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded px-2 py-1"
             >
               الاختبار
             </Link>
-            <span className="text-brown-text/40">•</span>
+            <span className="text-brown-text/40 dark:text-text-muted">•</span>
             <Link
-              href="/dashboard"
-              className="text-sm text-brown-text/60 hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded px-2 py-1"
+              href="/ar/favorites"
+              className="text-sm text-brown-text/60 dark:text-text-muted hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded px-2 py-1"
             >
               المفضلة
             </Link>

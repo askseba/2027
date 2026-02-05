@@ -1,8 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 export function HeadlineSection() {
+  const t = useTranslations('home');
+
   return (
     <section className="py-[var(--section-spacing)] bg-cream dark:bg-surface">
       <div className="container mx-auto px-6 max-w-6xl">
@@ -11,9 +14,9 @@ export function HeadlineSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-3xl md:text-4xl font-bold text-center text-dark-brown dark:text-text-primary leading-tight font-logo"
+          className="text-2xl font-bold text-center text-dark-brown dark:text-text-primary leading-tight font-logo"
         >
-          تعرف على ذوقك العطري في 3 دقائق
+          {t('headline')}
         </motion.h1>
       </div>
     </section>

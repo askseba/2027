@@ -91,11 +91,8 @@ export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending
     })
   }
 
-  const canNext = currentLevel === 1 
-    ? allergy.level1.length > 0
-    : currentLevel === 2
-    ? allergy.level1.length > 0 // Level 2 requires Level 1 completion
-    : allergy.level2.length > 0 || allergy.level1.length > 0 // Level 3 requires at least Level 1 or 2
+  // Allow proceeding with empty selections (skip allergies) so user can go straight to results
+  const canNext = true
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
@@ -109,7 +106,7 @@ export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending
       {/* Level 1: Symptoms */}
       {currentLevel === 1 && (
         <div className="space-y-6">
-          <h2 className="text-3xl font-bold text-text-dark dark:text-text-primary text-center">
+          <h2 className="text-3xl font-bold text-text-dark dark:text-text-primary dark:text-slate-100 text-center">
             {content.quiz.step3.level1Question}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -139,8 +136,8 @@ export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending
                 whileTap={{ scale: 0.98 }}
               >
                 <div className="text-3xl mb-3">{icon}</div>
-                <h3 className="font-bold text-text-dark dark:text-text-primary text-xl md:text-2xl mb-2 leading-tight">{title}</h3>
-                <p className="text-sm text-text-dark/70 dark:text-text-muted">{desc}</p>
+                <h3 className="font-bold text-text-dark dark:text-text-primary dark:text-slate-100 text-xl md:text-2xl mb-2 leading-tight">{title}</h3>
+                <p className="text-sm text-text-dark/70 dark:text-text-muted dark:text-slate-300">{desc}</p>
               </motion.button>
             ))}
           </div>
@@ -150,7 +147,7 @@ export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending
       {/* Level 2: Fragrance Families */}
       {currentLevel === 2 && (
         <div className="space-y-6">
-          <h2 className="text-3xl font-bold text-text-dark dark:text-text-primary text-center">
+          <h2 className="text-3xl font-bold text-text-dark dark:text-text-primary dark:text-slate-100 text-center">
             {content.quiz.step3.level2Question}
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
@@ -180,8 +177,8 @@ export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending
                 whileTap={{ scale: 0.98 }}
               >
                 <div className="text-4xl mb-4">{icon}</div>
-                <h3 className="font-bold text-text-dark dark:text-text-primary text-xl md:text-2xl">{name}</h3>
-                <p className="text-xs text-text-dark/60 dark:text-text-muted mt-1">{examples}</p>
+                <h3 className="font-bold text-text-dark dark:text-text-primary dark:text-slate-100 text-xl md:text-2xl">{name}</h3>
+                <p className="text-xs text-text-dark/60 dark:text-text-muted dark:text-slate-300 mt-1">{examples}</p>
               </motion.button>
             ))}
           </div>

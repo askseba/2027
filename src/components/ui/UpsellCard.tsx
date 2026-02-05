@@ -127,25 +127,6 @@ export function UpsellCard({ position, remainingCount, averageMatch, onUpgrade }
             <span>اشترك الآن</span>
             <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
           </button>
-          
-          <p className="text-xs text-brown-text/50">
-            يمكنك الإلغاء في أي وقت • ضمان استرجاع المال خلال 7 أيام
-          </p>
-        </div>
-        
-        {/* Social proof */}
-        <div className="flex items-center justify-center gap-2 text-sm text-brown-text/60 pt-4 border-t border-brown-text/10">
-          <div className="flex -space-x-2">
-            {[1, 2, 3, 4].map(i => (
-              <div 
-                key={i}
-                className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-purple-600 border-2 border-white flex items-center justify-center text-white text-xs font-bold"
-              >
-                ✓
-              </div>
-            ))}
-          </div>
-          <span>انضم لأكثر من 500+ مشترك</span>
         </div>
       </div>
     </motion.div>

@@ -4,12 +4,14 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useTheme } from 'next-themes';
 
 export function CTASection() {
   const router = useRouter();
+  const t = useTranslations('home.cta');
   const [isClicked, setIsClicked] = useState(false);
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
@@ -57,9 +59,11 @@ export function CTASection() {
     
     setTimeout(() => {
       ripple.remove();
-      router.push('/quiz');
+      router.push('/quiz/step1-favorites');
     }, 300);
   };
+
+  const buttonText = isClicked ? t('loading') : t('ctaButton');
 
   return (
     <section className="py-12">
@@ -104,8 +108,8 @@ export function CTASection() {
             <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
             
             {/* Button text - white for max contrast on gold/amber gradient */}
-            <span className="relative z-10 text-3xl md:text-4xl text-white font-bold">
-              {isClicked ? 'جاري التحميل...' : 'ابدأ الرحلة'}
+            <span className="relative z-10 text-sm text-white font-bold">
+              {buttonText}
             </span>
           </motion.button>
         </motion.div>

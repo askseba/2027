@@ -25,7 +25,33 @@
     "userMenuAriaLabel": "User menu",
     "notificationsLoginPrompt": "Log in for notifications"
   },
+  "favorites": {
+    "metadata": {
+      "title": "Favorites",
+      "description": "Your favorite fragrances"
+    },
+    "title": "Favorites",
+    "emptyTitle": "Your favorites list is empty",
+    "emptyDescription": "Start exploring fragrances and add what you like here",
+    "exploreCta": "Explore fragrances now",
+    "backToHome": "Back to home",
+    "backToDashboard": "Dashboard"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "Sorry, the page you're looking for doesn't exist or was removed.",
+    "backHome": "Back to home",
+    "browseQuiz": "Browse fragrances",
+    "quickLinks": "Quick links",
+    "home": "Home",
+    "quiz": "Quiz",
+    "favorites": "Favorites"
+  },
   "home": {
+    "metadata": {
+      "title": "Ask Seba – Your smart fragrance advisor",
+      "description": "Perfume discovery based on your olfactory profile"
+    },
     "hero": {
       "title": "A smart quiz to discover your perfect fragrance",
       "subtitle": "ask.seba analyzes your olfactory profile, sensitivities, and lifestyle to recommend fragrances that truly fit you—before you buy.",
@@ -39,16 +65,16 @@
     "questions": {
       "title": "Have you experienced this?",
       "items": [
-        "You buy a fragrance and regret it after the first wear?",
-        "You’re sensitive to certain smells but don’t know the real trigger?",
-        "You fell for marketing hype and bought a fragrance that doesn’t feel like you?"
+        "Ever bought a perfume and didn't like it ?",
+        "Do certain fragrances trigger allergies for you ?",
+        "Tricked by marketing hype ?"
       ]
     },
     "stats": [
-      { "number": "+80,000", "label": "Global fragrances in our database" },
+      { "number": "80,000+", "label": "Global fragrance" },
       { "number": "98%", "label": "User satisfaction" },
-      { "number": "3 minutes", "label": "Average quiz time" },
-      { "number": "+10,000", "label": "Users who tried Ask Seba" }
+      { "number": "minutes 3", "label": "Test duration" },
+      { "number": "10,000+", "label": "User" }
     ],
     "benefits": {
       "title": "We help you",
@@ -70,6 +96,8 @@
         }
       ]
     },
+    "headline": "Discover your olfactory profile in 3 minutes",
+    "valuePropTagline": "A smart quiz that finds your perfect fragrance match",
     "valueProposition": {
       "title": "Why Ask Seba is different",
       "bullets": [
@@ -82,6 +110,8 @@
     "cta": {
       "title": "Ready to discover your perfect fragrance?",
       "body": "Answer a few simple questions about fragrances you love, ones you dislike, and any sensitivities you have—and let Ask Seba do the rest.",
+      "ctaButton": "Start the journey",
+      "loading": "Loading...",
       "primary": "Start the smart quiz",
       "primaryHref": "/quiz",
       "secondary": "Learn how Ask Seba works",
@@ -89,6 +119,8 @@
     }
   },
   "about": {
+    "backToProfile": "Back to profile",
+    "testimonialsTitle": "What our customers say",
     "hero": {
       "title": "Our Story at Ask Seba",
       "subtitle": "An app that analyzes fragrance compatibility based on your personal preferences",
@@ -199,6 +231,10 @@
     }
   },
   "faq": {
+    "backToProfile": "Back to profile",
+    "searchPlaceholder": "Search questions...",
+    "searchAriaLabel": "Search FAQ",
+    "noResults": "No questions found matching \"{term}\"",
     "hero": {
       "title": "Frequently Asked Questions",
       "subtitle": "Everything you want to know"
@@ -311,6 +347,10 @@
     "subtitle": "Discover your ideal fragrances through a simple guided quiz",
     "startButton": "Start quiz",
     "step1": {
+      "metadata": {
+        "title": "Favorites – Quiz | Ask Seba",
+        "description": "Select 3–12 fragrances you love to personalize your recommendations."
+      },
       "title": "Fragrances I love 🧡",
       "description": "Select 3–12 fragrances you like",
       "minError": "Please select at least 3 fragrances",
@@ -330,9 +370,16 @@
       "ariaLabel": "Search for a favorite fragrance",
       "searchTimeout": "Search timed out (10 seconds). Please try again.",
       "searchRateLimit": "Search limit reached. Please wait a bit and try again.",
-      "searchError": "Something went wrong while searching. Please try again."
+      "searchError": "Something went wrong while searching. Please try again.",
+      "nextButtonWithCount": "Next ({count} fragrances)",
+      "alreadyAdded": "This fragrance was already added",
+      "removeAriaLabel": "Remove {name}"
     },
     "step2": {
+      "metadata": {
+        "title": "Disliked – Quiz | Ask Seba",
+        "description": "Select fragrances you dislike to refine your profile."
+      },
       "title": "❌ Fragrances I don’t like",
       "description": "Select 3–12 fragrances you dislike",
       "placeholder": "Search for a fragrance...",
@@ -345,9 +392,16 @@
       "emptyStateDescription": "Type the fragrance or brand name, e.g. Dior, Chanel, Oud, Jasmine",
       "skipButton": "💡 Skip this step",
       "skipDescription": "You can skip this step if there are no fragrances you hate",
-      "dataError": "Fragrance data is currently unavailable"
+      "dataError": "Fragrance data is currently unavailable",
+      "backButton": "Back",
+      "nextButton": "Next",
+      "skipStepLabel": "Skip this step"
     },
     "step3": {
+      "metadata": {
+        "title": "Sensitivity – Quiz | Ask Seba",
+        "description": "Select symptoms and ingredients to avoid in recommendations."
+      },
       "title": "3",
       "description": "Select the symptoms you experience",
       "level1Question": "Have fragrances ever caused you any of these symptoms?",
@@ -362,10 +416,16 @@
     }
   },
   "privacy": {
+    "backButton": "Back to profile",
+    "backAriaLabel": "Go back to previous page",
+    "tocTitle": "Table of contents",
+    "summaryTitle": "Quick summary",
+    "contactTitle": "Contact",
     "hero": {
       "title": "Privacy Policy",
       "subtitle": "Your protection is our priority",
-      "last_updated": "January 2026"
+      "last_updated": "January 2026",
+      "lastUpdatedPrefix": "Last updated:"
     },
     "summaryBullets": [
       "We don't sell your data",
@@ -458,7 +518,7 @@
     "description": "We help you discover fragrances that match your taste, skin, and sensitivities—before you spend a single riyal.",
     "navAriaLabel": "Important links",
     "links": {
-      "about": "Our story",
+      "about": "About",
       "faq": "FAQ",
       "privacy": "Privacy",
       "pricing": "Pricing",
@@ -480,6 +540,12 @@
       "terms": "Terms & Conditions"
     },
     "madeWithLove": "Built with love for fragrance lovers everywhere."
+  },
+  "results": {
+    "metadata": {
+      "title": "Your quiz results - Your fragrance profile",
+      "description": "Discover your ideal fragrances based on your personality and preferences analysis"
+    }
   },
   "common": {
     "next": "Next",

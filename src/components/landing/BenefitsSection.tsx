@@ -1,12 +1,9 @@
 'use client';
 
 import { motion, Variants } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
-const benefits = [
-  { icon: '🎯', text: 'اختيار العطر' },
-  { icon: '🧪', text: 'تجنب الحساسية' },
-  { icon: '💰', text: 'توفير المال' },
-];
+type Benefit = { icon: string; title: string; description?: string };
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -33,6 +30,9 @@ const itemVariants: Variants = {
 };
 
 export function BenefitsSection() {
+  const t = useTranslations('home.benefits');
+  const benefits = t.raw('items') as Benefit[];
+
   return (
     <section className="py-[var(--section-spacing)] bg-cream dark:bg-surface">
       <div className="container mx-auto px-6 max-w-6xl">
@@ -41,9 +41,9 @@ export function BenefitsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-3xl md:text-4xl font-bold text-center text-dark-brown dark:text-text-primary mb-10 font-logo"
+          className="text-[24px] md:text-[30px] lg:text-[36px] font-bold text-center text-dark-brown dark:text-text-primary mb-10 font-logo"
         >
-          نساعدك في
+          {t('title')}
         </motion.h2>
         <motion.div
           variants={containerVariants}
@@ -61,7 +61,7 @@ export function BenefitsSection() {
             >
               <div className="text-5xl mb-4">{benefit.icon}</div>
               <p className="text-xl font-semibold text-dark-brown dark:text-text-primary">
-                {benefit.text}
+                {benefit.title}
               </p>
             </motion.div>
           ))}

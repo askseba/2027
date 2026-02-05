@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/i18n/routing'
 import { useQuiz } from '@/contexts/QuizContext'
 import logger from '@/lib/logger'
 
@@ -18,11 +18,16 @@ import logger from '@/lib/logger'
  */
 export function useQuizStepGuard(requiredStep: 1 | 2 | 3) {
   const router = useRouter()
-  const { data } = useQuiz()
+  const { data, isHydrated } = useQuiz()
 
   useEffect(() => {
     // Step 1 doesn't require any prerequisites
     if (requiredStep === 1) {
+      return
+    }
+
+    // Don't redirect until context has hydrated from sessionStorage (avoids redirect to step 1 on step 3)
+    if (!isHydrated) {
       return
     }
 
@@ -35,13 +40,15 @@ export function useQuizStepGuard(requiredStep: 1 | 2 | 3) {
       }
     }
 
-    // Step 3 requires at least 3 disliked perfumes from step 2
+    // Step 3 requires step 2 to be "done": either >= 3 disliked OR skipped (0). Don't require 3.
     if (requiredStep >= 3) {
-      if (!data.step2_disliked || data.step2_disliked.length < 3) {
-        logger.warn('Quiz Step Guard: Redirecting to step 2 - insufficient disliked perfumes')
+      const disliked = data.step2_disliked ?? []
+      const step2Done = disliked.length >= 3 || disliked.length === 0
+      if (!step2Done) {
+        logger.warn('Quiz Step Guard: Redirecting to step 2 - step 2 incomplete (1–2 selections)')
         router.push('/quiz/step2-disliked')
         return
       }
     }
-  }, [requiredStep, data, router])
+  }, [requiredStep, data, isHydrated, router])
 }

@@ -8,7 +8,7 @@ import { Clock, TrendingUp, Sparkles, ChevronRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { safeFetch } from '@/lib/utils/api-helpers'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/i18n/routing'
 import logger from '@/lib/logger'
 
 interface TestRecord {

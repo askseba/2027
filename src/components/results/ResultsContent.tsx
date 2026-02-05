@@ -2,6 +2,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sparkles, ArrowRightLeft, Zap } from 'lucide-react'
+import { useLocale } from 'next-intl'
 import { PerfumeCard } from '@/components/ui/PerfumeCard'
 import { Button } from '@/components/ui/button'
 import { useQuiz } from '@/contexts/QuizContext'
@@ -27,6 +28,7 @@ interface MatchResponse {
 }
 
 export function ResultsContent() {
+  const locale = useLocale()
   const { data: quizData } = useQuiz()
   const { data: session } = useSession()
   const [scoredPerfumes, setScoredPerfumes] = useState<ScoredPerfume[]>([])
@@ -54,12 +56,6 @@ export function ResultsContent() {
         setScoredPerfumes(data.perfumes)
         setBlurredItems(data.blurredItems || [])
         setTier(data.tier)
-        
-        console.log('API Response:', {
-          results: data.perfumes.length,
-          blurredItems: data.blurredItems?.length,
-          userTier: data.tier
-        })
       }
     } catch (err) {
       logger.error('Results fetch error:', err)
@@ -80,8 +76,9 @@ export function ResultsContent() {
 
   if (isLoading) return <div className="min-h-screen flex items-center justify-center bg-cream-bg dark:bg-background"><LoadingSpinner size="lg" /></div>
 
+  const direction = locale === 'ar' ? 'rtl' : 'ltr'
   return (
-    <div className="min-h-screen bg-cream-bg dark:bg-background pb-20" dir="rtl">
+    <div className="min-h-screen bg-cream-bg dark:bg-background pb-20" dir={direction}>
       {/* Hero Section */}
       <section className="bg-gradient-to-b from-primary/10 dark:from-amber-500/10 to-transparent pt-16 pb-12 px-6 text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
@@ -89,7 +86,6 @@ export function ResultsContent() {
             <Sparkles className="w-4 h-4 text-primary dark:text-amber-500" />
             <span className="text-sm font-bold text-text-primary dark:text-text-primary">تم تحليل ذوقك بنجاح</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-text-primary dark:text-text-primary mb-4">اكتشافاتك العطرية المخصصة</h1>
           <p className="text-text-secondary dark:text-text-muted max-w-2xl mx-auto text-lg">بناءً على تفضيلاتك، قمنا باختيار هذه العطور التي تناسب شخصيتك وتتجنب مسببات الحساسية لديك.</p>
         </motion.div>
       </section>

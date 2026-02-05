@@ -4,12 +4,7 @@
 'use client';
 
 import { motion, Variants } from 'framer-motion';
-
-const questions = [
-  'تشتري عطر ولا يعجبك؟',
-  'عندك حساسية من روائح معينة؟',
-  'هل وقعت في فخ التسويق؟'
-];
+import { useTranslations } from 'next-intl';
 
 // ✅ Animation variants - reusable
 const containerVariants: Variants = {
@@ -37,6 +32,9 @@ const itemVariants: Variants = {
 };
 
 export function QuestionsSection() {
+  const t = useTranslations('home.questions');
+  const items = t.raw('items') as string[];
+
   return (
     <section className="py-6">
       <div className="container mx-auto px-6">
@@ -49,7 +47,7 @@ export function QuestionsSection() {
           viewport={{ once: true, margin: '-100px' }}
           className="flex flex-col items-center gap-6"
         >
-          {questions.map((question, index) => (
+          {items.map((question, index) => (
             <motion.div
               key={index}
               variants={itemVariants}
