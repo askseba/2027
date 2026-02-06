@@ -373,7 +373,10 @@
       "searchError": "Something went wrong while searching. Please try again.",
       "nextButtonWithCount": "Next ({count} fragrances)",
       "alreadyAdded": "This fragrance was already added",
-      "removeAriaLabel": "Remove {name}"
+      "removeAriaLabel": "Remove {name}",
+      "voiceSearchHint": "Tap the mic for voice search",
+      "voiceSearchListening": "Listening...",
+      "voiceSearchError": "Voice recognition error"
     },
     "step2": {
       "metadata": {

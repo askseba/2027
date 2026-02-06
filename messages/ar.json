@@ -373,7 +373,10 @@
       "searchError": "حدث خطأ في البحث. الرجاء المحاولة مرة أخرى.",
       "nextButtonWithCount": "التالي ({count} عطور)",
       "alreadyAdded": "تم إضافة هذا العطر مسبقاً",
-      "removeAriaLabel": "حذف {name}"
+      "removeAriaLabel": "حذف {name}",
+      "voiceSearchHint": "اضغط على المايك للبحث الصوتي",
+      "voiceSearchListening": "جاري الاستماع...",
+      "voiceSearchError": "خطأ في التعرف الصوتي"
     },
     "step2": {
       "metadata": {

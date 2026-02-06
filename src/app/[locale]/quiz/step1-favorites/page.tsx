@@ -7,6 +7,9 @@ import { toast } from 'sonner'
 import { useLocale, useTranslations } from 'next-intl'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { useVoiceSearch } from '@/hooks/useVoiceSearch'
+import { VoiceMicButton } from '@/components/ui/VoiceMicButton'
+import { voiceSearchEnabled } from '@/lib/feature-flags'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { useQuiz } from '@/contexts/QuizContext'
 import logger from '@/lib/logger'
@@ -30,6 +33,12 @@ export default function Step1FavoritesPage() {
   const [searchError, setSearchError] = useState<string | null>(null)
   const [searchResults, setSearchResults] = useState<LocalPerfume[]>([])
   const [isSearching, setIsSearching] = useState(false)
+
+  // Voice search integration
+  const { state: voiceState, startListening, stopListening, reset, isSupported } = useVoiceSearch({
+    lang: locale === 'ar' ? 'ar-SA' : 'en-US',
+    onTranscript: (text) => setSearchTerm(text)
+  })
 
   useEffect(() => {
     const saved = sessionStorage.getItem('quiz-step1')
@@ -158,8 +167,18 @@ export default function Step1FavoritesPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="ps-14 pe-14 py-6 text-lg"
               />
-              {isSearching && (
+              {isSearching ? (
                 <Loader2 className="absolute inset-inline-end-4 top-1/2 -translate-y-1/2 animate-spin text-primary w-5 h-5" />
+              ) : (
+                voiceSearchEnabled && isSupported && (
+                  <VoiceMicButton
+                    className="absolute inset-inline-end-4 top-1/2 -translate-y-1/2"
+                    state={voiceState}
+                    startListening={startListening}
+                    stopListening={stopListening}
+                    reset={reset}
+                  />
+                )
               )}
             </div>
 

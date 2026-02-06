@@ -69,12 +69,21 @@ async function fuzzyTranscript(transcript: string): Promise<string> {
 }
 
 export interface UseVoiceSearchOptions {
+  lang?: string;
   onTranscript?: (text: string) => void;
 }
 
 export const useVoiceSearch = (options?: UseVoiceSearchOptions) => {
   const onTranscriptRef = useRef(options?.onTranscript);
-  onTranscriptRef.current = options?.onTranscript;
+  const langRef = useRef(options?.lang || 'ar-SA');
+
+  useEffect(() => {
+    onTranscriptRef.current = options?.onTranscript;
+  });
+
+  useEffect(() => {
+    langRef.current = options?.lang || 'ar-SA';
+  });
 
   const [state, setState] = useState<VoiceState>({
     status: 'idle',
@@ -97,7 +106,7 @@ export const useVoiceSearch = (options?: UseVoiceSearchOptions) => {
       recognitionRef.current = new SpeechRecognition();
       recognitionRef.current.continuous = true;
       recognitionRef.current.interimResults = true;
-      recognitionRef.current.lang = 'ar-SA';
+      recognitionRef.current.lang = langRef.current;
 
       recognitionRef.current.onresult = (event: { results: SpeechRecognitionResultList }) => {
         const transcript = Array.from(event.results)
