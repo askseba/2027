@@ -110,14 +110,6 @@ export function HeroSection() {
           }}
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ 
-              duration: 0.8, 
-              delay: 0.4,
-              type: 'spring',
-              stiffness: 100
-            }}
             style={{
               rotateX,
               rotateY,
@@ -132,8 +124,9 @@ export function HeroSection() {
               width={280}
               height={400}
               priority={true}
+              fetchPriority="high"
               sizes="(max-width: 768px) 280px, 400px"
-              className="drop-shadow-[0_20px_40px_rgba(91,66,51,0.3)] dark:drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)] transition-all duration-500 hover:drop-shadow-[0_30px_60px_rgba(179,157,125,0.4)] dark:hover:drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)]"
+              className="drop-shadow-[0_20px_40px_rgba(91,66,51,0.3)] dark:drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)]"
             />
             
             {/* ✅ Glow effect on hover */}
