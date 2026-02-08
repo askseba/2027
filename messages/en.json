@@ -48,12 +48,7 @@
     "danger": {
       "title": "Danger Zone",
       "logout": "Log out",
-      "delete": "Permanently delete account",
-      "deleteTitle": "Delete account",
-      "deleteDesc": "This action cannot be undone. Your data will be permanently removed.",
-      "deleteNotReady": "Account deletion is not available yet.",
-      "cancel": "Cancel",
-      "confirm": "Delete account"
+      "delete": "Permanently delete account"
     }
   },
   "favorites": {

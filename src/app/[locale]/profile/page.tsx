@@ -5,16 +5,17 @@ import {
   User,
   Camera,
   ShieldCheck,
+  Bell,
   Lock,
   LogOut,
-  AlertCircle
+  AlertCircle,
+  Trash2
 } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useSession, signOut } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
-import { DeleteAccountDialog } from '@/components/profile/delete-account-dialog'
 
 export default function ProfilePage() {
   const locale = useLocale()
@@ -142,9 +143,10 @@ export default function ProfilePage() {
               <LogOut className="w-4 h-4 ml-2" />
               {t('danger.logout')}
             </Button>
-            <div className="w-full flex justify-center">
-              <DeleteAccountDialog />
-            </div>
+            <button className="w-full text-center text-xs text-text-secondary hover:text-danger-red transition-colors flex items-center justify-center gap-1">
+              <Trash2 className="w-3 h-3" />
+              {t('danger.delete')}
+            </button>
           </div>
         </section>
       </main>
