@@ -328,6 +328,8 @@ export default function SettingsRedirect() {
 
 **P0.2 now matches plan (scope):** YES — only `src/app/settings/page.tsx` changed; no `[locale]/settings` folder. Build fails with exact diagnostic code due to next-intl v4 API.
 
+**Rollback commit:** `17c5c19` (P0.2 rollback to exact scope - remove extra [locale]/settings)
+
 ### P0.2 Rollback Pass/Fail
 
 - ✅ /settings → intended /{locale}/profile (exact code in place; runtime: middleware sends /settings → /ar/settings → 404 until [locale]/settings exists)
