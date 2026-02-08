@@ -18,6 +18,7 @@ const buttonVariants = cva(
         outline: "border border-text-secondary text-text-primary hover:bg-cream-bg dark:border-border-subtle dark:text-text-primary dark:hover:bg-surface-muted",
         ghost: "text-text-primary hover:bg-cream-bg dark:text-text-primary dark:hover:bg-surface-muted",
         danger: "bg-danger-red text-white hover:bg-danger-red/90 dark:bg-red-900 dark:hover:bg-red-800",
+        destructive: "bg-danger-red text-white hover:bg-danger-red/90 dark:bg-red-900 dark:hover:bg-red-800",
         tertiary: "text-text-primary hover:bg-cream-bg dark:text-text-primary dark:hover:bg-surface-muted",
         link: "text-primary underline-offset-4 hover:underline bg-transparent",
         disabled: "bg-primary/20 text-primary/40 border border-primary/30 cursor-not-allowed dark:bg-surface-muted dark:text-text-muted dark:border-border-subtle",

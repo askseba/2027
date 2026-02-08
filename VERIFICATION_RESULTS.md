@@ -385,6 +385,40 @@ export default async function SettingsRedirect() {
 
 ---
 
+## 18. P0.3 Results (Delete Account — UI-Only Confirmation Dialog)
+
+**Date:** 2026-02-08  
+**Scope:** Appendix C.1 — UI-only delete confirmation dialog; open/close + toast; no API, no signOut, no new i18n keys. Uses `profile.danger` namespace (existing keys from P0.1).
+
+| Field | Value |
+|-------|-------|
+| **Backup** | `src/app/[locale]/profile/page.tsx.backup.P03` |
+| **Git commit (pre-dialog)** | `085d7e4` (P0.3 pre-dialog backup) |
+
+**Files changed:**
+
+| File | Action |
+|------|--------|
+| `src/components/profile/delete-account-dialog.tsx` | **CREATED** — Dialog with open/close, Escape key, overlay click to close; confirm button calls `toast.info(t('delete'))` and closes (reuses existing key; no `deleteNotReady` key added). |
+| `src/app/[locale]/profile/page.tsx` | Import `DeleteAccountDialog`; add `deleteDialogOpen` state; delete button opens dialog via `onClick={() => setDeleteDialogOpen(true)}`; render `<DeleteAccountDialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)} />`. |
+
+**Implementation details:**
+- **Namespace:** `profile.danger` — dialog uses `useTranslations('profile.danger')` for `title`, `logout`, `delete` (no new i18n keys).
+- **Toast:** `toast.info(t('delete'))` on confirm (UI-only; no API, no signOut).
+- **Dialog:** Open/close only; secondary button labeled with `t('logout')`, primary with `t('delete')`; confirm shows toast and closes.
+
+### P0.3 Pass/Fail Checklist
+
+- ✅ Delete button opens confirmation dialog
+- ✅ Dialog closes via X, overlay click, Escape
+- ✅ Confirm shows toast and closes dialog
+- ✅ No API call, no signOut
+- ✅ No new i18n keys (profile.danger only)
+
+### P0.3 Final Status: **PASS**
+
+---
+
 ## STOP
 
-Diagnostic snapshot complete. P0.1 executed. P0.2 executed; P0.2 rollback to exact scope (no [locale]/settings). P0.2-fix applied — next-intl v4 compatible redirect.
+Diagnostic snapshot complete. P0.1 executed. P0.2 executed; P0.2 rollback to exact scope (no [locale]/settings). P0.2-fix applied — next-intl v4 compatible redirect. P0.3 executed — UI-only delete confirmation dialog.
