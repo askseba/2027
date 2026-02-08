@@ -1,5 +1,5 @@
 "use client"
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import {
   User,
@@ -7,22 +7,50 @@ import {
   ShieldCheck,
   Lock,
   LogOut,
-  AlertCircle
+  AlertCircle,
+  Crown,
+  Zap
 } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useSession, signOut } from 'next-auth/react'
 import { Link } from '@/i18n/routing'
+import { useRouter } from '@/i18n/routing'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 import { DeleteAccountDialog } from '@/components/profile/delete-account-dialog'
+
+type TierResponse = {
+  tier: 'GUEST' | 'FREE' | 'PREMIUM'
+  hasActiveSubscription: boolean
+  subscription?: {
+    plan: string
+    endDate: string
+    amount: number
+    currency: string
+    status: string
+  } | null
+}
 
 export default function ProfilePage() {
   const locale = useLocale()
   const t = useTranslations('profile')
   const direction = locale === 'ar' ? 'rtl' : 'ltr'
   const { data: session, status } = useSession()
+  const router = useRouter()
   const [isUploading, setIsUploading] = useState(false)
+  const [tierData, setTierData] = useState<TierResponse | null>(null)
+
+  useEffect(() => {
+    if (status !== 'authenticated' || !session?.user?.id) {
+      setTierData(null)
+      return
+    }
+    fetch('/api/user/tier')
+      .then((res) => res.json())
+      .then((data: TierResponse) => setTierData(data))
+      .catch(() => setTierData(null))
+  }, [status, session?.user?.id])
 
   if (status === 'loading') {
     return (
@@ -90,10 +118,59 @@ export default function ProfilePage() {
           </div>
           <h2 className="text-3xl font-black text-text-primary mt-6">{session?.user?.name}</h2>
           <p className="text-text-secondary text-sm">{session?.user?.email}</p>
+          {tierData && (
+            <div className="mt-3 flex flex-wrap justify-center gap-2">
+              {tierData.tier === 'PREMIUM' && tierData.hasActiveSubscription ? (
+                <span className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-black px-3 py-1.5 rounded-full">
+                  <Crown className="w-3.5 h-3.5" />
+                  مميز
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 bg-cream-bg text-text-secondary text-xs font-bold px-3 py-1.5 rounded-full">
+                  <Zap className="w-3.5 h-3.5" />
+                  مجاني
+                </span>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
       <main className="max-w-2xl mx-auto px-6 mt-10 space-y-8">
+        {tierData && (
+          <section className="bg-white rounded-[2rem] p-8 shadow-elevation-1 border border-primary/5">
+            <h3 className="text-lg font-bold text-text-primary mb-6 flex items-center gap-2">
+              <Crown className="w-5 h-5 text-primary" />
+              الاشتراك
+            </h3>
+            {tierData.tier === 'PREMIUM' && tierData.subscription ? (
+              <div className="space-y-3">
+                <p className="text-text-primary font-medium">
+                  الحالة: <span className="text-safe-green font-bold">نشط</span>
+                </p>
+                <p className="text-text-secondary text-sm">
+                  الخطة: {tierData.subscription.plan === 'yearly' ? 'سنوي' : 'شهري'} • ينتهي في{' '}
+                  {new Date(tierData.subscription.endDate).toLocaleDateString('ar-SA')}
+                </p>
+                <p className="text-text-secondary text-sm">
+                  {tierData.subscription.amount} {tierData.subscription.currency}
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-text-secondary text-sm">خطتك الحالية: مجاني</p>
+                <Button
+                  variant="outline"
+                  className="rounded-xl"
+                  onClick={() => router.push('/pricing')}
+                >
+                  ترقية إلى مميز
+                </Button>
+              </div>
+            )}
+          </section>
+        )}
+
         <section className="bg-white rounded-[2rem] p-8 shadow-elevation-1 border border-primary/5">
           <h3 className="text-lg font-bold text-text-primary mb-6 flex items-center gap-2">
             <User className="w-5 h-5 text-primary" />

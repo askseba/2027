@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server'
+import { auth } from '@/lib/auth'
 import { perfumes as rawPerfumes } from '@/lib/data/perfumes'
 import type { PerfumeForMatching, ScoredPerfume } from '@/lib/matching'
 import { calculateMatchScores } from '@/lib/matching'
-import { getResultsLimit, getBlurredCount } from '@/lib/gating'
+import { getResultsLimit, getBlurredCount, getUserTierInfo } from '@/lib/gating'
+import type { SubscriptionTier } from '@prisma/client'
 
-type Tier = 'GUEST' | 'FREE' | 'PREMIUM'
+type Tier = 'GUEST' | SubscriptionTier
 
 interface MatchRequestBody {
   preferences: {
@@ -86,8 +88,16 @@ export async function POST(request: Request) {
 
     const scored: ScoredPerfume[] = calculateMatchScores(allPerfumes, userPreference)
 
-    // Tier: GUEST when no auth; could be extended with getServerSession later
-    const tier: Tier = 'GUEST'
+    let tier: Tier = 'GUEST'
+    const session = await auth()
+    if (session?.user?.id) {
+      try {
+        const tierInfo = await getUserTierInfo(session.user.id)
+        tier = tierInfo.tier
+      } catch {
+        tier = 'FREE'
+      }
+    }
     const limit = getResultsLimit(tier)
     const blurredCount = getBlurredCount(tier)
 
