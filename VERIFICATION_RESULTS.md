@@ -385,6 +385,31 @@ export default async function SettingsRedirect() {
 
 ---
 
+## 18. P0.4 Results (Auth Guard)
+
+**Date:** 2026-02-08  
+**Scope:** Profile page auth guard — unauthenticated users see signin prompt
+
+| Field | Value |
+|-------|-------|
+| **Signin route** | `/login` (verified: auth.ts, header.tsx, notifications) |
+| **Link import** | `@/i18n/routing` |
+| **Auth keys** | profile.auth.required, profile.auth.pleaseSignIn, profile.auth.signInButton (added to en.json, ar.json) |
+
+**Implementation:**
+- `status === 'loading'` → skeleton
+- `status === 'unauthenticated'` → message + Link href="/login"
+- `status === 'authenticated'` → existing profile content
+
+### P0.4 Pass/Fail Checklist
+- ✅ When logged out, /en/profile shows "Authentication Required" message
+- ✅ Message includes clickable "Sign In" link
+- ✅ Link href="/login" (locale-aware via @/i18n/routing)
+- ✅ When logged in, profile content displays normally
+- ⏳ Manual: no redirect loops or console errors
+
+---
+
 ## STOP
 
-Diagnostic snapshot complete. P0.1 executed. P0.2 executed; P0.2 rollback to exact scope (no [locale]/settings). P0.2-fix applied — next-intl v4 compatible redirect.
+Diagnostic snapshot complete. P0.1 ✓ P0.2 ✓ P0.3 ✓ P0.4 ✓

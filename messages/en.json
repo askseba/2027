@@ -49,6 +49,11 @@
       "title": "Danger Zone",
       "logout": "Log out",
       "delete": "Permanently delete account"
+    },
+    "auth": {
+      "required": "Authentication Required",
+      "pleaseSignIn": "Please sign in to view your profile.",
+      "signInButton": "Sign In"
     }
   },
   "favorites": {

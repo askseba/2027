@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useSession, signOut } from 'next-auth/react'
+import { Link } from '@/i18n/routing'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
@@ -20,8 +21,33 @@ export default function ProfilePage() {
   const locale = useLocale()
   const t = useTranslations('profile')
   const direction = locale === 'ar' ? 'rtl' : 'ltr'
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const [isUploading, setIsUploading] = useState(false)
+
+  if (status === 'loading') {
+    return (
+      <div className="container mx-auto py-8" dir={direction}>
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 bg-gray-200 dark:bg-surface-muted rounded w-1/4" />
+          <div className="h-64 bg-gray-200 dark:bg-surface-muted rounded" />
+        </div>
+      </div>
+    )
+  }
+
+  if (status === 'unauthenticated') {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-cream-bg dark:!bg-surface" dir={direction}>
+        <div className="text-center space-y-6 px-6">
+          <h1 className="text-2xl font-bold text-text-primary">{t('auth.required')}</h1>
+          <p className="text-text-secondary">{t('auth.pleaseSignIn')}</p>
+          <Link href="/login">
+            <Button>{t('auth.signInButton')}</Button>
+          </Link>
+        </div>
+      </div>
+    )
+  }
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const [allergySettings, setAllergySettings] = useState({
