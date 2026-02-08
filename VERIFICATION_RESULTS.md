@@ -200,6 +200,72 @@ pages: {
 
 ---
 
+## 13. P0.1 Results (i18n Extraction — Profile)
+
+| Field | Value |
+|-------|-------|
+| **Backup files** | `messages/en.json.backup.P01`, `messages/ar.json.backup.P01`, `src/app/[locale]/profile/page.tsx.backup.P01` |
+| **Git commit** | `45430be` (P0.1 pre-i18n backup - safe to revert) |
+| **JSON structure** | `profile` sibling to `nav` at root |
+
+**First 3 lines of root (en.json):**
+```json
+{
+  "nav": {
+    "home": "Home",
+```
+
+| **Strings replaced** | 17 keys (pageTitle, avatarAlt, personalInfo x5, sensitivity x8, danger x3) |
+
+**Before/after examples:**
+| Before | After |
+|--------|-------|
+| `"المعلومات الشخصية"` | `{t('personalInfo.title')}` |
+| `toast.success('تم تحديث الإعدادات بنجاح')` | `toast.success(t('sensitivity.updated'))` |
+| `"منطقة الخطر"` | `{t('danger.title')}` |
+
+| **Build result** | **PASS** — `npm run build` completed (exit 0) |
+| **Build errors** | None (copyfile warning for standalone, non-fatal) |
+| **Runtime verification** | Manual — run `npm run dev` and check `/en/profile`, `/ar/profile` per user instructions |
+
+---
+
+## 14. P0.2 Diagnostic (Settings → Profile Redirect)
+
+**Date:** 2026-02-08  
+**Scope:** Pre-implementation gate — verify i18n routing + locale prefix before /settings redirect
+
+### Current /settings behavior (observed)
+
+| URL | Result |
+|-----|--------|
+| `http://localhost:3000/settings` | **Redirects to** `/ar/settings` (middleware adds default locale) |
+| `http://localhost:3000/en/settings` | **404** ✓ (no `[locale]/settings` page) |
+| `http://localhost:3000/ar/settings` | **404** ✓ (no `[locale]/settings` page) |
+
+**Locale prefix proof:** `/settings` **YES** — middleware redirects to `/ar/settings` (defaultLocale). Proves next-intl adds locale prefix to non-prefixed paths.
+
+### P0.2 Gates status
+
+| Gate | Status |
+|------|--------|
+| **Gate A** | **PASS** — `src/i18n/routing.ts` exports `redirect`, `Link`, `usePathname`, `useRouter`, `getPathname` |
+| **Gate B** | **PASS** — `localePrefix: 'always'`, `defaultLocale: 'ar'` in routing.ts; middleware uses `createMiddleware(routing)`; observation confirms `/settings` → `/ar/settings` |
+| **Gate C** | **PASS** — `redirect` exported from `src/i18n/routing.ts`; `/settings`→`/ar/settings` proves locale behavior; no imports yet (ready for P0.2) |
+
+### Recommendation (code template — NO EXECUTION)
+
+**File:** `src/app/settings/page.tsx` (REPLACE ENTIRE CONTENT)
+
+```tsx
+import { redirect } from '@/i18n/routing';
+export default function SettingsRedirect() {
+  redirect('/profile');  // next-intl should auto-prefix locale
+}
+```
+
+---
+
 ## STOP
 
-Diagnostic snapshot complete. No other tracked files were modified.
+Diagnostic snapshot complete. P0.1 executed. P0.2 Diagnostic ready.

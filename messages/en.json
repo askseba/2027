@@ -25,6 +25,32 @@
     "userMenuAriaLabel": "User menu",
     "notificationsLoginPrompt": "Log in for notifications"
   },
+  "profile": {
+    "pageTitle": "Profile Settings",
+    "avatarAlt": "Profile",
+    "personalInfo": {
+      "title": "Personal Information",
+      "fullName": "Full name",
+      "email": "Email",
+      "emailReadonly": "Email cannot be edited",
+      "save": "Save changes"
+    },
+    "sensitivity": {
+      "title": "Advanced Sensitivity Settings",
+      "strictMode": "Strict Mode",
+      "strictDesc": "Hide any fragrance containing potential allergens entirely",
+      "active": "Active",
+      "ingredientAlerts": "Ingredient alerts",
+      "ingredientAlertsDesc": "Receive alerts when new fragrances matching your health profile become available",
+      "ifraNote": "Note: The ingredient database is updated weekly based on IFRA international standards to ensure your safety.",
+      "updated": "Settings updated successfully"
+    },
+    "danger": {
+      "title": "Danger Zone",
+      "logout": "Log out",
+      "delete": "Permanently delete account"
+    }
+  },
   "favorites": {
     "metadata": {
       "title": "Favorites",

@@ -11,7 +11,7 @@ import {
   AlertCircle,
   Trash2
 } from 'lucide-react'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { useSession, signOut } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -19,6 +19,7 @@ import { toast } from 'sonner'
 
 export default function ProfilePage() {
   const locale = useLocale()
+  const t = useTranslations('profile')
   const direction = locale === 'ar' ? 'rtl' : 'ltr'
   const { data: session } = useSession()
   const [isUploading, setIsUploading] = useState(false)
@@ -32,18 +33,19 @@ export default function ProfilePage() {
 
   const handleToggle = (key: keyof typeof allergySettings) => {
     setAllergySettings(prev => ({ ...prev, [key]: !prev[key] }))
-    toast.success('تم تحديث الإعدادات بنجاح')
+    toast.success(t('sensitivity.updated'))
   }
 
   return (
     <div className="min-h-screen bg-cream-bg dark:!bg-surface pb-20" dir={direction}>
       <div className="bg-white border-b border-primary/5 pt-12 pb-8 px-6 text-center">
         <div className="max-w-2xl mx-auto">
+          <h1 className="text-lg font-bold text-text-primary mb-4">{t('pageTitle')}</h1>
           <div className="relative inline-block group">
             <div className="w-32 h-32 rounded-[2.5rem] overflow-hidden shadow-elevation-3 border-4 border-white relative">
               <Image
                 src={session?.user?.image || '/placeholder-user.png'}
-                alt="Profile"
+                alt={t('avatarAlt')}
                 fill
                 className="object-cover"
               />
@@ -61,7 +63,7 @@ export default function ProfilePage() {
             </button>
             <input type="file" ref={fileInputRef} className="hidden" accept="image/*" />
           </div>
-          <h1 className="text-3xl font-black text-text-primary mt-6">{session?.user?.name}</h1>
+          <h2 className="text-3xl font-black text-text-primary mt-6">{session?.user?.name}</h2>
           <p className="text-text-secondary text-sm">{session?.user?.email}</p>
         </div>
       </div>
@@ -70,18 +72,18 @@ export default function ProfilePage() {
         <section className="bg-white rounded-[2rem] p-8 shadow-elevation-1 border border-primary/5">
           <h3 className="text-lg font-bold text-text-primary mb-6 flex items-center gap-2">
             <User className="w-5 h-5 text-primary" />
-            المعلومات الشخصية
+            {t('personalInfo.title')}
           </h3>
           <div className="space-y-4">
             <div>
-              <label className="text-xs font-bold text-text-secondary mb-1.5 block mr-1">الاسم الكامل</label>
+              <label className="text-xs font-bold text-text-secondary mb-1.5 block mr-1">{t('personalInfo.fullName')}</label>
               <Input defaultValue={session?.user?.name || ''} className="rounded-xl py-6" />
             </div>
             <div>
-              <label className="text-xs font-bold text-text-secondary mb-1.5 block mr-1">البريد الإلكتروني</label>
-              <Input defaultValue={session?.user?.email || ''} disabled className="rounded-xl py-6 bg-cream-bg/50" />
+              <label className="text-xs font-bold text-text-secondary mb-1.5 block mr-1">{t('personalInfo.email')}</label>
+              <Input defaultValue={session?.user?.email || ''} disabled className="rounded-xl py-6 bg-cream-bg/50" title={t('personalInfo.emailReadonly')} />
             </div>
-            <Button className="w-full py-6 rounded-xl mt-2">حفظ التغييرات</Button>
+            <Button className="w-full py-6 rounded-xl mt-2">{t('personalInfo.save')}</Button>
           </div>
         </section>
 
@@ -89,15 +91,15 @@ export default function ProfilePage() {
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-bold text-text-primary flex items-center gap-2">
               <ShieldCheck className="w-5 h-5 text-safe-green" />
-              إعدادات الحساسية المتقدمة
+              {t('sensitivity.title')}
             </h3>
-            <span className="bg-safe-green/10 text-safe-green text-[10px] font-black px-2 py-0.5 rounded-full">نشط</span>
+            <span className="bg-safe-green/10 text-safe-green text-[10px] font-black px-2 py-0.5 rounded-full">{t('sensitivity.active')}</span>
           </div>
           <div className="space-y-6">
             <div className="flex items-center justify-between p-4 bg-cream-bg rounded-2xl">
               <div>
-                <p className="font-bold text-text-primary text-sm">الوضع الصارم (Strict Mode)</p>
-                <p className="text-[10px] text-text-secondary">إخفاء أي عطر يحتوي على مسببات حساسية محتملة تماماً</p>
+                <p className="font-bold text-text-primary text-sm">{t('sensitivity.strictMode')}</p>
+                <p className="text-[10px] text-text-secondary">{t('sensitivity.strictDesc')}</p>
               </div>
               <button
                 onClick={() => handleToggle('strictMode')}
@@ -108,8 +110,8 @@ export default function ProfilePage() {
             </div>
             <div className="flex items-center justify-between p-4 bg-cream-bg rounded-2xl">
               <div>
-                <p className="font-bold text-text-primary text-sm">تنبيهات المكونات</p>
-                <p className="text-[10px] text-text-secondary">إرسال تنبيه عند توفر عطور جديدة تناسب ملفك الصحي</p>
+                <p className="font-bold text-text-primary text-sm">{t('sensitivity.ingredientAlerts')}</p>
+                <p className="text-[10px] text-text-secondary">{t('sensitivity.ingredientAlertsDesc')}</p>
               </div>
               <button
                 onClick={() => handleToggle('notifyOnAllergen')}
@@ -121,7 +123,7 @@ export default function ProfilePage() {
             <div className="p-4 border border-warning-amber/20 bg-warning-amber/5 rounded-2xl flex gap-3">
               <AlertCircle className="w-5 h-5 text-warning-amber shrink-0" />
               <p className="text-[10px] text-warning-amber font-medium leading-relaxed">
-                ملاحظة: يتم تحديث قاعدة بيانات المكونات أسبوعياً بناءً على معايير IFRA الدولية لضمان سلامتك.
+                {t('sensitivity.ifraNote')}
               </p>
             </div>
           </div>
@@ -130,7 +132,7 @@ export default function ProfilePage() {
         <section className="bg-white rounded-[2rem] p-8 shadow-elevation-1 border border-danger-red/10">
           <h3 className="text-lg font-bold text-danger-red mb-6 flex items-center gap-2">
             <Lock className="w-5 h-5" />
-            منطقة الخطر
+            {t('danger.title')}
           </h3>
           <div className="space-y-4">
             <Button
@@ -139,11 +141,11 @@ export default function ProfilePage() {
               onClick={() => signOut()}
             >
               <LogOut className="w-4 h-4 ml-2" />
-              تسجيل الخروج
+              {t('danger.logout')}
             </Button>
             <button className="w-full text-center text-xs text-text-secondary hover:text-danger-red transition-colors flex items-center justify-center gap-1">
               <Trash2 className="w-3 h-3" />
-              حذف الحساب نهائياً
+              {t('danger.delete')}
             </button>
           </div>
         </section>
