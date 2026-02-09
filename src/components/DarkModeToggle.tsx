@@ -22,7 +22,7 @@ const DarkModeToggle = () => {
         style={{ cursor: 'default' }}
       >
         <div className="icon-container">
-          <span className="sr-only">Loading theme</span>
+          <span className="sr-only" aria-live="polite">جاري تحميل الواجهة...</span>
         </div>
       </button>
     );
