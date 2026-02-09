@@ -68,7 +68,7 @@ const nextConfig: NextConfig = {
   },
   reactStrictMode: true,
   trailingSlash: false,
-  output: 'standalone',
+  // output: 'standalone',  // TEMP DISABLED: Windows EINVAL node:inspector
   
   // Rewrites to handle API trailing slash
   async rewrites() {
