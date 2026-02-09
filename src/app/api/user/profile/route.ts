@@ -26,7 +26,7 @@ export async function GET() {
         name: true,
         email: true,
         image: true,
-        allergySettings: true,
+        // allergySettings: true, // not in User model
       },
     })
 
@@ -37,17 +37,7 @@ export async function GET() {
       )
     }
 
-    let allergySettings = DEFAULT_ALLERGY
-    if (user.allergySettings) {
-      try {
-        allergySettings = {
-          ...DEFAULT_ALLERGY,
-          ...JSON.parse(user.allergySettings),
-        }
-      } catch {
-        // invalid JSON, use defaults
-      }
-    }
+    const allergySettings = DEFAULT_ALLERGY
 
     return NextResponse.json({
       success: true,
