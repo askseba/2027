@@ -2,7 +2,7 @@
 
 import React, { Component, ErrorInfo, ReactNode } from 'react'
 import { AlertTriangle, RefreshCw, Home, MessageCircle } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/routing'
 import logger from '@/lib/logger'
 
@@ -29,8 +29,8 @@ interface ErrorBoundaryFallbackProps {
   onReset: () => void
 }
 
-function ErrorBoundaryFallback({ error, errorInfo, onReset }: ErrorBoundaryFallbackProps) {
-  const t = useTranslations('errorBoundary')
+async function ErrorBoundaryFallback({ error, errorInfo, onReset }: ErrorBoundaryFallbackProps) {
+  const t = await getTranslations('errorBoundary')
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream-bg via-amber-50 to-orange-50 flex items-center justify-center p-4" dir="rtl">
