@@ -107,11 +107,17 @@ export async function POST(request: Request) {
             ifraScore: enriched.ifraScore,
             symptomTriggers: enriched.symptomTriggers ?? [],
             ifraWarnings: enriched.ifraWarnings ?? [],
-            source: enriched.source ?? 'local'
+            source: enriched.source ?? 'local',
+            fragellaId: enriched.fragellaId
           }
         } catch (enrichErr) {
           console.warn(`IFRA failed for ${perfume.id}:`, enrichErr)
-          return toPerfumeForMatching(perfume)
+          const fallback = toPerfumeForMatching(perfume)
+          return {
+            ...fallback,
+            fragellaId: perfume.fragellaId,
+            source: perfume.source ?? 'local'
+          }
         }
       })
     )
@@ -121,6 +127,7 @@ export async function POST(request: Request) {
       symptomTriggers?: string[]
       ifraWarnings?: string[]
       source?: string
+      fragellaId?: string
     })[]
     console.log(
       '[match] Final pool:',
@@ -171,7 +178,8 @@ export async function POST(request: Request) {
         ifraScore: p.ifraScore,
         symptomTriggers: p.symptomTriggers ?? [],
         ifraWarnings: p.ifraWarnings ?? [],
-        source: p.source ?? 'local'
+        source: p.source ?? 'local',
+        fragellaId: p.fragellaId
       })),
       blurredItems: blurred,
       tier

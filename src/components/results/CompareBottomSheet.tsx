@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { Link } from '@/i18n/routing'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShieldCheck, AlertCircle, X, Crown, ChevronRight } from 'lucide-react'
+import { ShieldCheck, AlertCircle, X, Crown, ChevronLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { PriceAlertButton } from '@/components/ui/PriceAlertButton'
 import { cn } from '@/lib/classnames'
@@ -119,16 +119,18 @@ function StoreRow ({
         className={cn(
           'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition',
           store.available
-            ? 'bg-text-primary dark:bg-white hover:opacity-80 text-white dark:text-surface'
+            ? 'bg-text-primary dark:bg-white hover:opacity-80 cursor-pointer text-white dark:text-surface'
             : 'bg-gray-200 dark:bg-surface-muted cursor-not-allowed text-gray-400'
         )}
-        aria-label={t('goToStore', { store: store.name })}
+        aria-label={store.available ? `${t('goToStore', { store: store.name })}` : t('outOfStock')}
+        onClick={store.available ? undefined : (e) => e.preventDefault()}
       >
-        {store.available ? (
-          <ChevronRight className="w-4 h-4" />
-        ) : (
-          <ChevronRight className="w-4 h-4 opacity-50" />
-        )}
+        <ChevronLeft
+          className={cn(
+            'w-4 h-4',
+            store.available ? 'text-white dark:text-surface' : 'text-gray-400'
+          )}
+        />
       </a>
     </div>
   )

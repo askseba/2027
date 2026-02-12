@@ -48,6 +48,8 @@ export interface ScoredPerfume extends PerfumeForMatching {
   ifraWarnings?: string[]
   /** Data source: 'local' | 'fragella' */
   source?: string
+  /** Fragella API ID (for fragella-sourced perfumes) */
+  fragellaId?: string
 }
 
 // ============================================

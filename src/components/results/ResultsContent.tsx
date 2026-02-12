@@ -13,6 +13,8 @@ import { UpsellCard } from '@/components/ui/UpsellCard'
 import { BlurredTeaserCard } from '@/components/ui/BlurredTeaserCard'
 import { BackButton } from '@/components/ui/BackButton'
 import { CompareBottomSheet } from '@/components/results/CompareBottomSheet'
+import { IngredientsSheet } from '@/components/results/IngredientsSheet'
+import { MatchSheet } from '@/components/results/MatchSheet'
 import { cn } from '@/lib/classnames'
 import logger from '@/lib/logger'
 
@@ -43,6 +45,8 @@ export function ResultsContent() {
   const [isCompareOpen, setIsCompareOpen] = useState(false)
   const [compareMode, setCompareMode] = useState<'compare' | 'price-hub'>('compare')
   const [priceHubPerfume, setPriceHubPerfume] = useState<ScoredPerfume | null>(null)
+  const [ingredientsPerfume, setIngredientsPerfume] = useState<ScoredPerfume | null>(null)
+  const [matchPerfume, setMatchPerfume] = useState<ScoredPerfume | null>(null)
 
   const fetchResults = useCallback(async () => {
     setIsLoading(true)
@@ -190,33 +194,53 @@ export function ResultsContent() {
             {t('hero.title')}
           </h1>
 
-          {/* Summary Strip */}
-          <div className="max-w-lg mx-auto mb-6 px-6 py-4 bg-white/60 dark:bg-surface-elevated/60 backdrop-blur-sm rounded-2xl border border-primary/10 dark:border-border-subtle shadow-sm">
-            <div className="flex items-center justify-between gap-4 text-sm md:text-base">
-              {/* Left: Total count */}
-              <div className="flex items-center gap-2">
-                <span className="text-2xl md:text-3xl font-black text-text-primary dark:text-text-primary">
-                  {totalCount}
-                </span>
-                <span className="text-text-secondary dark:text-text-muted">
-                  {t('summary', { count: totalCount }).split(' ').slice(1).join(' ')}
-                </span>
+          {/* Summary Strip - تصنيف ديناميكي */}
+          {scoredPerfumes.length > 0 && (() => {
+            const excellent = scoredPerfumes.filter(p => p.finalScore >= 80).length
+            const good = scoredPerfumes.filter(p => p.finalScore >= 60 && p.finalScore < 80).length
+            const fair = scoredPerfumes.filter(p => p.finalScore >= 40 && p.finalScore < 60).length
+            
+            return (
+              <div className="flex items-center gap-3 flex-wrap justify-center mb-8 px-4">
+                {excellent > 0 && (
+                  <span className="text-sm font-bold text-safe-green dark:text-green-400">
+                    {excellent} {t('heroExcellent')}
+                  </span>
+                )}
+                {good > 0 && (
+                  <>
+                    <span className="text-text-muted dark:text-text-muted">·</span>
+                    <span className="text-sm font-bold text-primary dark:text-amber-500">
+                      {good} {t('heroGood')}
+                    </span>
+                  </>
+                )}
+                {fair > 0 && (
+                  <>
+                    <span className="text-text-muted dark:text-text-muted">·</span>
+                    <span className="text-sm font-medium text-amber-500 dark:text-amber-400">
+                      {fair} {t('heroFair')}
+                    </span>
+                  </>
+                )}
               </div>
+            )
+          })()}
 
-              {/* Divider */}
-              <div className="h-8 w-px bg-primary/20 dark:bg-border-subtle" />
-
-              {/* Right: Top match score */}
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-text-secondary dark:text-text-muted whitespace-nowrap">
-                  {t('summaryHighMatch', { score: '' }).replace('%', '')}
-                </span>
-                <span className="text-2xl md:text-3xl font-black text-primary dark:text-amber-500">
-                  {topScore > 0 ? `${topScore}%` : '—'}
-                </span>
+          {/* Source Indicator */}
+          {scoredPerfumes.length > 0 && (() => {
+            const fragellaCount = scoredPerfumes.filter(p => p.source === 'fragella').length
+            const isFragellaMode = fragellaCount > 0 || scoredPerfumes.length > 19
+            
+            return (
+              <div className="text-xs text-text-muted dark:text-text-muted mt-2 mb-4">
+                {isFragellaMode 
+                  ? '🟢 Fragella + IFRA (5K+ عطور)' 
+                  : '🟡 Demo Mode (19 عطر)'
+                }
               </div>
-            </div>
-          </div>
+            )
+          })()}
 
           {/* Description */}
           <p className="text-text-secondary dark:text-text-muted max-w-2xl mx-auto text-lg">
@@ -260,7 +284,7 @@ export function ResultsContent() {
 
       {/* Results Grid */}
       <main className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {scoredPerfumes.map((perfume, index) => {
             const items = [];
             
@@ -268,14 +292,22 @@ export function ResultsContent() {
             items.push(
               <motion.div
                 key={perfume.id}
-                className={cn(index === 0 && 'lg:col-span-2')}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
+                className={cn("relative transition-opacity", perfume.finalScore < 40 && "opacity-60")}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{
                   delay: Math.min(index * 0.08, 0.5),
-                  duration: 0.4
+                  duration: 0.3
                 }}
               >
+                {/* Label تطابق ضعيف فوق البطاقة */}
+                {perfume.finalScore < 40 && (
+                  <div className="absolute top-2 inset-x-0 z-20 flex justify-center pointer-events-none">
+                    <span className="text-[10px] font-bold text-red-500 bg-red-50 dark:bg-red-900/20 px-2 py-0.5 rounded-full shadow-sm">
+                      {t('poorMatch')}
+                    </span>
+                  </div>
+                )}
                 <PerfumeCard
                   {...perfume}
                   ifraScore={perfume.ifraScore}
@@ -286,7 +318,9 @@ export function ResultsContent() {
                   isComparing={compareIds.includes(perfume.id)}
                   onCompare={() => toggleCompare(perfume.id)}
                   priority={index < 2}
-                  isTopMatch={index === 0}
+                  isFirst={index === 0}
+                  onShowIngredients={() => setIngredientsPerfume(perfume)}
+                  onShowMatch={() => setMatchPerfume(perfume)}
                   onPriceCompare={(p) => {
                     setPriceHubPerfume(p)
                     setCompareMode('price-hub')
@@ -354,6 +388,26 @@ export function ResultsContent() {
           tier={tier}
           locale={locale}
         />
+
+        {/* Ingredients and Match Sheets */}
+        <AnimatePresence mode="wait">
+          {ingredientsPerfume && (
+            <IngredientsSheet 
+              key="ingredients" 
+              perfume={ingredientsPerfume} 
+              onClose={() => setIngredientsPerfume(null)} 
+              locale={locale} 
+            />
+          )}
+          {matchPerfume && (
+            <MatchSheet 
+              key="match" 
+              perfume={matchPerfume} 
+              onClose={() => setMatchPerfume(null)} 
+              locale={locale} 
+            />
+          )}
+        </AnimatePresence>
 
         {/* Upsell zone with divider */}
         {tier !== 'PREMIUM' && (
