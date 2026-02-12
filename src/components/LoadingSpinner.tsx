@@ -49,7 +49,7 @@ export function LoadingSpinner({
         {/* Loading Text */}
         {message && (
           <div className="text-center">
-            <p className="text-sm font-medium text-brown-text">{message}</p>
+            <p className="text-sm font-medium text-brown-text dark:text-text-secondary">{message}</p>
           </div>
         )}
       </div>
@@ -89,7 +89,7 @@ export function LoadingSpinner({
           <div className="h-full bg-gradient-to-r from-gradient-start to-primary rounded-full animate-pulse" style={{ width: '60%' }} />
         </div>
         {message && (
-          <p className="text-sm text-brown-text/85">{message}</p>
+          <p className="text-sm text-brown-text/85 dark:text-text-secondary">{message}</p>
         )}
       </div>
     )

@@ -604,10 +604,103 @@
   },
   "results": {
     "metadata": {
-      "title": "Your quiz results - Your fragrance profile",
-      "description": "Discover your ideal fragrances based on your personality and preferences analysis"
+      "title": "Your Perfume Quiz Results",
+      "description": "Discover fragrances matching your personality & avoiding allergens"
     },
-    "backToDashboard": "Back to dashboard"
+    "backToDashboard": "Back to dashboard",
+    "hero": {
+      "badge": "Your taste has been analyzed",
+      "title": "Your Ideal Fragrances",
+      "description": "Based on your preferences, we've selected these fragrances that match your personality and avoid your allergens."
+    },
+    "compare": {
+      "title": "Compare Perfumes",
+      "subtitle": "Compare ingredients, price, and performance",
+      "cancel": "Cancel",
+      "action": "Compare Now",
+      "count": "({count}/3)",
+      "comingSoon": "Coming soon",
+      "sheetTitle": "Compare Selected Perfumes",
+      "matchLabel": "Match Score",
+      "safeLabel": "Health Safe",
+      "warningLabel": "Sensitivity Warning",
+      "familiesLabel": "Fragrance Families",
+      "ingredientsLabel": "Key Ingredients",
+      "close": "Close",
+      "priceHubTitle": "Best Available Prices",
+      "bestPrice": "Best price",
+      "available": "Available",
+      "outOfStock": "Out of stock",
+      "goToStore": "Go to {store}",
+      "currency": "SAR",
+      "priceHubGatingTitle": "Subscribe to see all prices",
+      "priceHubGatingCta": "Subscribe now",
+      "moreStoresLocked": "Subscribe to see {remaining} more stores",
+      "alertHint": "You can set 1 free price alert after signing up",
+      "subscribeToPrices": "Subscribe Now",
+      "priceAlertCta": "Alert me when price drops",
+      "priceAlertCtaWithPrice": "Alert me when price drops ({price} SAR)",
+      "priceAlertSetting": "Setting...",
+      "priceAlertSuccess": "Price alert set for {perfumeName}",
+      "priceAlertError": "Failed to set price alert",
+      "priceAlertSubscribe": "Subscribe for price alerts (1 free)"
+    },
+    "errorMessage": "Failed to load results. Please try again.",
+    "retry": "Retry",
+    "loading": "Loading...",
+    "errorDefault": "Failed to load results",
+    "summary": "We found {count} fragrances for you",
+    "summaryHighMatch": "Top match {score}%",
+    "empty": {
+      "title": "No matching results found",
+      "description": "Try adjusting your preferences or retaking the quiz",
+      "retakeQuiz": "Retake quiz"
+    },
+    "card": {
+      "match": "Match",
+      "safe": "Fully safe",
+      "exclusive": "Exclusive",
+      "lowStock": "Very limited stock",
+      "explore": "Explore ingredients",
+      "compareLabel": "Compare",
+      "defaultDesc": "A captivating fragrance blend selected based on your personal preferences for a unique experience.",
+      "unknownPerfume": "Unknown perfume",
+      "matchScore": "Match score",
+      "safeBadge": "Safe to use",
+      "topMatch": "Top Match ✨",
+      "comparePricesAction": "Compare Prices"
+    },
+    "upsell": {
+      "badge": "Premium Upgrade",
+      "title": "{count} more fragrances",
+      "titleHighlight": "match you perfectly! ✨",
+      "avgMatch": "Average match:",
+      "featureUnlimited": "Unlimited quizzes",
+      "featureUnlimitedDesc": "Test your taste anytime",
+      "featureResults": "{count} more results",
+      "featureResultsDesc": "Each quiz shows 12 fragrances",
+      "featureAlerts": "Price alerts",
+      "featureAlertsDesc": "Know when the price drops",
+      "featureHistory": "Quiz history",
+      "featureHistoryDesc": "Track how your taste evolves",
+      "price": "15",
+      "currency": "SAR",
+      "period": "/month",
+      "yearlyNote": "or 150 SAR/year (save 17%)",
+      "cta": "Subscribe now",
+      "ctaWithPrice": "Subscribe for 15 SAR/month"
+    },
+    "blurred": {
+      "guestMessage": "Sign up free to save your fragrance profile",
+      "freeMessage": "Subscribe to access all results",
+      "guestCta": "Sign up for free",
+      "freeCta": "Subscribe for 15 SAR/month",
+      "title": "{count} more fragrances await you",
+      "avgMatchLabel": "Average match",
+      "hiddenPerfume": "Hidden perfume",
+      "locked": "🔒 Blurred",
+      "subscribeCta": "Subscribe to see result"
+    }
   },
   "dashboard": {
     "matchFormat": "{pct}% match"

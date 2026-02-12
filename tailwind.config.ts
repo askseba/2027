@@ -31,6 +31,7 @@ const config: Config = {
         'dark-brown': '#5B4233',
         'medium-brown': '#8B7355',
         'light-brown': '#A89B8C',
+        'brown-text': '#5B4233',
 
         // Existing project colors
         primary: {
@@ -62,8 +63,10 @@ const config: Config = {
         'medium': '0 8px 30px rgba(179, 157, 125, 0.2)',
         'strong': '0 12px 40px rgba(179, 157, 125, 0.3)',
         'elevation-1': '0 2px 8px rgba(91, 66, 51, 0.08)',
-        'elevation-2': '0 4px 16px rgba(91, 66, 51, 0.12)',
+        'elevation-2': '0 8px 32px rgba(0,0,0,0.12)',
         'elevation-3': '0 8px 24px rgba(91, 66, 51, 0.16)',
+        'black/30': '0 4px 20px rgba(0,0,0,0.3)',
+        'amber-500/30': '0 0 20px rgba(245,158,11,0.3)',
         'button': '0 2px 8px rgba(192, 132, 26, 0.2)',
         'card': '0 4px 16px rgba(91, 66, 51, 0.12)',
         'luxury': '0 20px 40px rgba(0,0,0,0.08)',

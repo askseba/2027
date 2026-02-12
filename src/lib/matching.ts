@@ -42,6 +42,12 @@ export interface ScoredPerfume extends PerfumeForMatching {
   safetyScore: number
   isExcluded: boolean
   exclusionReason: string | null
+  /** IFRA safety score (0–100); added by enrichWithIFRA */
+  ifraScore?: number
+  /** Enriched symptom triggers; may override base */
+  ifraWarnings?: string[]
+  /** Data source: 'local' | 'fragella' */
+  source?: string
 }
 
 // ============================================
