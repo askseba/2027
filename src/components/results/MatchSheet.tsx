@@ -47,7 +47,7 @@ export function MatchSheet({ perfume, onClose, locale = "ar" }: MatchSheetProps)
           animate={{ y: 0 }}
           exit={{ y: "100%" }}
           transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className="absolute inset-x-0 bottom-0 top-auto max-h-[65vh] bg-white dark:bg-surface-elevated rounded-t-3xl shadow-2xl flex flex-col overflow-hidden"
+          className="absolute inset-x-0 bottom-0 top-auto max-h-[65vh] bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl flex flex-col overflow-hidden border-t border-slate-700"
         >
           {/* Handle bar */}
           <div className="flex justify-center pt-3 pb-2">

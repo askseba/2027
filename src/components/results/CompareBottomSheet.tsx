@@ -90,8 +90,8 @@ function StoreRow ({
       className={cn(
         'flex items-center gap-3 p-4 rounded-2xl border transition',
         store.price === bestPrice
-          ? 'border-primary/30 dark:border-amber-500/30 bg-primary/5 dark:bg-amber-500/5'
-          : 'border-gray-100 dark:border-border-subtle bg-white dark:bg-surface',
+          ? 'border-primary/30 dark:border-amber-500/30 bg-primary/5 dark:bg-amber-500/10'
+          : 'border-gray-100 dark:border-slate-600 bg-white dark:bg-slate-800',
         !store.available && 'opacity-60'
       )}
     >
@@ -108,7 +108,7 @@ function StoreRow ({
             {t('bestPrice')}
           </span>
         )}
-        <span className="text-lg font-black text-text-primary dark:text-text-primary whitespace-nowrap">
+        <span className="text-lg font-black text-gray-900 dark:text-slate-100 whitespace-nowrap">
           {t('currency')} {store.price}
         </span>
       </div>
@@ -166,7 +166,7 @@ function PriceHubContent ({
     <div className="flex flex-col h-full min-h-0">
       {/* Sticky Header (Mode B only) */}
       {perfume && (
-        <div className="sticky top-0 bg-white dark:bg-surface z-10 px-6 py-4 border-b border-primary/5 dark:border-border-subtle flex-shrink-0">
+        <div className="sticky top-0 bg-white dark:bg-slate-800 z-10 px-6 py-4 border-b border-primary/5 dark:border-slate-700 flex-shrink-0">
           <div className="flex items-center gap-4">
             <div className="relative w-20 h-20 rounded-2xl bg-cream-bg dark:bg-background p-2 flex-shrink-0 overflow-hidden">
               <Image
@@ -446,7 +446,7 @@ export function CompareBottomSheet({
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="relative w-full sm:max-w-2xl max-h-[85vh] overflow-hidden bg-white dark:bg-surface-elevated rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col"
+            className="relative w-full sm:max-w-2xl max-h-[85vh] overflow-hidden bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col border-t border-slate-700 sm:border-t-0"
           >
             {/* Mode A: generic header + content + footer */}
             {!showPriceHubContent && (

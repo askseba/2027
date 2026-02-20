@@ -36,7 +36,7 @@ export function IngredientsSheet({ perfume, onClose, locale = "ar" }: Ingredient
           animate={{ y: 0 }}
           exit={{ y: "100%" }}
           transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className="absolute inset-x-0 bottom-0 top-auto max-h-[85vh] bg-white dark:bg-surface-elevated rounded-t-3xl shadow-2xl flex flex-col overflow-hidden"
+          className="absolute inset-x-0 bottom-0 top-auto max-h-[85vh] bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl flex flex-col overflow-hidden border-t border-slate-700"
         >
           {/* Handle bar */}
           <div className="flex justify-center pt-3 pb-2">
@@ -44,7 +44,7 @@ export function IngredientsSheet({ perfume, onClose, locale = "ar" }: Ingredient
           </div>
 
           {/* Header */}
-          <div className="px-6 pb-4 border-b border-primary/5 dark:border-border-subtle flex items-center gap-4 bg-cream-bg dark:bg-surface sticky top-0 z-10">
+          <div className="px-6 pb-4 border-b border-primary/5 dark:border-slate-700 flex items-center gap-4 bg-cream-bg dark:bg-slate-800 sticky top-0 z-10">
             {/* Image */}
             <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-cream-bg dark:bg-background border border-primary/10 dark:border-border-subtle flex-shrink-0">
               <Image

@@ -147,7 +147,7 @@ export function PerfumeCard({
             e.stopPropagation()
             onShowIngredients?.()
           }}
-          className="flex-1 py-2.5 text-xs font-medium text-gray-700 dark:text-slate-300 bg-gray-100 dark:bg-surface-muted rounded-xl hover:bg-gray-200 dark:hover:bg-slate-600 transition text-center"
+          className="flex-1 py-2.5 text-xs font-medium text-gray-700 dark:text-slate-200 bg-gray-200 dark:bg-slate-600 rounded-xl hover:bg-gray-300 dark:hover:bg-slate-500 transition text-center border-0"
         >
           {t("ingredientsBtn")}
         </button>
@@ -157,7 +157,7 @@ export function PerfumeCard({
             e.stopPropagation()
             onShowMatch?.()
           }}
-          className="flex-1 py-2.5 text-xs font-medium text-gray-700 dark:text-slate-300 bg-gray-100 dark:bg-surface-muted rounded-xl hover:bg-gray-200 dark:hover:bg-slate-600 transition text-center"
+          className="flex-1 py-2.5 text-xs font-medium text-gray-700 dark:text-slate-200 bg-gray-200 dark:bg-slate-600 rounded-xl hover:bg-gray-300 dark:hover:bg-slate-500 transition text-center border-0"
         >
           {t("matchBtn")}
         </button>
@@ -169,7 +169,7 @@ export function PerfumeCard({
               onPriceCompare(perfumeData)
             }
           }}
-          className="flex-1 py-2.5 text-xs font-medium text-white bg-primary dark:bg-amber-500 rounded-xl hover:opacity-90 transition text-center"
+          className="flex-1 py-2.5 text-xs font-medium text-white bg-primary dark:bg-amber-600 rounded-xl hover:opacity-90 transition text-center border-0"
         >
           {t("pricesBtn")}
         </button>
