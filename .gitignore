@@ -37,3 +37,9 @@ pids
 .DS_Store
 Thumbs.db
 .vercel
+
+# Database
+prisma/*.db
+prisma/*.db-journal
+prisma/*.db-wal
+prisma/*.db-shm
