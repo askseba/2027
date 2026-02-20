@@ -74,6 +74,14 @@ export function PerfumeCard({
 
   const [imageError, setImageError] = useState(false)
 
+  // External URLs (Unsplash, etc.) must bypass Next.js image optimizer
+  // because Next.js fetches them server-side — Unsplash blocks server requests.
+  const isExternalUrl = Boolean(
+    displayImage &&
+      !imageError &&
+      (displayImage.startsWith("http://") || displayImage.startsWith("https://"))
+  )
+
   // Extract scores from perfumeData if available, otherwise use props
   const tasteScore =
     perfumeData?.tasteScore ?? Math.round(displayScore * 0.7) // Fallback estimate
@@ -90,7 +98,7 @@ export function PerfumeCard({
       )}
     >
       {/* Header: صورة + Radar + Badge */}
-      <div className="relative aspect-[4/5] bg-cream-bg dark:bg-background p-5">
+      <div className="relative h-[190px] bg-cream-bg dark:bg-background p-5">
         {/* Radar صغير - الزاوية اليمنى العلوية */}
         <div className="absolute top-3 end-3 z-10">
           <RadarGauge
@@ -119,6 +127,7 @@ export function PerfumeCard({
           sizes="(max-width: 768px) 100vw, 33vw"
           priority={priority}
           loading={priority ? undefined : "lazy"}
+          unoptimized={isExternalUrl}
           onError={() => setImageError(true)}
         />
       </div>
