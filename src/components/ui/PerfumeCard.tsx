@@ -94,11 +94,11 @@ export function PerfumeCard({
       role="article"
       aria-label={`${displayName} - ${finalScoreValue}% ${t("match")}`}
       className={cn(
-        "bg-white dark:bg-surface rounded-3xl shadow-elevation-1 dark:shadow-black/20 border border-primary/5 dark:border-border-subtle overflow-hidden flex flex-col h-[320px] outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        "bg-white dark:bg-surface rounded-3xl shadow-elevation-1 dark:shadow-black/20 border border-primary/5 dark:border-border-subtle overflow-hidden flex flex-col h-[360px] outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       )}
     >
       {/* Header: صورة + Radar + Badge */}
-      <div className="relative h-[190px] bg-cream-bg dark:bg-background p-5">
+      <div className="relative h-[200px] bg-cream-bg dark:bg-background p-5">
         {/* Radar صغير - الزاوية اليمنى العلوية */}
         <div className="absolute top-3 end-3 z-10">
           <RadarGauge
@@ -147,7 +147,7 @@ export function PerfumeCard({
             e.stopPropagation()
             onShowIngredients?.()
           }}
-          className="flex-1 py-2.5 text-xs font-medium text-text-secondary dark:text-text-muted bg-cream-bg dark:bg-surface-muted rounded-xl hover:bg-primary/5 dark:hover:bg-surface-elevated transition text-center"
+          className="flex-1 py-2.5 text-xs font-medium text-gray-700 dark:text-slate-300 bg-gray-100 dark:bg-surface-muted rounded-xl hover:bg-gray-200 dark:hover:bg-slate-600 transition text-center"
         >
           {t("ingredientsBtn")}
         </button>
@@ -157,7 +157,7 @@ export function PerfumeCard({
             e.stopPropagation()
             onShowMatch?.()
           }}
-          className="flex-1 py-2.5 text-xs font-medium text-text-secondary dark:text-text-muted bg-cream-bg dark:bg-surface-muted rounded-xl hover:bg-primary/5 dark:hover:bg-surface-elevated transition text-center"
+          className="flex-1 py-2.5 text-xs font-medium text-gray-700 dark:text-slate-300 bg-gray-100 dark:bg-surface-muted rounded-xl hover:bg-gray-200 dark:hover:bg-slate-600 transition text-center"
         >
           {t("matchBtn")}
         </button>
