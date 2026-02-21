@@ -7,6 +7,9 @@ import { cn } from "@/lib/classnames"
 import { RadarGauge } from "./RadarGauge"
 import type { ScoredPerfume } from "@/lib/matching"
 
+const PLACEHOLDER_URL =
+  "https://via.placeholder.com/300x400/FAF8F5/8B7355?text=%D8%B9%D8%B7%D8%B1"
+
 interface PerfumeCardProps {
   id: string
   name?: string
@@ -69,25 +72,22 @@ export function PerfumeCard({
 
   const [imageError, setImageError] = useState(false)
 
-  // Only accept proper http(s) URLs or root-relative paths (/...).
-  // Bare relative paths, empty strings, "null", "N/A", etc. → undefined → placeholder.
-  const rawImage = image || imageUrl
+  // Resolve the best available image string (image prop takes priority over imageUrl).
+  // Treat null, "null", and blank strings as missing.
+  const raw = image || imageUrl
   const displayImage =
-    rawImage &&
-    (rawImage.startsWith("http://") ||
-      rawImage.startsWith("https://") ||
-      rawImage.startsWith("/"))
-      ? rawImage
-      : undefined
+    !raw || raw === "null" || raw.trim() === ""
+      ? PLACEHOLDER_URL
+      : raw
 
-  const isExternalUrl = Boolean(
-    displayImage &&
-      !imageError &&
-      (displayImage.startsWith("http://") || displayImage.startsWith("https://"))
-  )
+  // After a load error fall back to the same placeholder.
+  const imgSrc = imageError ? PLACEHOLDER_URL : displayImage
 
-  // Resolved src — named variable so we can use it as the Image key too.
-  const imgSrc = !displayImage || imageError ? "/placeholder-perfume.svg" : displayImage
+  // Always unoptimized for external URLs so no domain whitelisting is needed for
+  // arbitrary CDN hosts; via.placeholder.com IS in remotePatterns but unoptimized
+  // is simpler and consistent across all external sources.
+  const isExternal =
+    imgSrc.startsWith("http://") || imgSrc.startsWith("https://")
 
   const tasteScore =
     perfumeData?.tasteScore ?? Math.round(displayScore * 0.7)
@@ -100,7 +100,6 @@ export function PerfumeCard({
       role="article"
       aria-label={`${displayName} - ${finalScoreValue}% ${t("match")}`}
       className={cn(
-        // HOTFIX: explicit dark:bg-slate-900 instead of dark:bg-surface (token may not resolve)
         "group bg-white dark:bg-slate-900",
         "rounded-2xl border border-card-border dark:border-slate-700",
         "overflow-hidden flex flex-col h-[380px]",
@@ -130,7 +129,7 @@ export function PerfumeCard({
         )}
 
         {/* Hover overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-white/30 dark:from-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-[1]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-white/30 dark:from-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-[-1]" />
 
         {/* صورة العطر */}
         <Image
@@ -142,7 +141,7 @@ export function PerfumeCard({
           sizes="(max-width: 768px) 100vw, 33vw"
           priority={priority}
           loading={priority ? undefined : "lazy"}
-          unoptimized={isExternalUrl}
+          unoptimized={isExternal}
           onError={() => setImageError(true)}
         />
       </div>
