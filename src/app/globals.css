@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* Tailwind v4: override default media-query dark variant → class-based (.dark on any ancestor) */
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   --background: #ffffff;
@@ -20,6 +22,8 @@
   --font-logo: 'Cormorant Garamond', serif;
   --section-spacing: 80px;
   --component-spacing: 32px;
+  /* Visual refresh */
+  --accent-warm: 192 132 26;
 }
 
 @theme inline {
@@ -36,11 +40,14 @@
   /* Brand gold for CTA gradient – required for from-gold / to-gold-dark (Tailwind v4) */
   --color-gold: #B39D7D;
   --color-gold-dark: #8A7760;
+  /* Visual refresh tokens */
+  --color-accent-warm: rgb(var(--accent-warm));
+  --color-card-border: 228 228 231;
   --font-sans: var(--font-arabic), Tahoma, Arial, sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
 }
 
-/* Override semantic tokens when .dark is on root – utilities use var() so they pick these up */
+/* Override semantic tokens when .dark is on root */
 .dark {
   --color-surface: 15 23 42;
   --color-surface-elevated: 10 10 10;
@@ -50,7 +57,9 @@
   --color-text-primary: 241 245 249;
   --color-text-secondary: 148 163 184;
   --color-text-muted: 107 114 128;
-  --color-accent-primary: 251 191 36; /* brighter gold */
+  --color-accent-primary: 251 191 36;
+  --accent-warm: 251 191 36;
+  --color-card-border: 51 65 85;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -101,7 +110,7 @@ body {
   animation: slideUp 300ms ease-out;
 }
 
-/* WCAG 2.4.7 Focus Visible – keyboard focus ring with primary color */
+/* WCAG 2.4.7 Focus Visible */
 *:focus-visible {
   outline: 2px solid rgb(var(--color-accent-primary));
   outline-offset: 2px;
@@ -160,7 +169,7 @@ DarkModeToggle Styles (Ask Seba)
 }
 
 /* ============================================
-Landing CTA "ابدأ الرحلة" / quiz – visible in light + dark, contrast 4.5:1+
+Landing CTA
 ============================================ */
 .landing-cta-quiz {
   display: inline-flex;
@@ -173,24 +182,22 @@ Landing CTA "ابدأ الرحلة" / quiz – visible in light + dark, contrast
 }
 
 /* ============================================
-   LOCKED: Shrink heading/stat font sizes – no Tailwind steps, survives cache/config
-   Use class .about-shrunk or hard-coded text-[24px] etc. in components.
+   LOCKED: Shrink heading/stat font sizes
 ============================================ */
 .about-shrunk {
-  font-size: 1.5rem !important; /* 24px */
+  font-size: 1.5rem !important;
 }
 @media (min-width: 768px) {
   .about-shrunk {
-    font-size: 1.875rem !important; /* 30px */
+    font-size: 1.875rem !important;
   }
 }
 @media (min-width: 1024px) {
   .about-shrunk {
-    font-size: 2.25rem !important; /* 36px */
+    font-size: 2.25rem !important;
   }
 }
 
-/* About page: force 24/30/36px – PX only, !important, no revert */
 .about-title {
   font-size: 24px !important;
 }
@@ -202,5 +209,31 @@ Landing CTA "ابدأ الرحلة" / quiz – visible in light + dark, contrast
 @media (min-width: 1024px) {
   .about-title {
     font-size: 36px !important;
+  }
+}
+
+/* ============================================
+   Visual Refresh — Card hover & transitions
+   HOTFIX: @layer utilities so Tailwind v4 JIT keeps them
+============================================ */
+@layer utilities {
+  .card-hover {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(192, 132, 26, 0.1);
+  }
+  .dark .card-hover:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .tab-toggle {
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .tab-toggle:hover {
+    background-color: rgb(var(--color-border-subtle));
+    color: rgb(var(--color-text-primary));
   }
 }

@@ -1,5 +1,6 @@
 "use client"
 import React, { useState } from "react"
+import { DollarSign, GitCompare, FlaskConical } from "lucide-react"
 import Image from "next/image"
 import { useTranslations } from "next-intl"
 import { cn } from "@/lib/classnames"
@@ -9,12 +10,12 @@ import type { ScoredPerfume } from "@/lib/matching"
 interface PerfumeCardProps {
   id: string
   name?: string
-  title?: string // Backward compatibility
+  title?: string
   brand: string
   finalScore?: number
-  matchPercentage?: number // Backward compatibility
+  matchPercentage?: number
   image?: string
-  imageUrl?: string // Backward compatibility
+  imageUrl?: string
   description?: string | null
   isSafe?: boolean
   showCompare?: boolean
@@ -22,21 +23,16 @@ interface PerfumeCardProps {
   onCompare?: () => void
   rarity?: "common" | "rare" | "exclusive"
   stockStatus?: "in-stock" | "low-stock" | "out-of-stock"
-  variant?: "on-sale" | "just-arrived" | string | null // Backward compatibility
-  priority?: boolean // ✅ prop جديد لتحسين LCP
+  variant?: "on-sale" | "just-arrived" | string | null
+  priority?: boolean
   ifraScore?: number
   symptomTriggers?: string[]
   ifraWarnings?: string[]
   source?: string
-  /** Highlight as first match (first result) */
   isFirst?: boolean
-  /** Callback when "Show Ingredients" is clicked */
   onShowIngredients?: () => void
-  /** Callback when "Show Match" is clicked */
   onShowMatch?: () => void
-  /** Callback when "Price Compare" is clicked; receives full perfume for Price Hub */
   onPriceCompare?: (perfume: ScoredPerfume) => void
-  /** Full perfume data to pass to callbacks (required when callbacks are used) */
   perfumeData?: ScoredPerfume
 }
 
@@ -70,21 +66,19 @@ export function PerfumeCard({
   const t = useTranslations("results.card")
   const displayName = name || title || t("unknownPerfume")
   const displayScore = finalScore ?? matchPercentage ?? 0
-  const displayImage = image || imageUrl
 
   const [imageError, setImageError] = useState(false)
 
-  // External URLs (Unsplash, etc.) must bypass Next.js image optimizer
-  // because Next.js fetches them server-side — Unsplash blocks server requests.
+  const displayImage = image || imageUrl
+
   const isExternalUrl = Boolean(
     displayImage &&
       !imageError &&
       (displayImage.startsWith("http://") || displayImage.startsWith("https://"))
   )
 
-  // Extract scores from perfumeData if available, otherwise use props
   const tasteScore =
-    perfumeData?.tasteScore ?? Math.round(displayScore * 0.7) // Fallback estimate
+    perfumeData?.tasteScore ?? Math.round(displayScore * 0.7)
   const safetyScore = perfumeData?.safetyScore ?? (isSafe ? 100 : 0)
   const finalScoreValue = finalScore ?? displayScore
 
@@ -94,12 +88,17 @@ export function PerfumeCard({
       role="article"
       aria-label={`${displayName} - ${finalScoreValue}% ${t("match")}`}
       className={cn(
-        "bg-white dark:bg-surface rounded-3xl shadow-elevation-1 dark:shadow-black/20 border border-primary/5 dark:border-border-subtle overflow-hidden flex flex-col h-[360px] outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        // HOTFIX: explicit dark:bg-slate-900 instead of dark:bg-surface (token may not resolve)
+        "group bg-white dark:bg-slate-900",
+        "rounded-2xl border border-card-border dark:border-slate-700",
+        "overflow-hidden flex flex-col h-[380px]",
+        "outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+        "card-hover shadow-sm"
       )}
     >
       {/* Header: صورة + Radar + Badge */}
-      <div className="relative h-[200px] bg-cream-bg dark:bg-background p-5">
-        {/* Radar صغير - الزاوية اليمنى العلوية */}
+      <div className="relative h-[200px] bg-surface-muted dark:bg-slate-800 overflow-hidden">
+        {/* Radar صغير */}
         <div className="absolute top-3 end-3 z-10">
           <RadarGauge
             finalScore={finalScoreValue}
@@ -109,21 +108,24 @@ export function PerfumeCard({
           />
         </div>
 
-        {/* Badge أفضل تطابق - الزاوية اليسرى العلوية */}
+        {/* Badge أفضل تطابق */}
         {isFirst && (
-          <div className="absolute top-3 start-3 z-10">
-            <span className="text-xs font-bold text-white bg-primary dark:bg-amber-500 px-2.5 py-1 rounded-full shadow-sm">
+          <div className="absolute top-3 start-3 z-20">
+            <span className="inline-block text-xs font-bold bg-amber-500 text-white px-2.5 py-1 rounded-full shadow-sm whitespace-nowrap">
               {t("topMatch")}
             </span>
           </div>
         )}
+
+        {/* Hover overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-white/30 dark:from-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-[1]" />
 
         {/* صورة العطر */}
         <Image
           src={imageError || !displayImage ? "/placeholder-perfume.svg" : displayImage}
           alt={displayName}
           fill
-          className="object-contain p-2"
+          className="object-contain p-4 z-0 transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, 33vw"
           priority={priority}
           loading={priority ? undefined : "lazy"}
@@ -133,22 +135,23 @@ export function PerfumeCard({
       </div>
 
       {/* معلومات */}
-      <div className="p-4 flex-1 flex flex-col">
-        <p className="text-xs text-text-muted dark:text-text-muted mb-1">{brand}</p>
-        <h3 className="text-base font-bold text-text-primary dark:text-text-primary line-clamp-2 mb-auto">
+      <div className="px-5 pt-4 pb-2 flex-1 flex flex-col">
+        <p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1">{brand}</p>
+        <h3 className="text-base font-semibold text-gray-900 dark:text-slate-100 line-clamp-2 mb-auto">
           {displayName}
         </h3>
       </div>
 
-      {/* 3 أزرار */}
-      <div className="px-4 pb-4 flex gap-2">
+      {/* 3 أزرار — visual refresh, same handlers */}
+      <div className="px-5 pb-4 flex gap-1.5">
         <button
           onClick={(e) => {
             e.stopPropagation()
             onShowIngredients?.()
           }}
-          className="flex-1 py-2.5 text-xs font-medium text-gray-700 dark:text-slate-200 bg-gray-200 dark:bg-slate-600 rounded-xl hover:bg-gray-300 dark:hover:bg-slate-500 transition text-center border-0"
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-2.5 text-xs font-medium bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 tab-toggle border-0"
         >
+          <FlaskConical className="h-3.5 w-3.5" />
           {t("ingredientsBtn")}
         </button>
 
@@ -157,8 +160,9 @@ export function PerfumeCard({
             e.stopPropagation()
             onShowMatch?.()
           }}
-          className="flex-1 py-2.5 text-xs font-medium text-gray-700 dark:text-slate-200 bg-gray-200 dark:bg-slate-600 rounded-xl hover:bg-gray-300 dark:hover:bg-slate-500 transition text-center border-0"
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-2.5 text-xs font-medium bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 tab-toggle border-0"
         >
+          <GitCompare className="h-3.5 w-3.5" />
           {t("matchBtn")}
         </button>
 
@@ -169,8 +173,9 @@ export function PerfumeCard({
               onPriceCompare(perfumeData)
             }
           }}
-          className="flex-1 py-2.5 text-xs font-medium text-white bg-primary dark:bg-amber-600 rounded-xl hover:opacity-90 transition text-center border-0"
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-2.5 text-xs font-medium bg-amber-700 dark:bg-amber-500 text-white dark:text-gray-900 hover:bg-amber-800 dark:hover:bg-amber-400 transition-all border-0 shadow-sm"
         >
+          <DollarSign className="h-3.5 w-3.5" />
           {t("pricesBtn")}
         </button>
       </div>
