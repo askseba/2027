@@ -69,13 +69,25 @@ export function PerfumeCard({
 
   const [imageError, setImageError] = useState(false)
 
-  const displayImage = image || imageUrl
+  // Only accept proper http(s) URLs or root-relative paths (/...).
+  // Bare relative paths, empty strings, "null", "N/A", etc. → undefined → placeholder.
+  const rawImage = image || imageUrl
+  const displayImage =
+    rawImage &&
+    (rawImage.startsWith("http://") ||
+      rawImage.startsWith("https://") ||
+      rawImage.startsWith("/"))
+      ? rawImage
+      : undefined
 
   const isExternalUrl = Boolean(
     displayImage &&
       !imageError &&
       (displayImage.startsWith("http://") || displayImage.startsWith("https://"))
   )
+
+  // Resolved src — named variable so we can use it as the Image key too.
+  const imgSrc = !displayImage || imageError ? "/placeholder-perfume.svg" : displayImage
 
   const tasteScore =
     perfumeData?.tasteScore ?? Math.round(displayScore * 0.7)
@@ -122,7 +134,8 @@ export function PerfumeCard({
 
         {/* صورة العطر */}
         <Image
-          src={imageError || !displayImage ? "/placeholder-perfume.svg" : displayImage}
+          key={imgSrc}
+          src={imgSrc}
           alt={displayName}
           fill
           className="object-contain p-4 z-0 transition-transform duration-500 group-hover:scale-105"
