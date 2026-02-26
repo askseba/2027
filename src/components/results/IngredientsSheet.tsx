@@ -20,7 +20,7 @@ export function IngredientsSheet({ perfume, onClose, locale = "ar" }: Ingredient
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 lg:hidden" dir={isRtl ? "rtl" : "ltr"}>
+      <div className="fixed inset-0 z-50" dir={isRtl ? "rtl" : "ltr"}>
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -54,6 +54,7 @@ export function IngredientsSheet({ perfume, onClose, locale = "ar" }: Ingredient
                 className="object-contain p-2"
                 sizes="64px"
                 onError={() => setImageError(true)}
+                unoptimized={!!perfume.image && perfume.image.startsWith('http')}
               />
             </div>
 

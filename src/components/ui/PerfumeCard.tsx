@@ -4,11 +4,11 @@ import { DollarSign, GitCompare, FlaskConical } from "lucide-react"
 import Image from "next/image"
 import { useTranslations } from "next-intl"
 import { cn } from "@/lib/classnames"
+import { getSafetyDisplay, severityFromScore } from "@/lib/safety-display"
 import { RadarGauge } from "./RadarGauge"
 import type { ScoredPerfume } from "@/lib/matching"
 
-const PLACEHOLDER_URL =
-  "https://via.placeholder.com/300x400/FAF8F5/8B7355?text=%D8%B9%D8%B7%D8%B1"
+const PLACEHOLDER_URL = "/placeholder-perfume.svg"
 
 interface PerfumeCardProps {
   id: string
@@ -32,6 +32,7 @@ interface PerfumeCardProps {
   symptomTriggers?: string[]
   ifraWarnings?: string[]
   source?: string
+  safetySeverity?: 'low' | 'medium' | 'high'
   isFirst?: boolean
   onShowIngredients?: () => void
   onShowMatch?: () => void
@@ -60,6 +61,7 @@ export function PerfumeCard({
   symptomTriggers,
   ifraWarnings,
   source,
+  safetySeverity,
   isFirst = false,
   onShowIngredients,
   onShowMatch,
@@ -127,6 +129,25 @@ export function PerfumeCard({
             </span>
           </div>
         )}
+
+        {/* Safety pill */}
+        {(() => {
+          const severity = safetySeverity ?? severityFromScore(
+            (safetyScore === 100 ? 100 : safetyScore === 50 ? 50 : 0) as 0 | 50 | 100
+          )
+          const display = getSafetyDisplay(severity)
+          if (!display.showWarning) return null
+          return (
+            <div className="absolute top-14 end-3 z-10">
+              <span
+                style={{ backgroundColor: display.color }}
+                className="text-[10px] font-bold px-2 py-0.5 rounded-full text-white shadow-sm"
+              >
+                {display.badge} {display.label}
+              </span>
+            </div>
+          )
+        })()}
 
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-white/30 dark:from-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-[-1]" />

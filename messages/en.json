@@ -472,7 +472,52 @@
       "level2Title": "2. Fragrance families",
       "level3Title": "3. Ingredients",
       "saveButton": "Save my profile",
-      "transitioning": "Saving and moving on..."
+      "transitioning": "Saving and moving on...",
+      "gateway": {
+        "question": "Have fragrances ever caused you irritation or symptoms?",
+        "yes": "Yes",
+        "no": "No, continue directly"
+      },
+      "symptoms": {
+        "sneeze": "Sneezing or congestion",
+        "sneezeDesc": "Strong perfumes cause me to sneeze",
+        "redness": "Redness or itching",
+        "rednessDesc": "My skin reacts to some ingredients",
+        "headache": "Headache or dizziness",
+        "headacheDesc": "Certain scents give me headaches",
+        "nausea": "Nausea or breathing difficulty",
+        "nauseaDesc": "Heavy perfumes bother me",
+        "none": "I don't have any symptoms",
+        "noneDesc": "I'm perfectly fine"
+      },
+      "families": {
+        "floral": "Floral",
+        "floralExamples": "Jasmine, Rose",
+        "citrus": "Citrus",
+        "citrusExamples": "Lemon, Orange",
+        "woody": "Woody",
+        "woodyExamples": "Oud, Sandalwood",
+        "spicy": "Spicy",
+        "spicyExamples": "Cinnamon, Pepper",
+        "gourmand": "Gourmand",
+        "gourmandExamples": "Vanilla, Caramel",
+        "leather": "Leather",
+        "leatherExamples": "Leather, Tobacco"
+      },
+      "ingredients": {
+        "jasmine": "Jasmine",
+        "rose": "Rose",
+        "oud": "Oud",
+        "sandalwood": "Sandalwood",
+        "vanilla": "Vanilla",
+        "musk": "Musk",
+        "amber": "Amber",
+        "patchouli": "Patchouli",
+        "lavender": "Lavender",
+        "bergamot": "Bergamot",
+        "pepper": "Pepper",
+        "leather": "Leather"
+      }
     }
   },
   "privacy": {
@@ -611,7 +656,7 @@
     "hero": {
       "badge": "Your taste has been analyzed",
       "title": "Your Ideal Fragrances",
-      "description": "Based on your preferences, we've selected these fragrances that match your personality and avoid your allergens."
+      "description": "Chosen for your taste and safe for your sensitivities"
     },
     "compare": {
       "title": "Compare Perfumes",

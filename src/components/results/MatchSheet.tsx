@@ -31,7 +31,7 @@ export function MatchSheet({ perfume, onClose, locale = "ar" }: MatchSheetProps)
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 lg:hidden" dir={isRtl ? "rtl" : "ltr"}>
+      <div className="fixed inset-0 z-50" dir={isRtl ? "rtl" : "ltr"}>
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -66,6 +66,7 @@ export function MatchSheet({ perfume, onClose, locale = "ar" }: MatchSheetProps)
                     className="object-contain p-2"
                     sizes="48px"
                     onError={() => setImageError(true)}
+                    unoptimized={!!perfume.image && perfume.image.startsWith('http')}
                   />
                 </div>
                 <div>

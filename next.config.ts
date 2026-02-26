@@ -45,6 +45,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "cdn.fragella.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "api.fragella.com",
         port: "",
         pathname: "/**",

@@ -10,7 +10,6 @@ import { useSession } from 'next-auth/react'
 import { type ScoredPerfume } from '@/lib/matching'
 import { safeFetch } from '@/lib/utils/api-helpers'
 import { UpsellCard } from '@/components/ui/UpsellCard'
-import { BlurredTeaserCard } from '@/components/ui/BlurredTeaserCard'
 import { BackButton } from '@/components/ui/BackButton'
 import { CompareBottomSheet } from '@/components/results/CompareBottomSheet'
 import { IngredientsSheet } from '@/components/results/IngredientsSheet'
@@ -351,29 +350,6 @@ export function ResultsContent() {
 
             return items;
           })}
-
-          {/* Blurred Teaser Cards */}
-          {tier !== 'PREMIUM' && blurredItems.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{
-                delay: Math.min(scoredPerfumes.length * 0.08, 0.6),
-                duration: 0.4
-              }}
-              className="col-span-1"
-            >
-              <BlurredTeaserCard 
-                items={blurredItems.map(item => ({
-                  name: t('blurred.hiddenPerfume'),
-                  brand: item.familyHint,
-                  matchScore: item.matchScore
-                }))}
-                tier={tier}
-                matchRange={`${Math.min(...blurredItems.map(i => i.matchScore))}-${Math.max(...blurredItems.map(i => i.matchScore))}%`}
-              />
-            </motion.div>
-          )}
         </div>
 
         <CompareBottomSheet

@@ -82,7 +82,7 @@ export async function POST(request: Request) {
       try {
         basePerfumes = await searchUnified(poolQuery || '', {
           includeFragella: true,
-          includeLocal: true,
+          includeLocal: false,
           limit: 2000
         })
         console.log(`[match] Fragella pool: ${basePerfumes.length} عطور`, poolQuery ? `(query: ${poolQuery})` : '')

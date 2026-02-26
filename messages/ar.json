@@ -472,7 +472,52 @@
       "level2Title": "2. العائلات",
       "level3Title": "3. المكونات",
       "saveButton": "حفظ بصمتي",
-      "transitioning": "جاري الانتقال..."
+      "transitioning": "جاري الانتقال...",
+      "gateway": {
+        "question": "هل سبق أن سبب لك عطر تهيجاً أو أعراضاً؟",
+        "yes": "نعم",
+        "no": "لا، أكمل مباشرة"
+      },
+      "symptoms": {
+        "sneeze": "عطاس أو احتقان",
+        "sneezeDesc": "عطور قوية تسبب لي عطاس",
+        "redness": "احمرار أو حكة",
+        "rednessDesc": "بشرتي تتحسس من بعض المكونات",
+        "headache": "صداع أو دوخة",
+        "headacheDesc": "روائح معينة تصيبني بالصداع",
+        "nausea": "غثيان أو ضيق تنفس",
+        "nauseaDesc": "عطور ثقيلة تضايقني",
+        "none": "لا أعاني من شيء",
+        "noneDesc": "أنا بخير تماماً"
+      },
+      "families": {
+        "floral": "زهرية",
+        "floralExamples": "ياسمين، ورد",
+        "citrus": "حمضية",
+        "citrusExamples": "ليمون، برتقال",
+        "woody": "خشبية",
+        "woodyExamples": "عود، صندل",
+        "spicy": "حارة",
+        "spicyExamples": "قرفة، فلفل",
+        "gourmand": "حلوة",
+        "gourmandExamples": "فانيليا، كراميل",
+        "leather": "جلدية",
+        "leatherExamples": "جلد، تبغ"
+      },
+      "ingredients": {
+        "jasmine": "ياسمين",
+        "rose": "ورد",
+        "oud": "عود",
+        "sandalwood": "صندل",
+        "vanilla": "فانيليا",
+        "musk": "مسك",
+        "amber": "عنبر",
+        "patchouli": "باتشولي",
+        "lavender": "لافندر",
+        "bergamot": "برغموت",
+        "pepper": "فلفل",
+        "leather": "جلد"
+      }
     }
   },
   "privacy": {
@@ -611,7 +656,7 @@
     "hero": {
       "badge": "تم تحليل ذوقك بنجاح",
       "title": "عطورك المثالية",
-      "description": "بناءً على تفضيلاتك، قمنا باختيار هذه العطور التي تناسب شخصيتك وتتجنب مسببات الحساسية لديك."
+      "description": "قمنا باختيار هذه العطور التي تناسب ذوقك وآمنة لحساسيتك"
     },
     "compare": {
       "title": "مقارنة العطور",

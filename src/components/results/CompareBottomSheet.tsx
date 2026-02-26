@@ -175,6 +175,8 @@ function PriceHubContent ({
                 width={80}
                 height={80}
                 className="w-full h-full object-contain"
+                unoptimized={perfume.image?.startsWith('http') ?? false}
+                onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder-perfume.svg' }}
               />
             </div>
             <div className="flex-1 min-w-0">
@@ -301,6 +303,7 @@ function ProductCompareContent({
                 fill
                 className="object-contain p-1"
                 sizes="64px"
+                unoptimized={p.image?.startsWith('http') ?? false}
               />
             </div>
             <p className="text-xs font-medium text-text-primary dark:text-text-primary text-center line-clamp-2 leading-tight">

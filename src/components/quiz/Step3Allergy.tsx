@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { ChevronLeft, Loader2 } from 'lucide-react'
 import { motion } from 'framer-motion'
-import content from '@/content'
 import { BackButton } from '@/components/ui/BackButton'
 
 interface AllergyData {
@@ -25,42 +24,43 @@ interface AllergyProps {
 export type Step3AllergyProps = AllergyProps
 
 export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending }: AllergyProps) {
-  const t = useTranslations('common')
+  const t = useTranslations('quiz.step3')
+  const tCommon = useTranslations('common')
   const [currentLevel, setCurrentLevel] = useState(1)
 
-  // Level 1: Symptoms
+  // Level 1: Symptoms (id redness per commit 01 — symptom-mappings.ts)
   const symptoms = [
-    { id: 'sneeze', icon: '🤧', title: 'عطاس أو احتقان', desc: 'عطور قوية تسبب لي عطاس' },
-    { id: 'rash', icon: '🔴', title: 'احمرار أو حكة', desc: 'بشرتي تتحسس من بعض المكونات' },
-    { id: 'headache', icon: '🤕', title: 'صداع أو دوخة', desc: 'روائح معينة تصيبني بالصداع' },
-    { id: 'nausea', icon: '😖', title: 'غثيان أو ضيق تنفس', desc: 'عطور ثقيلة تضايقني' },
-    { id: 'none', icon: '✅', title: 'لا أعاني من شيء', desc: 'أنا بخير تماماً' }
+    { id: 'sneeze', icon: '🤧', title: t('symptoms.sneeze'), desc: t('symptoms.sneezeDesc') },
+    { id: 'redness', icon: '🔴', title: t('symptoms.redness'), desc: t('symptoms.rednessDesc') },
+    { id: 'headache', icon: '🤕', title: t('symptoms.headache'), desc: t('symptoms.headacheDesc') },
+    { id: 'nausea', icon: '😖', title: t('symptoms.nausea'), desc: t('symptoms.nauseaDesc') },
+    { id: 'none', icon: '✅', title: t('symptoms.none'), desc: t('symptoms.noneDesc') }
   ]
 
   // Level 2: Fragrance Families
   const families = [
-    { id: 'floral', icon: '🌸', name: 'زهرية', examples: 'ياسمين، ورد' },
-    { id: 'citrus', icon: '🍋', name: 'حمضية', examples: 'ليمون، برتقال' },
-    { id: 'woody', icon: '🪵', name: 'خشبية', examples: 'عود، صندل' },
-    { id: 'spicy', icon: '🌶️', name: 'حارة', examples: 'قرفة، فلفل' },
-    { id: 'gourmand', icon: '🍰', name: 'حلوة', examples: 'فانيليا، كراميل' },
-    { id: 'leather', icon: '🧥', name: 'جلدية', examples: 'جلد، تبغ' }
+    { id: 'floral', icon: '🌸', name: t('families.floral'), examples: t('families.floralExamples') },
+    { id: 'citrus', icon: '🍋', name: t('families.citrus'), examples: t('families.citrusExamples') },
+    { id: 'woody', icon: '🪵', name: t('families.woody'), examples: t('families.woodyExamples') },
+    { id: 'spicy', icon: '🌶️', name: t('families.spicy'), examples: t('families.spicyExamples') },
+    { id: 'gourmand', icon: '🍰', name: t('families.gourmand'), examples: t('families.gourmandExamples') },
+    { id: 'leather', icon: '🧥', name: t('families.leather'), examples: t('families.leatherExamples') }
   ]
 
   // Level 3: Ingredients (Tags/Chips)
   const ingredients = [
-    { id: 'jasmine', name: 'ياسمين', icon: '🌸' },
-    { id: 'rose', name: 'ورد', icon: '🌹' },
-    { id: 'oud', name: 'عود', icon: '🪵' },
-    { id: 'sandalwood', name: 'صندل', icon: '🪵' },
-    { id: 'vanilla', name: 'فانيليا', icon: '🍦' },
-    { id: 'musk', name: 'مسك', icon: '💫' },
-    { id: 'amber', name: 'عنبر', icon: '🟡' },
-    { id: 'patchouli', name: 'باتشولي', icon: '🍃' },
-    { id: 'lavender', name: 'لافندر', icon: '💜' },
-    { id: 'bergamot', name: 'برغموت', icon: '🍋' },
-    { id: 'pepper', name: 'فلفل', icon: '🌶️' },
-    { id: 'leather', name: 'جلد', icon: '🧥' }
+    { id: 'jasmine', name: t('ingredients.jasmine'), icon: '🌸' },
+    { id: 'rose', name: t('ingredients.rose'), icon: '🌹' },
+    { id: 'oud', name: t('ingredients.oud'), icon: '🪵' },
+    { id: 'sandalwood', name: t('ingredients.sandalwood'), icon: '🪵' },
+    { id: 'vanilla', name: t('ingredients.vanilla'), icon: '🍦' },
+    { id: 'musk', name: t('ingredients.musk'), icon: '💫' },
+    { id: 'amber', name: t('ingredients.amber'), icon: '🟡' },
+    { id: 'patchouli', name: t('ingredients.patchouli'), icon: '🍃' },
+    { id: 'lavender', name: t('ingredients.lavender'), icon: '💜' },
+    { id: 'bergamot', name: t('ingredients.bergamot'), icon: '🍋' },
+    { id: 'pepper', name: t('ingredients.pepper'), icon: '🌶️' },
+    { id: 'leather', name: t('ingredients.leather'), icon: '🧥' }
   ]
 
   const toggleSymptom = (id: string) => {
@@ -110,7 +110,7 @@ export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending
       {currentLevel === 1 && (
         <div className="space-y-6">
           <h2 className="text-3xl font-bold text-text-dark dark:text-text-primary dark:text-slate-100 text-center">
-            {content.quiz.step3.level1Question}
+            {t('level1Question')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {symptoms.map(({ id, icon, title, desc }) => (
@@ -151,7 +151,7 @@ export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending
       {currentLevel === 2 && (
         <div className="space-y-6">
           <h2 className="text-3xl font-bold text-text-dark dark:text-text-primary dark:text-slate-100 text-center">
-            {content.quiz.step3.level2Question}
+            {t('level2Question')}
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             {families.map(({ id, icon, name, examples }) => (
@@ -192,10 +192,10 @@ export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending
       {currentLevel === 3 && (
         <div className="space-y-6">
           <h2 className="text-3xl font-bold text-text-dark dark:text-text-primary text-center">
-            {content.quiz.step3.level3Question}
+            {t('level3Question')}
           </h2>
           <p className="text-center text-text-dark/70 dark:text-text-muted mb-8">
-            {content.quiz.step3.level3Description}
+            {t('level3Description')}
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             {ingredients.map(({ id, name, icon }) => (
@@ -238,8 +238,8 @@ export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending
         <BackButton
           variant="button"
           onClick={onBack}
-          label={content.common.goBack}
-          ariaLabel={t('backToPreviousStep')}
+          label={tCommon('back')}
+          ariaLabel={tCommon('backToPreviousStep')}
           className="flex-1 md:flex-none min-h-[44px] min-w-[44px] px-8 py-3 rounded-2xl font-bold"
         />
         <button
@@ -258,18 +258,18 @@ export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending
           className="min-h-[44px] min-w-[44px] px-8 py-3 bg-gradient-to-l from-gauge-safe to-emerald-600 dark:from-green-600 dark:to-emerald-700 text-white rounded-2xl font-bold shadow-xl hover:shadow-2xl hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex-1 md:flex-none flex items-center justify-center touch-manipulation"
         >
           {isPending ? <Loader2 className="w-5 h-5 animate-spin inline me-2" aria-hidden="true" /> : null}
-          {currentLevel === 3 ? content.quiz.step3.saveButton : content.common.next}
+          {currentLevel === 3 ? t('saveButton') : tCommon('next')}
           {currentLevel < 3 && !isPending && <ChevronLeft className="w-5 h-5 inline me-2 rtl:rotate-180" aria-hidden="true" />}
         </button>
       </div>
 
       {/* Level Indicator */}
       <div className="flex justify-center gap-3 text-sm text-text-dark/60 dark:text-text-muted">
-        <span className={currentLevel === 1 ? 'font-bold text-text-dark dark:text-text-primary' : ''}>{content.quiz.step3.level1Title}</span>
+        <span className={currentLevel === 1 ? 'font-bold text-text-dark dark:text-text-primary' : ''}>{t('level1Title')}</span>
         <span>→</span>
-        <span className={currentLevel === 2 ? 'font-bold text-text-dark dark:text-text-primary' : ''}>{content.quiz.step3.level2Title}</span>
+        <span className={currentLevel === 2 ? 'font-bold text-text-dark dark:text-text-primary' : ''}>{t('level2Title')}</span>
         <span>→</span>
-        <span className={currentLevel === 3 ? 'font-bold text-text-dark dark:text-text-primary' : ''}>{content.quiz.step3.level3Title}</span>
+        <span className={currentLevel === 3 ? 'font-bold text-text-dark dark:text-text-primary' : ''}>{t('level3Title')}</span>
       </div>
     </div>
   )

@@ -123,6 +123,54 @@ async function searchLocalPerfumes(query: string, limit: number): Promise<Search
   }
 }
 
+/**
+ * Search Fragella API directly without cache (fallback when DB unavailable)
+ */
+async function searchPerfumesDirect(query: string, limit = 20): Promise<SearchResultsResponse> {
+  const apiKey = process.env.FRAGELLA_API_KEY
+  if (!apiKey) {
+    logger.warn('⚠️ FRAGELLA_API_KEY not set, using local fallback')
+    return searchLocalPerfumes(query, limit)
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.fragella.com/api/v1/fragrances?search=${encodeURIComponent(query)}&limit=${limit}`,
+      {
+        headers: { 'x-api-key': apiKey },
+        signal: AbortSignal.timeout(8000)
+      }
+    )
+
+    if (!response.ok) {
+      const errText = await response.text()
+      logger.warn(`⚠️ Fragella direct API error (${response.status}): ${errText.substring(0, 200)}`)
+      return searchLocalPerfumes(query, limit)
+    }
+
+    const contentType = response.headers.get('content-type')
+    if (!contentType?.includes('application/json')) {
+      logger.warn('⚠️ Invalid Fragella response format')
+      return searchLocalPerfumes(query, limit)
+    }
+
+    const raw = await response.json() as unknown
+    if (raw !== null && typeof raw === 'object' && 'results' in raw && Array.isArray((raw as SearchResultsResponse).results)) {
+      const count = (raw as SearchResultsResponse).results.length
+      logger.info(`Fragella direct: Found ${count} results`)
+      return raw as SearchResultsResponse
+    }
+    if (Array.isArray(raw)) {
+      logger.info(`Fragella direct: Found ${raw.length} results (array)`)
+      return { results: raw }
+    }
+    return { results: [] }
+  } catch (error) {
+    logger.warn('⚠️ Fragella direct search error, falling back to local:', error)
+    return searchLocalPerfumes(query, limit)
+  }
+}
+
 export async function searchPerfumes(query: string, limit = 20): Promise<SearchResultsResponse> {
   const apiKey = process.env.FRAGELLA_API_KEY
 
@@ -179,8 +227,21 @@ export async function searchPerfumesWithCache<T = { results: unknown[] }>(
 ): Promise<T> {
   const cacheKey = `search:${query.toLowerCase()}:${limit}`
 
+  // Quick DB check — if unreachable, call Fragella directly
+  let dbAvailable = true
   try {
-    // Check cache
+    await prisma.$queryRaw`SELECT 1`
+  } catch {
+    dbAvailable = false
+    logger.warn('⚠️ DB unavailable — calling Fragella directly')
+  }
+
+  if (!dbAvailable) {
+    return (await searchPerfumes(query, limit)) as T
+  }
+
+  try {
+    // Check cache (original code — only runs when DB is available)
     const cached = await prisma.fragellaCache.findFirst({
       where: {
         key: cacheKey,
@@ -200,25 +261,32 @@ export async function searchPerfumesWithCache<T = { results: unknown[] }>(
     // Fetch fresh
     logger.info('🔄 Cache MISS - fetching:', cacheKey)
     const data = await searchPerfumes(query, limit)
-    
-    // Cache for 24h
-    try {
-      await prisma.fragellaCache.upsert({
-        where: { key: cacheKey },
-        create: {
-          key: cacheKey,
-          data: JSON.stringify(data),
-          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
-        },
-        update: {
-          data: JSON.stringify(data),
-          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
-        }
-      })
-      logger.info('Cache updated')
-    } catch (cacheError) {
-      logger.warn('Failed to cache search results:', cacheError)
-      // Continue anyway - cache failure should not break search
+
+    // Don't cache local fallback results — only cache real Fragella API data
+    const hasLocalOnly = Array.isArray(data?.results) &&
+      data.results.length > 0 &&
+      data.results.every((r: any) => r.source === 'local' || r._isFallback)
+
+    if (!hasLocalOnly) {
+      try {
+        await prisma.fragellaCache.upsert({
+          where: { key: cacheKey },
+          create: {
+            key: cacheKey,
+            data: JSON.stringify(data),
+            expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
+          },
+          update: {
+            data: JSON.stringify(data),
+            expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
+          }
+        })
+        logger.info('Cache updated')
+      } catch (cacheError) {
+        logger.warn('Failed to cache search results:', cacheError)
+      }
+    } else {
+      logger.info('Skipping cache — results are local fallback only')
     }
 
     return data as T

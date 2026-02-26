@@ -21,6 +21,10 @@ const config: Config = {
         'text-muted': 'rgb(var(--color-text-muted) / <alpha-value>)',
         'accent-primary': 'rgb(var(--color-accent-primary) / <alpha-value>)',
 
+        /* Visual refresh — warm accent for hover glow */
+        'accent-warm': 'rgb(var(--accent-warm) / <alpha-value>)',
+        'card-border': 'rgb(var(--color-card-border) / <alpha-value>)',
+
         // Brand colors from the design
         cream: '#FAF8F5',
         gold: {
@@ -65,6 +69,9 @@ const config: Config = {
         'elevation-1': '0 2px 8px rgba(91, 66, 51, 0.08)',
         'elevation-2': '0 8px 32px rgba(0,0,0,0.12)',
         'elevation-3': '0 8px 24px rgba(91, 66, 51, 0.16)',
+        /* Visual refresh — card hover shadow */
+        'card-hover': '0 12px 24px rgba(192, 132, 26, 0.1)',
+        'card-hover-dark': '0 12px 24px rgba(0, 0, 0, 0.3)',
         'black/30': '0 4px 20px rgba(0,0,0,0.3)',
         'amber-500/30': '0 0 20px rgba(245,158,11,0.3)',
         'button': '0 2px 8px rgba(192, 132, 26, 0.2)',

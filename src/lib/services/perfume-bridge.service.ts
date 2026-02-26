@@ -222,7 +222,22 @@ export function convertFragellaToUnified(
       return null
     }
     
-    const image = fragellaData.image_url || fragellaData.image || fragellaData['Image URL'] || '/placeholder-perfume.jpg'
+    // 🔍 DIAGNOSTIC: Log raw Fragella keys to find the image field
+    if (fallbackIndex === 0) {
+      console.log('[Fragella RAW keys]', Object.keys(fragellaData))
+      console.log('[Fragella RAW sample]', JSON.stringify(fragellaData).slice(0, 600))
+    }
+    // Image priority: 'Image URL' (Fragella CDN) first, then image_url, then image
+    // CRITICAL: fragellaData.image often contains placeholder/picsum URLs — must be LAST
+    const cdnImage = fragellaData['Image URL'] || fragellaData['image_url'] || ''
+    const fallbackImage = fragellaData.image || ''
+    const rawImage = cdnImage || fallbackImage
+    const image = (rawImage && typeof rawImage === 'string' && rawImage.trim() !== '' && rawImage !== 'null')
+      ? rawImage.trim()
+      : '/placeholder-perfume.svg'
+    if (fallbackIndex !== undefined && fallbackIndex < 3) {
+      console.log(`[Fragella image #${fallbackIndex}]`, image)
+    }
     const price = fragellaData.price ?? fragellaData.Price ?? null
     
     return {
