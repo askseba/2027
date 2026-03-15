@@ -480,7 +480,8 @@ export async function enrichWithIFRA(
     return {
       ...perfume,
       ifraScore: safetyData.score,
-      ifraWarnings: safetyData.warnings
+      ifraWarnings: safetyData.warnings,
+      isSafe: safetyData.score >= 70
     }
   }
   
