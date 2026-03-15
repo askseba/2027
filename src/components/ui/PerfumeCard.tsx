@@ -38,6 +38,7 @@ interface PerfumeCardProps {
   onShowMatch?: () => void
   onPriceCompare?: (perfume: ScoredPerfume) => void
   perfumeData?: ScoredPerfume
+  exclusionReason?: string | null
 }
 
 export function PerfumeCard({
@@ -67,6 +68,7 @@ export function PerfumeCard({
   onShowMatch,
   onPriceCompare,
   perfumeData,
+  exclusionReason,
 }: PerfumeCardProps) {
   const t = useTranslations("results.card")
   const displayName = name || title || t("unknownPerfume")
@@ -148,6 +150,15 @@ export function PerfumeCard({
             </div>
           )
         })()}
+
+        {exclusionReason && (
+          <div className="absolute bottom-2 start-3 z-10">
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full
+              text-white shadow-sm bg-red-500">
+              ⚠ {exclusionReason}
+            </span>
+          </div>
+        )}
 
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-white/30 dark:from-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-[-1]" />
