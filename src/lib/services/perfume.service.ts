@@ -184,8 +184,8 @@ export async function searchPerfumes(query: string, limit = 20): Promise<SearchR
   const apiKey = process.env.FRAGELLA_API_KEY
 
   if (!apiKey) {
-    logger.warn('⚠️ FRAGELLA_API_KEY not set, returning empty results (no local fallback for search)')
-    return { results: [] }
+    logger.warn('FRAGELLA_API_KEY not set, using local fallback')
+    return searchLocalPerfumes(query, limit)
   }
 
   try {
@@ -245,7 +245,7 @@ export async function searchPerfumesWithCache<T = { results: unknown[] }>(
   }
 
   if (!dbAvailable) {
-    return (await searchPerfumes(query, limit)) as T
+    return (await searchPerfumesDirect(query, limit)) as T
   }
 
   try {
