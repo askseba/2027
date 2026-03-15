@@ -141,14 +141,14 @@ export function calculateSafetyScore(
 
 /**
  * Calculates the final weighted match score.
- * Formula: (Taste * 0.7) + (Safety * 0.3)
+ * Formula: (Taste * 0.8) + (Safety * 0.2)
  */
 export function calculateFinalMatchScore(
   tasteScore: number,
   safetyScore: number
 ): number {
-  const TASTE_WEIGHT = 0.7
-  const SAFETY_WEIGHT = 0.3
+  const TASTE_WEIGHT = 0.8
+  const SAFETY_WEIGHT = 0.2
   
   const finalScore = (tasteScore * TASTE_WEIGHT) + (safetyScore * SAFETY_WEIGHT)
   return Math.round(finalScore)
@@ -225,7 +225,7 @@ export function calculateMatchScores(
     if (safetyScore === 0) {
       return {
         ...perfume,
-        finalScore: Math.round(tasteScore * 0.7), // Only taste score, no safety bonus
+        finalScore: Math.round(tasteScore * 0.8), // Only taste score, no safety bonus
         tasteScore,
         safetyScore: 0,
         isExcluded: false, // Show but with warning
