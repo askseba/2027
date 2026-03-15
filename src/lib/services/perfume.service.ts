@@ -18,7 +18,16 @@ interface FragranceApiPayload {
 /** Safe parse of Prisma Json field (may be string or already object). Avoids cache corruption. */
 function parseJsonField<T>(raw: unknown): T {
   if (typeof raw === 'string') {
-    return JSON.parse(raw) as T
+    try {
+      return JSON.parse(raw) as T
+    } catch (err) {
+      logger.error('parseJsonField: malformed JSON in cache', {
+        // raw is a string here, so substring is safe
+        preview: (raw as string).substring(0, 100),
+        error: err instanceof Error ? err.message : String(err),
+      })
+      return {} as T
+    }
   }
   return raw as T
 }
@@ -267,6 +276,16 @@ export async function searchPerfumesWithCache<T = { results: unknown[] }>(
       data.results.every((r: any) => r.source === 'local' || r._isFallback)
 
     if (!hasLocalOnly) {
+      // Don't cache results that are suspiciously small for the requested limit
+      // e.g. 4 results when we asked for 2000 means Fragella returned partial data
+      const resultCount = Array.isArray(data?.results) ? data.results.length : 0
+      const isTooFewResults = limit > 50 && resultCount < Math.min(limit * 0.1, 50)
+
+      if (isTooFewResults) {
+        console.warn(`[perfume.service] Skipping cache: only ${resultCount} results for limit=${limit}`)
+        return data as T
+      }
+
       try {
         await prisma.fragellaCache.upsert({
           where: { key: cacheKey },
