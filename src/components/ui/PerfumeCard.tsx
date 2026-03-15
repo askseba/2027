@@ -133,7 +133,7 @@ export function PerfumeCard({
         {/* Safety pill */}
         {(() => {
           const severity = safetySeverity ?? severityFromScore(
-            (safetyScore === 100 ? 100 : safetyScore === 50 ? 50 : 0) as 0 | 50 | 100
+            (safetyScore >= 70 ? 100 : safetyScore >= 40 ? 50 : 0) as 0 | 50 | 100
           )
           const display = getSafetyDisplay(severity)
           if (!display.showWarning) return null
