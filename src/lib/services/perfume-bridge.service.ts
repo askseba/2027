@@ -110,7 +110,14 @@ export async function searchUnified(
         }
       }
       const fragellaResults = fragellaArray
-        .map((item: any, index: number) => convertFragellaToUnified(item, undefined, index))
+        .map((item: any) => {
+          const canonicalId = extractFragellaIdFromSearchItem(item)
+          if (!canonicalId) {
+            logger.warn('Fragella search item missing canonical ID, skipping', { name: item?.Name ?? item?.name })
+            return null
+          }
+          return convertFragellaToUnified(item, canonicalId)
+        })
         .filter((p): p is UnifiedPerfume => p !== null)
       results.push(...fragellaResults)
     }
@@ -192,6 +199,67 @@ export async function getPerfumesUnified(ids: string[]): Promise<UnifiedPerfume[
 // FRAGELLA CONVERSION
 // ============================================
 
+const URL_DERIVED_ID_BLOCKLIST = new Set([
+  'en_us', 'ar_sa', 'perfume', 'fragrances', 'fragrance', 'eau-de-parfum', 'eau-de-toilette', 'parfums'
+])
+
+function isAcceptableUrlDerivedId(segment: string): boolean {
+  if (!segment || segment.includes('?') || segment.includes('#')) return false
+  const lower = segment.toLowerCase().trim()
+  if (URL_DERIVED_ID_BLOCKLIST.has(lower)) return false
+  if (lower.length < 2) return false
+  return true
+}
+
+function safeDecodeURIComponent(s: string): string | null {
+  try {
+    return decodeURIComponent(s)
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Extract verified canonical Fragella ID from a search result item only.
+ * No fake IDs, no Brand+Name slugs, no idx-N. URL-derived only if clearly per-fragrance.
+ */
+export function extractFragellaIdFromSearchItem(item: any): string | null {
+  if (!item || typeof item !== 'object') return null
+
+  const directId =
+    item.id ??
+    item._id ??
+    item.Id ??
+    item.fragranceId ??
+    item.fragrance_id ??
+    item.slug ??
+    item.Slug
+
+  if (directId != null) {
+    const value = String(directId).trim()
+    if (value && !value.startsWith('idx-')) return value
+  }
+
+  const rawUrl =
+    item['Purchase URL'] ??
+    item.purchase_url ??
+    item.url ??
+    item.link ??
+    item.href
+
+  if (typeof rawUrl === 'string' && rawUrl.trim()) {
+    const url = safeDecodeURIComponent(rawUrl.trim())
+    if (url === null) return null
+    const match = /\/fragrances\/([^/?#]+)/i.exec(url)
+    if (match?.[1]) {
+      const segment = safeDecodeURIComponent(match[1].trim())
+      if (segment !== null && isAcceptableUrlDerivedId(segment)) return segment
+    }
+  }
+
+  return null
+}
+
 /**
  * Convert Fragella API response to UnifiedPerfume format
  * @param fragellaData - Raw Fragella API data
@@ -203,41 +271,36 @@ export async function getPerfumesUnified(ids: string[]): Promise<UnifiedPerfume[
  */
 export function convertFragellaToUnified(
   fragellaData: any,
-  fragellaId?: string,
-  fallbackIndex?: number
+  fragellaId?: string
 ): UnifiedPerfume | null {
   if (!fragellaData || typeof fragellaData !== 'object') {
     return null
   }
 
   try {
-    // Fragella API uses PascalCase: Name, Brand, "Image URL"; some responses have id
     const name = fragellaData.name || fragellaData.Name || 'Unknown'
     const brand = fragellaData.brand?.name ?? fragellaData.brand ?? fragellaData.Brand ?? 'Unknown'
-    const id = fragellaId || fragellaData.id || fragellaData._id
-    const effectiveId = id || (fallbackIndex !== undefined ? `idx-${fallbackIndex}` : null)
-    
-    if (!effectiveId) {
-      logger.warn('Fragella data missing ID')
+    const effectiveId =
+      (typeof fragellaId === 'string' && fragellaId.trim() ? fragellaId.trim() : null) ??
+      (fragellaData.id != null ? String(fragellaData.id).trim() : null) ??
+      (fragellaData._id != null ? String(fragellaData._id).trim() : null) ??
+      (fragellaData.Id != null ? String(fragellaData.Id).trim() : null) ??
+      (fragellaData.fragranceId != null ? String(fragellaData.fragranceId).trim() : null) ??
+      (fragellaData.fragrance_id != null ? String(fragellaData.fragrance_id).trim() : null) ??
+      (fragellaData.slug != null ? String(fragellaData.slug).trim() : null) ??
+      (fragellaData.Slug != null ? String(fragellaData.Slug).trim() : null)
+
+    if (!effectiveId || effectiveId.startsWith('idx-')) {
+      logger.warn('Fragella data missing canonical ID')
       return null
     }
-    
-    // 🔍 DIAGNOSTIC: Log raw Fragella keys to find the image field
-    if (fallbackIndex === 0) {
-      console.log('[Fragella RAW keys]', Object.keys(fragellaData))
-      console.log('[Fragella RAW sample]', JSON.stringify(fragellaData).slice(0, 600))
-    }
-    // Image priority: 'Image URL' (Fragella CDN) first, then image_url, then image
-    // CRITICAL: fragellaData.image often contains placeholder/picsum URLs — must be LAST
+
     const cdnImage = fragellaData['Image URL'] || fragellaData['image_url'] || ''
     const fallbackImage = fragellaData.image || ''
     const rawImage = cdnImage || fallbackImage
     const image = (rawImage && typeof rawImage === 'string' && rawImage.trim() !== '' && rawImage !== 'null')
       ? rawImage.trim()
       : '/placeholder-perfume.svg'
-    if (fallbackIndex !== undefined && fallbackIndex < 3) {
-      console.log(`[Fragella image #${fallbackIndex}]`, image)
-    }
     const price = fragellaData.price ?? fragellaData.Price ?? null
     
     return {
@@ -279,6 +342,20 @@ export function convertFragellaToUnified(
   }
 }
 
+function normalizeFamily(f: string): string {
+  const map: Record<string, string> = {
+    'خشبي': 'woody',    'woody': 'woody',    'wood': 'woody',
+    'شرقي': 'oriental', 'oriental': 'oriental', 'amber': 'oriental',
+    'زهري': 'floral',   'floral': 'floral',  'flower': 'floral',
+    'منعش': 'fresh',    'fresh': 'fresh',    'aquatic': 'fresh',
+    'حمضيات': 'citrus', 'citrus': 'citrus',
+    'برتقال': 'citrus', 'ليمون': 'citrus',
+    'توابل': 'spicy',   'spicy': 'spicy',
+    'سويتي': 'sweet',   'sweet': 'sweet',    'gourmand': 'sweet',
+  }
+  return map[f.toLowerCase().trim()] ?? f.toLowerCase().trim()
+}
+
 /**
  * Extract fragrance families from Fragella data
  */
@@ -296,7 +373,9 @@ function extractFamilies(fragellaData: any): string[] {
   if (fragellaData.olfactive_family && typeof fragellaData.olfactive_family === 'string') {
     families.push(fragellaData.olfactive_family)
   }
-  return [...new Set(families)].filter(f => f && typeof f === 'string' && f.trim())
+  return [...new Set(families)]
+    .filter(f => f && typeof f === 'string' && f.trim())
+    .map(normalizeFamily)
 }
 
 /**
@@ -440,7 +519,15 @@ export async function enrichBatchWithIFRA(
   }
 
   return Promise.all(
-    perfumes.map(p => enrichWithIFRA(p, userSymptoms))
+    perfumes.map(p =>
+      enrichWithIFRA(p, userSymptoms).catch(err => {
+        logger.warn('enrichWithIFRA failed, returning unenriched', {
+          id: p?.id,
+          error: err instanceof Error ? err.message : String(err),
+        })
+        return p
+      })
+    )
   )
 }
 
@@ -453,23 +540,24 @@ export async function enrichBatchWithIFRA(
  */
 function deduplicatePerfumes(perfumes: UnifiedPerfume[]): UnifiedPerfume[] {
   const seen = new Map<string, UnifiedPerfume>()
-  
+
   for (const perfume of perfumes) {
     if (!perfume || !perfume.name || !perfume.brand) continue
-    
-    const key = `${perfume.name.toLowerCase()}|${perfume.brand.toLowerCase()}`
-    
-    if (!seen.has(key)) {
+
+    const key = perfume.id ?? `${perfume.name.toLowerCase()}|${perfume.brand.toLowerCase()}`
+    const existing = seen.get(key)
+
+    if (!existing) {
       seen.set(key, perfume)
-    } else {
-      // Prefer local over Fragella
-      const existing = seen.get(key)!
-      if (perfume.source === 'local' && existing.source === 'fragella') {
-        seen.set(key, perfume)
-      }
+      continue
+    }
+
+    // Prefer local over Fragella when same key appears twice
+    if (perfume.source === 'local' && existing.source === 'fragella') {
+      seen.set(key, perfume)
     }
   }
-  
+
   return Array.from(seen.values())
 }
 
