@@ -1,6 +1,6 @@
-"use client"
+ "use client"
 
-import { useSession, signOut } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/routing'
 import { Link } from '@/i18n/routing'
@@ -18,7 +18,7 @@ import { SettingsIcon, UserAvatarIcon } from "@/components/AskSebaIcons"
 import { Heart } from "lucide-react"
 
 export default function Header() {
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   const t = useTranslations('nav')
   const router = useRouter()
 
