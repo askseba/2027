@@ -827,6 +827,51 @@
         "heart": "نوتات القلب",
         "base": "نوتات القاعدة"
       },
+      "longevity": {
+        "veryWeak": "ضعيف جدًا",
+        "weak": "ضعيف",
+        "moderate": "متوسط",
+        "longLasting": "ثبات طويل",
+        "veryLongLasting": "ثبات طويل جدًا",
+        "eternal": "ثبات استثنائي"
+      },
+      "sillage": {
+        "intimate": "حميمي",
+        "moderate": "متوسط",
+        "strong": "قوي",
+        "enormous": "هائل"
+      },
+      "notes": {
+        "Pink Pepper": "فلفل وردي",
+        "Peppermint": "نعناع فلفلي",
+        "Bergamot": "برغموت",
+        "Lemon": "ليمون",
+        "Absinthe": "أبسينث",
+        "Orange": "برتقال",
+        "Lavender": "لافندر",
+        "Bulgarian Rose": "ورد بلغاري",
+        "Clove": "قرنفل",
+        "Allspice": "توابل مختلطة",
+        "Orris Root": "جذر أوريس",
+        "Jasmine": "ياسمين",
+        "Vetiver": "فيتيفر",
+        "Cedar": "أرز",
+        "White Musk": "مسك أبيض",
+        "Tonka Bean": "فول تونكا"
+      },
+      "families": {
+        "aromatic": "عطري",
+        "fresh spicy": "توابل منعشة",
+        "green": "أخضر",
+        "citrus": "حمضيات",
+        "soft spicy": "توابل ناعمة",
+        "gourmand": "غورماند",
+        "lavender": "لافندر",
+        "woody": "خشبي",
+        "rose": "وردي",
+        "musky": "مسكي",
+        "sweet": "حلو"
+      },
       "ingredientsTitle": "المكونات",
       "familiesTitle": "العائلات العطرية",
       "safetyTitle": "تقييم الأمان",

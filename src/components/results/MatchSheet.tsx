@@ -110,11 +110,11 @@ export function MatchSheet({ perfume, onClose, locale = "ar" }: MatchSheetProps)
 
             {/* تفصيل الحساب (شرائط) */}
             <div className="px-6 space-y-4 mb-6">
-              {/* الذوق (70%) */}
+              {/* الذوق (80%) */}
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-text-secondary dark:text-text-muted">
-                    {t("tasteLabel")} (70%)
+                    {t("tasteLabel")} (80%)
                   </span>
                   <span className="text-sm font-bold text-text-primary dark:text-text-primary">
                     {perfume.tasteScore}%
@@ -128,11 +128,11 @@ export function MatchSheet({ perfume, onClose, locale = "ar" }: MatchSheetProps)
                 </div>
               </div>
 
-              {/* الأمان (30%) */}
+              {/* الأمان (20%) */}
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-text-secondary dark:text-text-muted">
-                    {t("safetyLabel")} (30%)
+                    {t("safetyLabel")} (20%)
                   </span>
                   <span className="text-sm font-bold text-text-primary dark:text-text-primary">
                     {perfume.safetyScore}%
@@ -186,6 +186,40 @@ export function MatchSheet({ perfume, onClose, locale = "ar" }: MatchSheetProps)
                   ))}
                 </div>
               </div>
+            )}
+
+            {(perfume as any).accordsPercentage &&
+              Object.keys((perfume as any).accordsPercentage).length > 0 && (
+                <div className="mt-4 space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                  <p className="font-medium">لماذا يناسبك:</p>
+                  {(() => {
+                    const accords = (perfume as any).accordsPercentage as Record<string, string>
+                    const dominant = Object.entries(accords)
+                      .filter(([, v]) => v === 'Dominant').map(([k]) => k)
+                    const prominent = Object.entries(accords)
+                      .filter(([, v]) => v === 'Prominent').map(([k]) => k)
+                    return (
+                      <>
+                        {dominant.length > 0 && (
+                          <p>✅ الطابع الرئيسي: {dominant.join('، ')}</p>
+                        )}
+                        {prominent.length > 0 && (
+                          <p>✅ يتميز أيضاً بـ: {prominent.join('، ')}</p>
+                        )}
+                      </>
+                    )
+                  })()}
+                  {(perfume as any).sourceLikedPerfume && (
+                    <p>🔗 مشابه لـ {(perfume as any).sourceLikedPerfume}</p>
+                  )}
+                </div>
+              )}
+
+            {(perfume as any).gender && (
+              <span className="inline-block mt-2 text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                {(perfume as any).gender === 'Men' ? '👔 للرجال' :
+                 (perfume as any).gender === 'Women' ? '👗 للنساء' : '🌿 للجنسين'}
+              </span>
             )}
 
             {/* سبب الاستبعاد */}

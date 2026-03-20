@@ -109,6 +109,22 @@ export async function searchUnified(
           // ignore
         }
       }
+      if (fragellaArray.length > 0) {
+        console.log('[DIAG-ACCORDS] SEARCH ITEMS SAMPLE', {
+          totalItems: fragellaArray.length,
+          item0_keys: Object.keys(fragellaArray[0]),
+          item0_MainAccords: fragellaArray[0]['Main Accords'] ?? 'MISSING',
+          item0_main_accords: fragellaArray[0].main_accords ?? 'MISSING',
+          item0_Accords: fragellaArray[0].Accords ?? 'MISSING',
+          item0_accords: fragellaArray[0].accords ?? 'MISSING',
+          item0_Notes: fragellaArray[0].Notes ? Object.keys(fragellaArray[0].Notes) : 'MISSING',
+          item0_notes: fragellaArray[0].notes ? Object.keys(fragellaArray[0].notes) : 'MISSING',
+          item0_Name: fragellaArray[0].Name ?? fragellaArray[0].name ?? 'MISSING',
+          item0_Brand: fragellaArray[0].Brand ?? fragellaArray[0].brand ?? 'MISSING',
+          item2_MainAccords: fragellaArray[2]?.['Main Accords'] ?? 'MISSING',
+          item2_Name: fragellaArray[2]?.Name ?? fragellaArray[2]?.name ?? 'MISSING'
+        })
+      }
       const fragellaResults = fragellaArray
         .map((item: any) => {
           const canonicalId = extractFragellaIdFromSearchItem(item)
@@ -220,6 +236,30 @@ function safeDecodeURIComponent(s: string): string | null {
 }
 
 /**
+ * Derive a stable slug from Brand + Name when no canonical ID is available.
+ * Used as last-resort ID for PascalCase-only Fragella search results.
+ * Example: Brand="Creed", Name="Aventus" → "creed-aventus"
+ */
+function deriveSlugFromBrandName(item: any): string | null {
+  const itemName = item?.Name ?? item?.name
+  const itemBrand = item?.Brand ?? item?.brand?.name ?? item?.brand
+  if (typeof itemName !== 'string' || !itemName.trim()) return null
+  if (typeof itemBrand !== 'string' || !itemBrand.trim()) return null
+
+  const slug = `${itemBrand}-${itemName}`
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+
+  if (!slug || slug.length < 3) return null
+  if (URL_DERIVED_ID_BLOCKLIST.has(slug)) return null
+  return slug
+}
+
+/**
  * Extract verified canonical Fragella ID from a search result item only.
  * No fake IDs, no Brand+Name slugs, no idx-N. URL-derived only if clearly per-fragrance.
  */
@@ -237,7 +277,9 @@ export function extractFragellaIdFromSearchItem(item: any): string | null {
 
   if (directId != null) {
     const value = String(directId).trim()
-    if (value && !value.startsWith('idx-')) return value
+    if (value && !value.startsWith('idx-') && !URL_DERIVED_ID_BLOCKLIST.has(value.toLowerCase())) {
+      return value
+    }
   }
 
   const rawUrl =
@@ -256,6 +298,10 @@ export function extractFragellaIdFromSearchItem(item: any): string | null {
       if (segment !== null && isAcceptableUrlDerivedId(segment)) return segment
     }
   }
+
+  // Path 3: Derive slug from Name + Brand (last resort for PascalCase-only API responses)
+  const derivedSlug = deriveSlugFromBrandName(item)
+  if (derivedSlug) return derivedSlug
 
   return null
 }
@@ -280,7 +326,7 @@ export function convertFragellaToUnified(
   try {
     const name = fragellaData.name || fragellaData.Name || 'Unknown'
     const brand = fragellaData.brand?.name ?? fragellaData.brand ?? fragellaData.Brand ?? 'Unknown'
-    const effectiveId =
+    let effectiveId =
       (typeof fragellaId === 'string' && fragellaId.trim() ? fragellaId.trim() : null) ??
       (fragellaData.id != null ? String(fragellaData.id).trim() : null) ??
       (fragellaData._id != null ? String(fragellaData._id).trim() : null) ??
@@ -290,8 +336,16 @@ export function convertFragellaToUnified(
       (fragellaData.slug != null ? String(fragellaData.slug).trim() : null) ??
       (fragellaData.Slug != null ? String(fragellaData.Slug).trim() : null)
 
+    // Fallback: derive slug from Name + Brand
     if (!effectiveId || effectiveId.startsWith('idx-')) {
-      logger.warn('Fragella data missing canonical ID')
+      effectiveId = deriveSlugFromBrandName(fragellaData)
+    }
+
+    if (!effectiveId || effectiveId.startsWith('idx-')) {
+      logger.warn('Fragella data missing canonical ID', {
+        name: fragellaData?.Name ?? fragellaData?.name,
+        brand: fragellaData?.Brand ?? fragellaData?.brand
+      })
       return null
     }
 

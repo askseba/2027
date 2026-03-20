@@ -30,13 +30,23 @@ export default function ResultsError({
         <div className="flex gap-3 justify-center">
           <button
             onClick={reset}
-            className="px-6 py-3 bg-primary text-white rounded-xl hover:opacity-90 transition font-medium"
+            className="inline-flex items-center px-6 py-3 border border-transparent
+text-base font-medium rounded-md shadow-sm
+text-slate-900 bg-cream-50 hover:bg-cream-100
+dark:text-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700
+focus:outline-none focus:ring-2 focus:ring-offset-2
+focus:ring-gold-500"
           >
             {t('retry')}
           </button>
           <Link
             href="/dashboard"
-            className="px-6 py-3 bg-white dark:bg-surface-elevated text-text-primary dark:text-text-primary rounded-xl border border-primary/20 dark:border-border-subtle hover:bg-primary/5 transition font-medium"
+            className="ml-3 inline-flex items-center px-4 py-2
+border border-slate-300 text-sm font-medium rounded-md
+text-slate-700 bg-white hover:bg-slate-50
+dark:border-slate-600 dark:text-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800
+focus:outline-none focus:ring-2 focus:ring-offset-2
+focus:ring-gold-500"
           >
             {t('backToDashboard')}
           </Link>

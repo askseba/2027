@@ -90,15 +90,23 @@ export function calculateTasteScore(
   userScentDNA: Set<string>
 ): number {
   if (userScentDNA.size === 0) {
-    // No preferences yet - return neutral score
-    return 50
+    const neutralScore = 50
+    return neutralScore
   }
-  
+
   const perfumeSet = new Set(perfumeFamilies.map(f => f.toLowerCase()))
   const userSet = new Set([...userScentDNA].map(f => f.toLowerCase()))
-  
-  const similarity = jaccardSimilarity(perfumeSet, userSet)
-  return Math.round(similarity * 100)
+
+  const intersection = new Set([...perfumeSet].filter(x => userSet.has(x)))
+  const union = new Set([...perfumeSet, ...userSet])
+  // Overlap Coefficient: what fraction of user's DNA is matched?
+  const minSize = Math.min(perfumeSet.size, userSet.size)
+  const similarity = minSize > 0
+    ? intersection.size / minSize
+    : 0
+
+  const result = Math.round(similarity * 100)
+  return result
 }
 
 /**
@@ -117,25 +125,32 @@ export function calculateSafetyScore(
     symptoms: string[]
     families: string[]
     ingredients: string[]
-  }
+  },
+  precomputedIfraScore?: number
 ): { score: number; reason: string | null } {
   const perfumeIngredientsSet = new Set(perfumeIngredients.map(i => i.toLowerCase()))
   const perfumeTriggersSet = new Set(perfumeSymptomTriggers.map(t => t.toLowerCase()))
   
-  // Check for symptom triggers
+  // Check for direct symptom triggers — always returns 0 regardless of IFRA score
   for (const symptom of userAllergies.symptoms) {
     if (perfumeTriggersSet.has(symptom.toLowerCase())) {
       return { score: 0, reason: `يسبب ${symptom}` }
     }
   }
   
-  // Check for allergic ingredients
+  // Check for direct allergic ingredients — always returns 0
   for (const ingredient of userAllergies.ingredients) {
     if (perfumeIngredientsSet.has(ingredient.toLowerCase())) {
       return { score: 0, reason: `يحتوي على ${ingredient}` }
     }
   }
   
+  // If pre-computed IFRA score available (from DB-backed check), use it
+  if (typeof precomputedIfraScore === 'number' && precomputedIfraScore >= 0) {
+    return { score: precomputedIfraScore, reason: null }
+  }
+  
+  // Fallback: no direct triggers and no IFRA data = assume safe
   return { score: 100, reason: null }
 }
 
@@ -214,11 +229,12 @@ export function calculateMatchScores(
     // Calculate Taste Score
     const tasteScore = calculateTasteScore(perfume.families, userScentDNA)
     
-    // Calculate Safety Score
+    // Calculate Safety Score (uses pre-computed IFRA score if available)
     const { score: safetyScore, reason: safetyReason } = calculateSafetyScore(
       perfume.ingredients,
       perfume.symptomTriggers,
-      userPreference.allergyProfile
+      userPreference.allergyProfile,
+      (perfume as any).ifraScore
     )
     
     // If safety score is 0, mark as excluded but still include in results with warning

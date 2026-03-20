@@ -14,6 +14,7 @@ import { BackButton } from '@/components/ui/BackButton'
 import { CompareBottomSheet } from '@/components/results/CompareBottomSheet'
 import { IngredientsSheet } from '@/components/results/IngredientsSheet'
 import { MatchSheet } from '@/components/results/MatchSheet'
+import { ResultsLoadingScreen } from '@/components/results/ResultsLoadingScreen'
 import { cn } from '@/lib/classnames'
 import logger from '@/lib/logger'
 
@@ -47,14 +48,18 @@ export function ResultsContent() {
   const [ingredientsPerfume, setIngredientsPerfume] = useState<ScoredPerfume | null>(null)
   const [matchPerfume, setMatchPerfume] = useState<ScoredPerfume | null>(null)
 
+  const step1Liked = quizData?.step1_liked ?? []
+  const step2Disliked = quizData?.step2_disliked ?? []
+  const step3Allergy = quizData?.step3_allergy ?? { symptoms: [], families: [], ingredients: [] }
+
   const fetchResults = useCallback(async () => {
     setIsLoading(true)
     try {
       const payload = {
         preferences: {
-          likedPerfumeIds: quizData?.step1_liked ?? [],
-          dislikedPerfumeIds: quizData?.step2_disliked ?? [],
-          allergyProfile: quizData?.step3_allergy ?? {}
+          likedPerfumeIds: step1Liked,
+          dislikedPerfumeIds: step2Disliked,
+          allergyProfile: step3Allergy ?? {}
         }
       }
       const data = await safeFetch<MatchResponse>('/api/match', {
@@ -72,7 +77,7 @@ export function ResultsContent() {
     } finally {
       setIsLoading(false)
     }
-  }, [quizData, t])
+  }, [step1Liked, step2Disliked, step3Allergy, t])
 
   useEffect(() => { fetchResults() }, [fetchResults])
 
@@ -93,57 +98,7 @@ export function ResultsContent() {
   const topScore = scoredPerfumes.length > 0 ? Math.round(scoredPerfumes[0].finalScore) : 0
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-cream-bg dark:!bg-surface pb-20" dir={direction}>
-        {/* Hero skeleton */}
-        <div className="container mx-auto px-6 pt-6">
-          <div className="h-5 w-40 bg-primary/10 dark:bg-surface-elevated rounded-full animate-pulse mb-6" />
-        </div>
-
-        {/* Hero section skeleton */}
-        <section className="pt-16 pb-12 px-6 text-center">
-          <div className="h-6 w-48 bg-primary/10 dark:bg-surface-elevated rounded-full animate-pulse mx-auto mb-6" />
-          <div className="h-10 w-72 bg-primary/10 dark:bg-surface-elevated rounded-2xl animate-pulse mx-auto mb-4" />
-          <div className="h-5 w-96 max-w-full bg-text-secondary/10 dark:bg-surface-elevated rounded-lg animate-pulse mx-auto" />
-        </section>
-
-        {/* Main grid skeleton */}
-        <main className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="bg-white dark:bg-surface rounded-3xl shadow-elevation-1 dark:shadow-black/20 border border-primary/5 dark:border-border-subtle overflow-hidden animate-pulse">
-                <div className="aspect-[4/5] bg-cream-bg dark:bg-background" />
-                <div className="p-6 space-y-3">
-                  <div className="h-3 w-20 bg-primary/20 dark:bg-surface-elevated rounded animate-pulse" />
-                  <div className="h-5 w-3/4 bg-text-primary/10 dark:bg-surface-elevated rounded animate-pulse" />
-                  <div className="h-4 w-full bg-text-secondary/10 dark:bg-surface-elevated rounded animate-pulse" />
-                  <div className="h-4 w-2/3 bg-text-secondary/10 dark:bg-surface-elevated rounded animate-pulse" />
-                  <div className="h-10 w-full bg-primary/10 dark:bg-surface-elevated rounded-xl animate-pulse mt-4" />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Upsell skeleton */}
-          <div className="border-t border-primary/10 dark:border-border-subtle mt-12 pt-8">
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-white dark:bg-surface-elevated rounded-3xl shadow-elevation-1 dark:shadow-black/20 p-8 animate-pulse">
-                <div className="h-12 w-32 bg-primary/10 dark:bg-surface-elevated rounded-full mx-auto mb-6" />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  {Array.from({ length: 2 }).map((_, i) => (
-                    <div key={i} className="space-y-3">
-                      <div className="h-5 w-24 bg-primary/20 dark:bg-surface-elevated rounded animate-pulse" />
-                      <div className="h-4 w-40 bg-text-secondary/10 dark:bg-surface-elevated rounded animate-pulse" />
-                    </div>
-                  ))}
-                </div>
-                <div className="h-12 w-full bg-primary/10 dark:bg-surface-elevated rounded-2xl animate-pulse" />
-              </div>
-            </div>
-          </div>
-        </main>
-      </div>
-    )
+    return <ResultsLoadingScreen direction={direction} />
   }
 
   if (error) {

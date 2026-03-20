@@ -94,7 +94,7 @@ export function PerfumeCard({
     imgSrc.startsWith("http://") || imgSrc.startsWith("https://")
 
   const tasteScore =
-    perfumeData?.tasteScore ?? Math.round(displayScore * 0.7)
+    perfumeData?.tasteScore ?? Math.round(displayScore * 0.8)
   const safetyScore = perfumeData?.safetyScore ?? (isSafe ? 100 : 0)
   const finalScoreValue = finalScore ?? displayScore
 
@@ -180,7 +180,26 @@ export function PerfumeCard({
 
       {/* معلومات */}
       <div className="px-5 pt-4 pb-2 flex-1 flex flex-col">
-        <p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1">{brand}</p>
+        <p className="text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1">
+          {brand}
+          {(perfumeData as any)?.gender && (
+            <span className="text-[10px] text-gray-400 ml-1 rtl:mr-1 rtl:ml-0">
+              {(perfumeData as any).gender === 'Men' ? '👔' :
+               (perfumeData as any).gender === 'Women' ? '👗' : '🌿'}
+            </span>
+          )}
+          {(perfumeData as any)?.popularity &&
+            ['Very high', 'High'].includes((perfumeData as any).popularity) && (
+              <span
+                className="text-[10px] ml-1 rtl:mr-1 rtl:ml-0 px-1.5 py-0.5
+    rounded-full bg-amber-50 dark:bg-amber-900/20
+    text-amber-700 dark:text-amber-300"
+              >
+                {(perfumeData as any).popularity === 'Very high'
+                  ? '🔥 شائع جداً' : '⭐ شائع'}
+              </span>
+            )}
+        </p>
         <h3 className="text-base font-semibold text-gray-900 dark:text-slate-100 line-clamp-2 mb-auto">
           {displayName}
         </h3>

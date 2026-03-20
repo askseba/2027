@@ -33,6 +33,7 @@ interface StorePrice {
   url: string
 }
 
+/* MOCKSTORES — disabled until real multi-store data available
 const MOCKSTORES: StorePrice[] = [
   { id: 'fragrancex', name: 'FragranceX', logo: '/stores/fragrancex.svg', price: 299, available: true, url: 'https://www.fragrancex.com' },
   { id: 'niceone', name: 'Nice One', logo: '/stores/niceone.svg', price: 315, available: true, url: 'https://www.niceonesa.com' },
@@ -47,6 +48,7 @@ const MOCKSTORES: StorePrice[] = [
   { id: 'beautyglam', name: 'Beauty Glam', logo: '/stores/beautyglam.svg', price: 460, available: true, url: 'https://www.beautyglam.sa' },
   { id: 'perfumesa', name: 'Perfume SA', logo: '/stores/perfumesa.svg', price: 485, available: true, url: 'https://www.perfumesa.com' }
 ]
+*/
 
 const FREE_VISIBLE_STORES = 2
 
@@ -149,17 +151,8 @@ function PriceHubContent ({
   t: (key: string, values?: Record<string, string>) => string
   locale: string
 }) {
-  const sortedStores = useMemo(
-    () =>
-      [...MOCKSTORES].sort((a, b) => {
-        if (a.available && !b.available) return -1
-        if (!a.available && b.available) return 1
-        return a.price - b.price
-      }),
-    []
-  )
-  const availablePrices = sortedStores.filter((s) => s.available).map((s) => s.price)
-  const bestPrice = availablePrices.length > 0 ? Math.min(...availablePrices) : 0
+  const sortedStores = useMemo<StorePrice[]>(() => [], [])
+  const bestPrice = (perfume as any)?.price ? Number((perfume as any).price) : 0
   const isPremium = tier === 'PREMIUM'
 
   return (
@@ -205,16 +198,49 @@ function PriceHubContent ({
 
       {/* Store rows */}
       <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3">
-        {sortedStores.slice(0, isPremium ? sortedStores.length : FREE_VISIBLE_STORES).map((store) => (
-          <StoreRow key={store.id} store={store} bestPrice={bestPrice} t={t} />
-        ))}
+        <div className="space-y-4">
+          {(perfume as any)?.price ? (
+            <div
+              className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
+            >
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="font-medium text-sm text-gray-900 dark:text-gray-100">
+                    السعر التقريبي
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    المصدر: Fragella
+                  </p>
+                </div>
+                <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                  ${(perfume as any).price}
+                </p>
+              </div>
+
+              {(perfume as any)?.purchaseUrl && (
+                <a
+                  href={(perfume as any).purchaseUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 block w-full text-center py-2.5 rounded-xl bg-amber-700 text-white font-medium hover:bg-amber-800 dark:bg-amber-600 dark:hover:bg-amber-700 transition shadow-sm"
+                >
+                  🛒 اشتري الآن
+                </a>
+              )}
+            </div>
+          ) : (
+            <div className="p-6 text-center text-gray-500 dark:text-gray-400">
+              <p className="text-sm">لا تتوفر معلومات سعر حالياً</p>
+            </div>
+          )}
+        </div>
 
         {/* FREE: Blurred stores + GatingOverlay (Crown + upgrade CTA) */}
         {!isPremium && sortedStores.length > FREE_VISIBLE_STORES && (
           <div className="relative group">
             {/* Blurred content */}
             <div className="filter blur-[8px] opacity-50 pointer-events-none select-none space-y-3">
-              {MOCKSTORES.slice(FREE_VISIBLE_STORES).map((store, i) => (
+              {sortedStores.slice(FREE_VISIBLE_STORES).map((store, i) => (
                 <div
                   key={`${store.id}-${i}`}
                   className="flex items-center gap-3 p-4 rounded-2xl border border-gray-100 dark:border-border-subtle"
@@ -236,21 +262,13 @@ function PriceHubContent ({
                 <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-primary/10 dark:bg-amber-500/10 flex items-center justify-center">
                   <Crown className="w-6 h-6 text-primary dark:text-amber-500" />
                 </div>
-                <p className="text-sm font-bold text-text-primary dark:text-text-primary mb-1">
-                  {t('moreStoresLocked', {
-                    remaining: String(MOCKSTORES.length - FREE_VISIBLE_STORES)
-                  })}
-                </p>
-                <p className="text-xs text-text-muted dark:text-text-muted mb-4">
-                  {t('alertHint')}
-                </p>
-                <Link
-                  href="/pricing"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-l from-amber-500 to-amber-600 text-white rounded-xl font-bold text-sm shadow-lg hover:shadow-amber-500/30 transition-all hover:scale-[1.05] active:scale-[0.95]"
+                <div
+                  className="p-4 mt-4 text-center rounded-xl bg-gray-50 dark:bg-gray-800/50"
                 >
-                  <Crown className="w-4 h-4" />
-                  {t('subscribeToPrices')}
-                </Link>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    🔔 قريباً: مقارنة أسعار من متاجر متعددة
+                  </p>
+                </div>
               </div>
             </div>
           </div>

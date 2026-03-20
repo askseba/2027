@@ -51,6 +51,7 @@ export async function getPerfume(fragellaId: string): Promise<unknown> {
   }
 
   logger.info(`🔄 CACHE MISS: ${fragellaId}`)
+  const __diagFragellaUrl = `https://api.fragella.com/api/v1/fragrances/${fragellaId}`
   const response = await fetch(`https://api.fragella.com/api/v1/fragrances/${fragellaId}`, {
     headers: { 'x-api-key': apiKey }
   })
