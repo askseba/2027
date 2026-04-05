@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 import { DeleteAccountDialog } from '@/components/profile/delete-account-dialog'
+import { VaultEntryCard } from '@/components/account/VaultEntryCard'
 
 type TierResponse = {
   tier: 'GUEST' | 'FREE' | 'PREMIUM'
@@ -233,6 +234,8 @@ export default function ProfilePage() {
             </div>
           </div>
         </section>
+
+        <VaultEntryCard />
 
         <section className="bg-white rounded-[2rem] p-8 shadow-elevation-1 border border-danger-red/10">
           <h3 className="text-lg font-bold text-danger-red mb-6 flex items-center gap-2">

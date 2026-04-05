@@ -118,7 +118,7 @@ function PricingPageContent() {
   }
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cream-bg via-white to-primary/5 py-16 px-6" dir="rtl">
+    <div className="min-h-screen bg-gradient-to-br from-cream-bg via-white to-primary/5 py-8 md:py-10 px-6" dir="rtl">
       <div className="max-w-6xl mx-auto">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="text-center mb-4">
@@ -137,13 +137,13 @@ function PricingPageContent() {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-4 md:mb-6"
         >
-          <h1 className="text-5xl md:text-6xl font-black text-brown-text mb-4">
+          <h1 className="text-3xl md:text-4xl font-black text-brown-text mb-4">
             اختر خطتك المثالية
           </h1>
-          <p className="text-xl text-brown-text/75 mb-8">
-            ابدأ مجاناً، ثم ارتقِ لتجربة كاملة
+          <p className="text-lg text-brown-text/75 mb-3 md:mb-4">
+            وفّر <span className="text-green-600 dark:text-green-500 font-bold">52.00</span> ريال عند التغيير إلى الاشتراك السنوي الموصى به
           </p>
           
           {/* Billing Toggle */}
@@ -151,7 +151,7 @@ function PricingPageContent() {
             <button
               type="button"
               onClick={() => setBillingCycle('monthly')}
-              className={`flex-1 min-w-[7rem] py-3 px-4 rounded-xl font-bold text-center transition-colors ${
+              className={`flex-1 min-w-[7rem] py-2 px-4 rounded-xl font-bold text-center transition-colors ${
                 billingCycle === 'monthly'
                   ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
                   : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600/50'
@@ -162,37 +162,33 @@ function PricingPageContent() {
             <button
               type="button"
               onClick={() => setBillingCycle('yearly')}
-              className={`flex-1 min-w-[7rem] py-3 px-4 rounded-xl font-bold relative text-center transition-colors ${
+              className={`flex-1 min-w-[7rem] py-2 px-4 rounded-xl font-bold relative text-center transition-colors ${
                 billingCycle === 'yearly'
                   ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
                   : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600/50'
               }`}
             >
               سنوي
-              <span className="absolute -top-2 -right-2 bg-safe-green text-white text-xs px-2 py-0.5 rounded-full font-bold whitespace-nowrap">
-                وفّر 17%
-              </span>
+
             </button>
           </div>
         </motion.div>
         
         {/* Pricing Cards - side-by-side on desktop, stack on mobile */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto w-full items-stretch">
           {/* Free Plan */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="w-full min-w-0 bg-white dark:bg-gray-900 rounded-3xl p-8 shadow-xl border-2 border-gray-200 dark:border-gray-700"
+            className="w-full min-w-0 bg-white dark:bg-gray-900 rounded-3xl px-4 py-5 md:px-5 md:py-6 shadow-xl border-2 border-gray-200 dark:border-gray-700 flex flex-col h-full"
           >
-            <div className="text-center mb-6">
-              <Zap className="w-12 h-12 text-amber-500 mx-auto mb-4" />
+            <div className="text-center mb-4">
               <h3 className="text-2xl font-bold text-brown-text dark:text-gray-100 mb-2">مجاني</h3>
-              <div className="text-4xl font-black text-brown-text dark:text-gray-100 mb-2">0 ريال</div>
-              <p className="text-brown-text/60 dark:text-gray-300">للأبد</p>
+              <div className="text-3xl font-black text-brown-text dark:text-gray-100 mb-2">0 ريال</div>
             </div>
             
-            <ul className="space-y-3 mb-8">
+            <ul className="space-y-2 mb-5 md:mb-6 flex-1">
               <li className="flex items-start gap-2 text-brown-text dark:text-gray-100">
                 <Check className="w-5 h-5 text-safe-green flex-shrink-0 mt-0.5" />
                 <span>اختبار شهري واحد</span>
@@ -229,25 +225,23 @@ function PricingPageContent() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="w-full min-w-0 bg-gradient-to-br from-primary to-[#9d7a54] rounded-3xl p-8 shadow-2xl border-2 border-[#9d7a54] relative"
+            className="w-full min-w-0 bg-gradient-to-br from-primary to-[#9d7a54] rounded-3xl px-4 py-5 md:px-5 md:py-6 shadow-2xl border-2 border-[#9d7a54] relative flex flex-col h-full"
           >
             <div className="absolute -top-4 right-1/2 translate-x-1/2 bg-amber-500 text-white px-4 py-1 rounded-full text-sm font-bold">
               الأكثر شعبية
             </div>
             
-            <div className="text-center mb-6 text-white">
-              <Crown className="w-12 h-12 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold mb-2">مميز شهري</h3>
-              <div className="text-4xl font-black mb-2">
-                {billingCycle === 'monthly' ? '15' : '12.5'}
-                <span className="text-xl mr-1">ريال/شهر</span>
+            <div className="text-center mb-4 text-white">
+              <h3 className={`text-2xl font-bold mb-2 ${billingCycle === 'yearly' ? 'text-amber-400' : ''}`}>
+                {billingCycle === 'monthly' ? 'مميز شهري' : 'برايم'}
+              </h3>
+              <div className="text-3xl font-black mb-2">
+                {billingCycle === 'monthly' ? '16' : '140'}
+                <span className="text-xl mr-1">{billingCycle === 'monthly' ? 'ريال/شهر' : 'ريال/سنة'}</span>
               </div>
-              {billingCycle === 'yearly' && (
-                <p className="text-white/80 text-sm">يُدفع 150 ريال سنوياً</p>
-              )}
             </div>
             
-            <ul className="space-y-3 mb-8 text-white">
+            <ul className="space-y-2 mb-5 md:mb-6 text-white flex-1">
               <li className="flex items-start gap-2">
                 <Check className="w-5 h-5 flex-shrink-0 mt-0.5" />
                 <span className="font-medium">اختبارات غير محدودة</span>
@@ -308,7 +302,7 @@ function PricingPageContent() {
               )}
             </button>
             
-            <p className="text-white/80 text-xs text-center mt-4">
+            <p className="text-white/80 text-xs text-center mt-2">
               إلغاء في أي وقت • ضمان استرجاع خلال 7 أيام
             </p>
           </motion.div>

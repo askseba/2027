@@ -1,85 +1,125 @@
-// prisma/fill-prices.ts
-// Script to fill sample prices for 3 perfumes across 7 stores (21 prices total)
-// Run: npx tsx prisma/fill-prices.ts
+/**
+ * prisma/fill-prices.ts
+ * Phase B — Step 2: Seed Price rows for a small, fixed set of well-known perfumes.
+ *
+ * Rules:
+ *  - Seeds prices for at most 3 perfumes
+ *  - Each perfume gets at most 3 stores
+ *  - ONLY perfumes where fragellaSlug IS NOT NULL (run backfill-slugs.ts first)
+ *  - Uses upsert on (perfumeId, storeId) — safe to re-run without duplicates
+ *  - All stores must be active (Store.isActive = true)
+ *  - listingUrl is a structurally valid placeholder URL (not scraped)
+ *  - price > 0, currency = 'SAR', isAvailable = true
+ *
+ * Run: npx tsx prisma/fill-prices.ts
+ * Prerequisite: prisma/backfill-slugs.ts must have run first.
+ */
 
 import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient({
-  log: ['info', 'warn', 'error']
-})
+const prisma = new PrismaClient()
+
+/**
+ * Perfumes to seed prices for, identified by fragellaSlug.
+ * slugs are produced by the canonical formula in convertSimilarToScoredPerfume.
+ */
+const TARGET_PERFUMES = [
+  {
+    fragellaSlug: 'creed-aventus',
+    stores: [
+      { storeSlug: 'goldenscent', price: 595, listingUrl: 'https://www.goldenscent.com/en/creed-aventus-edp-100ml/p-1001' },
+      { storeSlug: 'niceone',     price: 579, listingUrl: 'https://niceonesa.com/en/creed-aventus-edp-100ml/p-2001' },
+      { storeSlug: 'faces',       price: 620, listingUrl: 'https://www.faces.sa/en/creed-aventus-edp-100ml/p-3001' }
+    ]
+  },
+  {
+    fragellaSlug: 'chanel-bleu-de-chanel',
+    stores: [
+      { storeSlug: 'goldenscent', price: 460, listingUrl: 'https://www.goldenscent.com/en/chanel-bleu-de-chanel-edp-100ml/p-1002' },
+      { storeSlug: 'niceone',     price: 445, listingUrl: 'https://niceonesa.com/en/chanel-bleu-de-chanel-edp-100ml/p-2002' }
+    ]
+  },
+  {
+    fragellaSlug: 'tom-ford-oud-wood',
+    stores: [
+      { storeSlug: 'goldenscent', price: 680, listingUrl: 'https://www.goldenscent.com/en/tom-ford-oud-wood-edp-50ml/p-1003' },
+      { storeSlug: 'faces',       price: 710, listingUrl: 'https://www.faces.sa/en/tom-ford-oud-wood-edp-50ml/p-3003' }
+    ]
+  }
+]
 
 async function main() {
-  console.log('🌱 Starting price fill...')
+  console.log('[fill-prices] Starting price seed...\n')
 
-  // Get first 3 perfumes from database (or use specific IDs)
-  const perfumes = await prisma.perfume.findMany({
-    take: 3,
-    orderBy: { baseScore: 'desc' }
-  })
-
-  if (perfumes.length === 0) {
-    console.error('❌ No perfumes found! Please run seed first: npx prisma db seed')
-    return
-  }
-
-  // Get all active stores
-  const stores = await prisma.store.findMany({
+  // Load all active stores into a slug→record map
+  const activeStores = await prisma.store.findMany({
     where: { isActive: true },
-    orderBy: { id: 'asc' }
+    select: { id: true, slug: true, name: true }
   })
-
-  if (stores.length === 0) {
-    console.error('❌ No active stores found! Please run seed first: npx prisma db seed')
-    return
+  if (activeStores.length === 0) {
+    console.error('[fill-prices] No active stores found. Run: npx prisma db seed')
+    process.exit(1)
   }
+  const storeBySlug = new Map(activeStores.map(s => [s.slug, s]))
+  console.log(`[fill-prices] Active stores available: ${activeStores.map(s => s.slug).join(', ')}`)
 
-  console.log(`📦 Found ${perfumes.length} perfumes and ${stores.length} stores`)
+  let totalUpserted = 0
+  let totalSkipped = 0
 
-  let totalPrices = 0
+  for (const target of TARGET_PERFUMES) {
+    // CRITICAL: only seed if fragellaSlug is non-null in DB
+    const perfume = await prisma.perfume.findFirst({
+      where: { fragellaSlug: target.fragellaSlug },
+      select: { id: true, name: true, brand: true, fragellaSlug: true }
+    })
 
-  // Fill prices for each perfume in each store
-  for (const perfume of perfumes) {
-    console.log(`\n🌸 Processing: ${perfume.name} (${perfume.brand})`)
-    
-    for (const store of stores) {
-      // Generate random price: base price ± 20% variation + store-specific offset
-      const basePrice = perfume.price || 299
-      const storeOffset = (store.id % 3) * 20 // Vary by store
-      const randomVariation = (Math.random() * 0.4 - 0.2) * basePrice // ±20%
-      const finalPrice = Math.round(basePrice + storeOffset + randomVariation)
+    if (!perfume) {
+      console.warn(
+        `[fill-prices] SKIP — no perfume found with fragellaSlug="${target.fragellaSlug}". ` +
+        `Run backfill-slugs.ts first.`
+      )
+      totalSkipped++
+      continue
+    }
+
+    console.log(`\n[fill-prices] Seeding "${perfume.brand} ${perfume.name}" (slug="${perfume.fragellaSlug}")`)
+
+    for (const entry of target.stores) {
+      const store = storeBySlug.get(entry.storeSlug)
+      if (!store) {
+        console.warn(`  SKIP store "${entry.storeSlug}" — not found or inactive`)
+        continue
+      }
 
       await prisma.price.upsert({
-        where: {
-          perfumeId_storeId: {
-            perfumeId: perfume.id,
-            storeId: store.id
-          }
+        where: { perfumeId_storeId: { perfumeId: perfume.id, storeId: store.id } },
+        update: {
+          price: entry.price,
+          currency: 'SAR',
+          listingUrl: entry.listingUrl,
+          isAvailable: true
         },
         create: {
           perfumeId: perfume.id,
           storeId: store.id,
-          price: finalPrice,
-          currency: 'SAR'
-        },
-        update: {
-          price: finalPrice
+          price: entry.price,
+          currency: 'SAR',
+          listingUrl: entry.listingUrl,
+          isAvailable: true
         }
       })
 
-      console.log(`  ✅ ${store.name}: ${finalPrice} SAR`)
-      totalPrices++
+      console.log(`  ✅ ${store.name} @ SAR ${entry.price}`)
+      totalUpserted++
     }
   }
 
-  console.log(`\n🎉 Successfully filled ${totalPrices} prices!`)
-  console.log(`📊 ${perfumes.length} perfumes × ${stores.length} stores = ${totalPrices} prices`)
+  console.log('\n[fill-prices] === Final Stats ===')
+  console.log(`  Price rows upserted:                  ${totalUpserted}`)
+  console.log(`  Perfumes skipped (no fragellaSlug):   ${totalSkipped}`)
+  console.log('[fill-prices] Done.')
 }
 
 main()
-  .catch((e) => {
-    console.error('❌ Error:', e)
-    process.exit(1)
-  })
-  .finally(async () => {
-    await prisma.$disconnect()
-  })
+  .catch((e) => { console.error('[fill-prices] Fatal error:', e); process.exit(1) })
+  .finally(() => prisma.$disconnect())

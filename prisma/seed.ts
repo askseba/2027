@@ -510,7 +510,7 @@ async function seedPerfumesAndStores() {
   console.log('🏪 Seeding stores...')
   
   // Clear existing data
-  await prisma.price.deleteMany()
+  // Price data is managed separately via seed-prices.ts — do NOT delete here
   // Delete old stores or set isActive=false
   await prisma.store.updateMany({
     where: { isActive: true },

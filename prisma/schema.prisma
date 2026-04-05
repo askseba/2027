@@ -70,6 +70,7 @@ model User {
   testHistory      TestHistory[] // Phase 3
   subscriptions    Subscription[] // Phase 3
   checkoutSessions CheckoutSession[] // ✅ P3-#2: Checkout recovery
+  vault            UserVault?
 
   @@index([email])
   @@index([subscriptionTier, monthlyTestCount])
@@ -163,6 +164,7 @@ model Perfume {
   isSafe          Boolean  @default(true)
   status          String   @default("safe")
   variant         String?
+  fragellaSlug    String?  @unique
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
 
@@ -178,6 +180,12 @@ model Store {
   affiliateUrl String
   commission   Float
   isActive     Boolean  @default(true)
+  discountCode   String?
+  discountLabel  String?
+  discountExpiry DateTime?
+  logoUrl        String?
+  priority       Int      @default(0)
+  lastSyncAt     DateTime?
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
@@ -190,9 +198,11 @@ model Price {
   id        Int      @id @default(autoincrement())
   perfumeId String   @map("perfume_id")
   storeId   Int      @map("store_id")
-  price     Float
-  currency  String   @default("SAR")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  price        Float
+  currency     String   @default("SAR")
+  listingUrl   String?
+  isAvailable  Boolean  @default(true)
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
   perfume Perfume @relation(fields: [perfumeId], references: [id], onDelete: Cascade)
   store   Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
@@ -445,4 +455,63 @@ model CheckoutSession {
   @@index([email])
   @@index([userId])
   @@map("checkout_sessions")
+}
+
+// ============================================
+// VAULT FEATURE
+// ============================================
+
+enum VaultPerfumeStatus {
+  ACTIVE
+  PASSIVE
+  EXCLUDED
+}
+
+model UserVault {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activeCount    Int      @default(0)
+  /// null when activeCount < 5
+  diversityScore Int?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  perfumes VaultPerfume[]
+
+  @@index([userId])
+  @@map("user_vaults")
+}
+
+model VaultPerfume {
+  id      String    @id @default(cuid())
+  vaultId String
+  vault   UserVault @relation(fields: [vaultId], references: [id], onDelete: Cascade)
+
+  /// المعرّف في FragellaPerfume.fragellaId، يُستخدم مع getPerfume() و Fragella API
+  fragellaId   String
+  /// المعرّف في Perfume.fragellaSlug، يُستخدم مع /api/store-prices
+  fragellaSlug String
+
+  name     String
+  brand    String
+  imageUrl String?
+
+  /// normalized via normalizeFamily(), e.g. 'woody', 'oriental', 'unknown'
+  family          String
+  familySecondary String?
+
+  /// PostgreSQL native arrays (intentional, not JSON-encoded)
+  notesTop   String[]
+  notesHeart String[]
+  notesBase  String[]
+
+  status    VaultPerfumeStatus @default(ACTIVE)
+  addedAt   DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+
+  @@unique([vaultId, fragellaId])
+  @@index([vaultId])
+  @@index([vaultId, status])
+  @@map("vault_perfumes")
 }

@@ -1,13 +1,21 @@
 // Prisma Client Singleton
 // Prevents multiple instances in development
+// Uses PrismaNeonHttp adapter so connections go via HTTPS (port 443)
+// instead of raw TCP port 5432, which may be blocked in some environments.
 
 import { PrismaClient } from '@prisma/client'
+import { PrismaNeonHttp } from '@prisma/adapter-neon'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient()
+function makePrismaClient() {
+  const adapter = new PrismaNeonHttp(process.env.DATABASE_URL!, {})
+  return new PrismaClient({ adapter } as any)
+}
+
+export const prisma = globalForPrisma.prisma ?? makePrismaClient()
 
 if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prisma

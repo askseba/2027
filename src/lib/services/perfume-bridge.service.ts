@@ -6,6 +6,7 @@
 // Unified interface for both local perfumes.ts and Fragella API
 // Supports dual ID systems: '1', '2', '3' (local) and 'fragella-12345' (Fragella)
 
+import { normalizeFamily } from '@/lib/utils/family'
 import { searchPerfumesWithCache, getPerfume } from '@/lib/services/perfume.service'
 import { getIngredientsForNote } from '@/data/note-to-ingredient-map'
 import { calculateSymptomMatchScore } from '@/lib/services/symptom.service'
@@ -366,8 +367,9 @@ export function convertFragellaToUnified(
       description: fragellaData.description || '',
       
       /**
-       * Reference price for internal filtering only
-       * ⚠️ DO NOT DISPLAY IN UI - Use /api/prices/compare endpoint
+       * Reference price from Fragella API.
+       * Used as fallback in CompareBottomSheet when local store prices are unavailable.
+       * Local store prices are served by /api/store-prices endpoint.
        */
       price,
       originalPrice: fragellaData.original_price || null,
@@ -394,20 +396,6 @@ export function convertFragellaToUnified(
     logger.error('Failed to convert Fragella data:', error)
     return null
   }
-}
-
-function normalizeFamily(f: string): string {
-  const map: Record<string, string> = {
-    'خشبي': 'woody',    'woody': 'woody',    'wood': 'woody',
-    'شرقي': 'oriental', 'oriental': 'oriental', 'amber': 'oriental',
-    'زهري': 'floral',   'floral': 'floral',  'flower': 'floral',
-    'منعش': 'fresh',    'fresh': 'fresh',    'aquatic': 'fresh',
-    'حمضيات': 'citrus', 'citrus': 'citrus',
-    'برتقال': 'citrus', 'ليمون': 'citrus',
-    'توابل': 'spicy',   'spicy': 'spicy',
-    'سويتي': 'sweet',   'sweet': 'sweet',    'gourmand': 'sweet',
-  }
-  return map[f.toLowerCase().trim()] ?? f.toLowerCase().trim()
 }
 
 /**

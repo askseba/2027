@@ -1,0 +1,20 @@
+[
+  {
+    "fragellaSlug": "versace-dylan-blue",
+    "brand": "Versace",
+    "name": "Dylan Blue",
+    "image": "/placeholder-perfume.svg"
+  },
+  {
+    "fragellaSlug": "ysl-libre",
+    "brand": "YSL",
+    "name": "Libre",
+    "image": "/placeholder-perfume.svg"
+  },
+  {
+    "fragellaSlug": "giorgio-armani-acqua-di-gio",
+    "brand": "Giorgio Armani",
+    "name": "Acqua di Gio",
+    "image": "/placeholder-perfume.svg"
+  }
+]

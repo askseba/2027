@@ -1,3 +1,4 @@
+import { normalizeFamily } from '@/lib/utils/family'
 import { NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import type { PerfumeForMatching, ScoredPerfume } from '@/lib/matching'
@@ -109,6 +110,7 @@ function mapNotesToScentPyramid(notes: SimilarResult['Notes']): any[] | undefine
   ]
 }
 
+// TODO: Update return type from `any` after purchaseUrl type migration is fully verified
 function convertSimilarToScoredPerfume(
   item: SimilarResult, similarityScore: number, sourceLikedPerfume: string
 ): any {
@@ -504,20 +506,6 @@ export async function POST(request: Request) {
     let userScentDNA: Set<string> = new Set()
     const poolQuery = (body.seedSearchQuery ?? '').trim()
 
-    const normalizeFamilyRoute = (f: string): string => {
-      const map: Record<string, string> = {
-        'خشبي': 'woody',    'woody': 'woody',    'wood': 'woody',
-        'شرقي': 'oriental', 'oriental': 'oriental', 'amber': 'oriental',
-        'زهري': 'floral',   'floral': 'floral',  'flower': 'floral',
-        'منعش': 'fresh',    'fresh': 'fresh',    'aquatic': 'fresh',
-        'حمضيات': 'citrus', 'citrus': 'citrus',
-        'برتقال': 'citrus', 'ليمون': 'citrus',
-        'توابل': 'spicy',   'spicy': 'spicy',
-        'سويتي': 'sweet',   'sweet': 'sweet',    'gourmand': 'sweet',
-      }
-      return map[f.toLowerCase().trim()] ?? f.toLowerCase().trim()
-    }
-
     if (apiKey) {
       try {
         // 1. General search first
@@ -540,7 +528,7 @@ export async function POST(request: Request) {
           if (found) {
             if (found.families?.length) {
               const newFams = (found.families as string[])
-                .map(normalizeFamilyRoute)
+                .map(normalizeFamily)
                 .filter((f: string) => !likedPerfumesFamilies.includes(f))
               likedPerfumesFamilies.push(...newFams)
             }
@@ -614,7 +602,7 @@ export async function POST(request: Request) {
           const found = basePerfumes.find((p: any) => p.id === id)
           if (found?.families?.length) {
             const newFams = (found.families as string[])
-              .map(normalizeFamilyRoute)
+              .map(normalizeFamily)
               .filter((f: string) => !likedPerfumesFamilies.includes(f))
             likedPerfumesFamilies.push(...newFams)
           }
@@ -634,7 +622,7 @@ export async function POST(request: Request) {
 
           if (match?.families?.length) {
             const newFams = (match.families as string[])
-              .map(normalizeFamilyRoute)
+              .map(normalizeFamily)
               .filter((f: string) => !likedPerfumesFamilies.includes(f))
 
             likedPerfumesFamilies.push(...newFams)
@@ -642,7 +630,7 @@ export async function POST(request: Request) {
         }
 
         // Final normalization + dedup before DNA building
-        const dedupedFamilies = [...new Set(likedPerfumesFamilies.map(normalizeFamilyRoute))]
+        const dedupedFamilies = [...new Set(likedPerfumesFamilies.map(normalizeFamily))]
         userScentDNA = buildUserScentDNA(dedupedFamilies)
         console.log('[DNA-FIX]', {
           rawCount: likedPerfumesFamilies.length,
@@ -653,7 +641,7 @@ export async function POST(request: Request) {
 
         basePerfumes = basePerfumes.map((p: any) => ({
           ...p,
-          families: (p.families ?? []).map(normalizeFamilyRoute)
+          families: (p.families ?? []).map(normalizeFamily)
         }))
 
         // ── Add directly-fetched liked perfumes to pool ──

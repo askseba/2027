@@ -158,14 +158,14 @@ export function ResultsContent() {
               <div className="flex items-center gap-3 flex-wrap justify-center mb-8 px-4">
                 {excellent > 0 && (
                   <span className="text-sm font-bold text-safe-green dark:text-green-400">
-                    {excellent} {t('heroExcellent')}
+                    {locale === 'ar' ? `${excellent} عطور ممتازة` : `${excellent} ${t('heroExcellent')}`}
                   </span>
                 )}
                 {good > 0 && (
                   <>
                     <span className="text-text-muted dark:text-text-muted">·</span>
                     <span className="text-sm font-bold text-primary dark:text-amber-500">
-                      {good} {t('heroGood')}
+                      {locale === 'ar' ? `${good} عطور جيدة` : `${good} ${t('heroGood')}`}
                     </span>
                   </>
                 )}
@@ -173,7 +173,7 @@ export function ResultsContent() {
                   <>
                     <span className="text-text-muted dark:text-text-muted">·</span>
                     <span className="text-sm font-medium text-amber-500 dark:text-amber-400">
-                      {fair} {t('heroFair')}
+                      {locale === 'ar' ? `${fair} عطور مقبولة` : `${fair} ${t('heroFair')}`}
                     </span>
                   </>
                 )}
@@ -189,7 +189,7 @@ export function ResultsContent() {
             return (
               <div className="text-xs text-text-muted dark:text-text-muted mt-2 mb-4">
                 {isFragellaMode 
-                  ? '🟢 Fragella + IFRA (5K+ عطور)' 
+                  ? '🟢 Fragella + IFRA'
                   : '🟡 Demo Mode (19 عطر)'
                 }
               </div>

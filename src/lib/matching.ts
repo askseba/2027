@@ -24,6 +24,7 @@ export interface PerfumeForMatching {
     heart: string[]
     base: string[]
   } | null
+  purchaseUrl?: string | null
 }
 
 export interface UserPreferenceForMatching {

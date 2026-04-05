@@ -6,6 +6,7 @@ import { X } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { cn } from "@/lib/classnames"
 import type { ScoredPerfume } from "@/lib/matching"
+import { translateNote } from '@/lib/utils/family'
 
 interface IngredientsSheetProps {
   perfume: ScoredPerfume
@@ -181,14 +182,17 @@ export function IngredientsSheet({ perfume, onClose, locale = "ar" }: Ingredient
                             {(notes || []).map((note: string, i: number) => (
                               <span
                                 key={i}
-                                className="text-xs px-2.5 py-1 rounded-full border border-transparent"
-                                style={{
-                                  backgroundColor: bg,
-                                  borderColor: border,
-                                  color: color ?? undefined
-                                }}
+                                className={cn(
+                                  "text-xs px-2.5 py-1 rounded-full border transition-all",
+                                  stage === "top" &&
+                                    "bg-amber-50/80 border-amber-200 text-amber-800 dark:bg-amber-900/20 dark:border-amber-500/30 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-800/50",
+                                  stage === "heart" &&
+                                    "bg-rose-50/80 border-rose-200 text-rose-800 dark:bg-rose-900/20 dark:border-rose-500/30 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-800/50",
+                                  stage === "base" &&
+                                    "bg-gold/20 border-gold/30 text-gold-dark dark:bg-gold-dark/20 dark:border-gold-light/30 dark:text-gold-light hover:bg-gold/30 dark:hover:bg-gold-dark/50"
+                                )}
                               >
-                                {t(`notes.${note}`, { defaultValue: note })}
+                                {t.has(`notes.${note}`) ? t(`notes.${note}`) : translateNote(note)}
                               </span>
                             ))}
                           </div>
@@ -205,14 +209,14 @@ export function IngredientsSheet({ perfume, onClose, locale = "ar" }: Ingredient
                     <span
                       className="text-xs px-2 py-1 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300"
                     >
-                      ⏱️ {longevityKey ? t(`longevity.${longevityKey}`) : (perfume as any).longevity}
+                      ⏱️ {longevityKey && t.has(`longevity.${longevityKey}`) ? t(`longevity.${longevityKey}`) : (perfume as any).longevity}
                     </span>
                   )}
                   {(perfume as any).sillage && (
                     <span
                       className="text-xs px-2 py-1 rounded-full bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300"
                     >
-                      💨 {sillageKey ? t(`sillage.${sillageKey}`) : (perfume as any).sillage}
+                      💨 {sillageKey && t.has(`sillage.${sillageKey}`) ? t(`sillage.${sillageKey}`) : (perfume as any).sillage}
                     </span>
                   )}
                 </div>
@@ -259,7 +263,7 @@ export function IngredientsSheet({ perfume, onClose, locale = "ar" }: Ingredient
                           key={i}
                           className="text-xs bg-primary/10 dark:bg-amber-500/10 text-primary dark:text-amber-500 px-2.5 py-1 rounded-full font-medium"
                         >
-                          {t(`families.${fam}`, { defaultValue: fam })}
+                          {t.has(`families.${fam}`) ? t(`families.${fam}`) : fam}
                         </span>
                       ))
                     })()}

@@ -40,7 +40,8 @@ self.addEventListener('fetch', (event) => {
     caches.match(req).then(cached => 
       cached || fetch(req).then(resp => {
         if (resp.ok && resp.type === 'basic') {
-          caches.open(CACHE_NAME).then(cache => cache.put(req, resp.clone()));
+          const respToCache = resp.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(req, respToCache));
         }
         return resp;
       }).catch(() => {

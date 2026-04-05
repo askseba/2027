@@ -95,7 +95,7 @@ export async function sendPaymentSuccessEmail(
     
     <div class="footer">
       <p>هذه رسالة آلية من Ask Seba</p>
-      <p>إذا كانت لديك أي استفسارات، تواصل معنا على support@askseba.com</p>
+      <p>إذا كانت لديك أي استفسارات، تواصل معنا على info@askseba.com</p>
     </div>
   </div>
 </body>
@@ -134,7 +134,7 @@ export async function sendPaymentFailedEmail(
     retryUrl?: string
   }
 ) {
-  const { userName, reason, supportEmail = 'support@askseba.com', retryUrl } = details
+  const { userName, reason, supportEmail = 'info@askseba.com', retryUrl } = details
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://askseba.com'
   const finalRetryUrl = retryUrl || `${appUrl}/pricing`
   
@@ -401,7 +401,7 @@ export async function sendRecoveryEmail(
     
     <div class="footer">
       <p>هذه رسالة آلية من Ask Seba</p>
-      <p>إذا كانت لديك أي استفسارات، تواصل معنا على support@askseba.com</p>
+      <p>إذا كانت لديك أي استفسارات، تواصل معنا على info@askseba.com</p>
     </div>
   </div>
 </body>

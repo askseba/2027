@@ -53,7 +53,7 @@ export function Footer() {
         {/* Icons row – dark:fill-amber-300 */}
         <div className="flex items-center justify-center gap-4 mb-6">
           <a
-            href="mailto:support@askseba.com"
+            href="mailto:info@askseba.com"
             className="!flex !items-center !justify-center !min-h-[44px] !min-w-[44px] !transition-colors !text-[rgb(var(--color-accent-primary))] hover:!text-[rgb(var(--color-accent-primary))] [&_svg]:dark:!fill-amber-200 touch-manipulation"
             aria-label={t('social.emailAriaLabel')}
           >

@@ -8,6 +8,7 @@ import { RadarGauge } from "@/components/ui/RadarGauge"
 import { getMatchStatus } from "@/lib/matching"
 import { cn } from "@/lib/classnames"
 import type { ScoredPerfume } from "@/lib/matching"
+import { translateFamily } from '@/lib/utils/family'
 
 interface MatchSheetProps {
   perfume: ScoredPerfume
@@ -17,6 +18,7 @@ interface MatchSheetProps {
 
 export function MatchSheet({ perfume, onClose, locale = "ar" }: MatchSheetProps) {
   const t = useTranslations("results.match")
+  const tIngredients = useTranslations("results.ingredients")
   const [imageError, setImageError] = useState(false)
   const isRtl = locale === "ar"
 
@@ -181,7 +183,7 @@ export function MatchSheet({ perfume, onClose, locale = "ar" }: MatchSheetProps)
                       key={i}
                       className="text-xs bg-primary/10 dark:bg-amber-500/10 text-primary dark:text-amber-500 px-2.5 py-1 rounded-full font-medium"
                     >
-                      {family}
+                      {tIngredients.has(`families.${family}`) ? tIngredients(`families.${family}`) : family}
                     </span>
                   ))}
                 </div>
@@ -201,10 +203,10 @@ export function MatchSheet({ perfume, onClose, locale = "ar" }: MatchSheetProps)
                     return (
                       <>
                         {dominant.length > 0 && (
-                          <p>✅ الطابع الرئيسي: {dominant.join('، ')}</p>
+                          <p>✅ الطابع الرئيسي: {dominant.map(f => translateFamily(f)).join('، ')}</p>
                         )}
                         {prominent.length > 0 && (
-                          <p>✅ يتميز أيضاً بـ: {prominent.join('، ')}</p>
+                          <p>✅ يتميز أيضاً بـ: {prominent.map(f => translateFamily(f)).join('، ')}</p>
                         )}
                       </>
                     )

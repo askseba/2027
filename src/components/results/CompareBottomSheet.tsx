@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { Link } from '@/i18n/routing'
@@ -10,6 +10,17 @@ import { Button } from '@/components/ui/button'
 import { PriceAlertButton } from '@/components/ui/PriceAlertButton'
 import { cn } from '@/lib/classnames'
 import type { ScoredPerfume } from '@/lib/matching'
+
+/** Typed subset of ScoredPerfume fields used by PriceHubContent */
+interface PriceHubPerfume {
+  id: string
+  name: string
+  brand: string
+  image: string
+  fragellaId?: string
+  price?: number | null
+  purchaseUrl?: string | null
+}
 
 export type CompareMode = 'compare' | 'price-hub'
 
@@ -29,8 +40,12 @@ interface StorePrice {
   name: string
   logo: string
   price: number
+  currency: string
   available: boolean
   url: string
+  discountCode: string | null
+  discountLabel: string | null
+  discountExpiry: string | null
 }
 
 /* MOCKSTORES — disabled until real multi-store data available
@@ -51,6 +66,15 @@ const MOCKSTORES: StorePrice[] = [
 */
 
 const FREE_VISIBLE_STORES = 2
+
+// Convenience search links shown in fallback states.
+// Domains are drawn directly from the project's trusted store list (verified in DB).
+// Search path follows the standard /en/search?q= convention for each platform.
+const FALLBACK_STORES = [
+  { name: 'Golden Scent', searchBase: 'https://www.goldenscent.com/en/search?q=' },
+  { name: 'FACES',        searchBase: 'https://www.faces.sa/en/search?q=' },
+  { name: 'Nice One',     searchBase: 'https://www.niceonesa.com/ar/search?q=' },
+] as const
 
 function StoreLogo ({ name, logo }: { name: string; logo: string }) {
   const [imgError, setImgError] = useState(false)
@@ -81,11 +105,13 @@ function StoreLogo ({ name, logo }: { name: string; logo: string }) {
 function StoreRow ({
   store,
   bestPrice,
-  t
+  t,
+  locale
 }: {
   store: StorePrice
   bestPrice: number
   t: (key: string, values?: Record<string, string>) => string
+  locale: string
 }) {
   return (
     <div
@@ -100,6 +126,34 @@ function StoreRow ({
       <StoreLogo name={store.name} logo={store.logo} />
       <div className="flex-1 min-w-0 text-start">
         <p className="text-sm font-bold text-text-primary dark:text-text-primary">{store.name}</p>
+        {store.discountCode && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              void navigator.clipboard.writeText(store.discountCode!)
+            }}
+            className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-1.5 py-0.5 rounded-full mt-0.5 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition"
+            title={t('copyCode')}
+          >
+            🏷️ {store.discountCode}
+            {store.discountLabel && (
+              <span className="text-amber-600/70 dark:text-amber-500/70">— {store.discountLabel}</span>
+            )}
+          </button>
+        )}
+        {store.discountCode && store.discountExpiry && (() => {
+          const expiry = new Date(store.discountExpiry)
+          const daysLeft = Math.ceil((expiry.getTime() - Date.now()) / 86_400_000)
+          if (daysLeft < 0) return null
+          return (
+            <p className="text-[10px] mt-0.5 text-gray-500 dark:text-gray-400">
+              {daysLeft <= 7
+                ? t('expiresSoon')
+                : `${t('expiresOn')} ${expiry.toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')}`}
+            </p>
+          )
+        })()}
         <p className={cn('text-xs', store.available ? 'text-safe-green' : 'text-red-400')}>
           {store.available ? t('available') : t('outOfStock')}
         </p>
@@ -111,7 +165,7 @@ function StoreRow ({
           </span>
         )}
         <span className="text-lg font-black text-gray-900 dark:text-slate-100 whitespace-nowrap">
-          {t('currency')} {store.price}
+          {store.currency} {store.price}
         </span>
       </div>
       <a
@@ -138,6 +192,51 @@ function StoreRow ({
   )
 }
 
+function PriceFallbackBlock ({
+  status,
+  perfumeName,
+  perfumeBrand,
+  t,
+}: {
+  status: 'not_indexed' | 'no_prices'
+  perfumeName: string
+  perfumeBrand: string
+  t: (key: string) => string
+}) {
+  const searchQuery = encodeURIComponent(`${perfumeBrand} ${perfumeName}`)
+  return (
+    <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 space-y-3">
+      <div>
+        <p className="text-sm font-bold text-text-primary dark:text-text-primary">
+          {status === 'not_indexed' ? t('notIndexedTitle') : t('noPricesTitle')}
+        </p>
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          {status === 'not_indexed' ? t('notIndexedBody') : t('noPricesBody')}
+        </p>
+      </div>
+      <div>
+        <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+          {t('searchDirectly')}
+        </p>
+        <div className="space-y-2">
+          {FALLBACK_STORES.map((store) => (
+            <a
+              key={store.name}
+              href={`${store.searchBase}${searchQuery}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between w-full p-3 rounded-lg border border-gray-100 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 text-sm font-medium text-amber-700 dark:text-amber-400 hover:border-amber-200 dark:hover:border-amber-700 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition"
+            >
+              <span>{store.name}</span>
+              <ChevronLeft className="w-4 h-4 opacity-60" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function PriceHubContent ({
   perfume,
   tier,
@@ -151,9 +250,90 @@ function PriceHubContent ({
   t: (key: string, values?: Record<string, string>) => string
   locale: string
 }) {
-  const sortedStores = useMemo<StorePrice[]>(() => [], [])
-  const bestPrice = (perfume as any)?.price ? Number((perfume as any).price) : 0
+  const [isLoadingPrices, setIsLoadingPrices] = useState(false)
+  const [fetchedStores, setFetchedStores] = useState<StorePrice[]>([])
+  const [pricesStatus, setPricesStatus] = useState<'not_indexed' | 'no_prices' | 'available' | null>(null)
+
+  // sortedStores feeds BOTH rendering AND gating/blur logic
+  const sortedStores = useMemo<StorePrice[]>(
+    () => [...fetchedStores].sort((a, b) => a.price - b.price),
+    [fetchedStores]
+  )
+
+  const hubPerfume = perfume as PriceHubPerfume
+  const fragellaId = hubPerfume.fragellaId
+
+  useEffect(() => {
+    if (!fragellaId) {
+      setFetchedStores([])
+      setPricesStatus(null)
+      setIsLoadingPrices(false)
+      return
+    }
+
+    setIsLoadingPrices(true)
+    setFetchedStores([])
+    setPricesStatus(null)
+
+    type StorePricesApiStore = {
+      name: string
+      slug: string
+      price: number
+      currency: string
+      url: string
+      discountCode: string | null
+      discountLabel: string | null
+      discountExpiry: string | null
+      logoUrl: string | null
+    }
+
+    type StorePricesApiResponse = {
+      stores?: StorePricesApiStore[]
+      meta?: {
+        fragellaSlug: string
+        count: number
+        lastUpdated: string | null
+        status: 'not_indexed' | 'no_prices' | 'available'
+      }
+    }
+
+    fetch(`/api/store-prices?fragellaSlug=${encodeURIComponent(fragellaId)}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: StorePricesApiResponse | null) => {
+        const status = data?.meta?.status ?? null
+        setPricesStatus(status)
+        if (status === 'available' && data?.stores?.length) {
+          setFetchedStores(
+            data.stores.map((s) => ({
+              id: s.slug,
+              name: s.name,
+              logo: s.logoUrl || '',
+              price: s.price,
+              currency: s.currency || 'SAR',
+              available: true,
+              url: s.url,
+              discountCode: s.discountCode ?? null,
+              discountLabel: s.discountLabel ?? null,
+              discountExpiry: s.discountExpiry ?? null,
+            }))
+          )
+        } else {
+          setFetchedStores([])
+        }
+      })
+      .catch((err) => {
+        console.warn('[PriceHub] Failed to fetch store prices:', err)
+        setFetchedStores([])
+      })
+      .finally(() => setIsLoadingPrices(false))
+  }, [fragellaId])
+
+  const fragellaPrice = hubPerfume.price ? Number(hubPerfume.price) : 0
+  const localBestPrice = sortedStores.length > 0 ? sortedStores[0].price : null
+  const bestPrice = localBestPrice ?? fragellaPrice
   const isPremium = tier === 'PREMIUM'
+
+  const localBestForRows = sortedStores.length > 0 ? sortedStores[0].price : 0
 
   return (
     <div className="flex flex-col h-full min-h-0">
@@ -199,40 +379,89 @@ function PriceHubContent ({
       {/* Store rows */}
       <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3">
         <div className="space-y-4">
-          {(perfume as any)?.price ? (
-            <div
-              className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
-            >
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="font-medium text-sm text-gray-900 dark:text-gray-100">
-                    السعر التقريبي
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    المصدر: Fragella
-                  </p>
-                </div>
-                <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                  ${(perfume as any).price}
-                </p>
-              </div>
-
-              {(perfume as any)?.purchaseUrl && (
-                <a
-                  href={(perfume as any).purchaseUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 block w-full text-center py-2.5 rounded-xl bg-amber-700 text-white font-medium hover:bg-amber-800 dark:bg-amber-600 dark:hover:bg-amber-700 transition shadow-sm"
-                >
-                  🛒 اشتري الآن
-                </a>
-              )}
-            </div>
-          ) : (
-            <div className="p-6 text-center text-gray-500 dark:text-gray-400">
-              <p className="text-sm">لا تتوفر معلومات سعر حالياً</p>
+          {isLoadingPrices && (
+            <div className="space-y-3 animate-pulse">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="h-20 rounded-2xl bg-gray-100 dark:bg-slate-800" />
+              ))}
             </div>
           )}
+
+          {!isLoadingPrices && sortedStores.length > 0 && (
+            <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                {t('localStores')}
+              </p>
+              <div className="space-y-3">
+                {sortedStores
+                  .slice(0, isPremium ? sortedStores.length : FREE_VISIBLE_STORES)
+                  .map((store) => (
+                    <StoreRow
+                      key={store.id}
+                      store={store}
+                      bestPrice={localBestForRows}
+                      t={t}
+                      locale={locale}
+                    />
+                  ))}
+              </div>
+            </div>
+          )}
+
+          {!isLoadingPrices && sortedStores.length > 0 && (
+            <p className="text-[10px] text-gray-400 dark:text-gray-500 text-center mt-2">
+              {t('pricesDisclaimer')}
+            </p>
+          )}
+
+          {!isLoadingPrices && (pricesStatus === 'not_indexed' || pricesStatus === 'no_prices') && (
+            <PriceFallbackBlock
+              status={pricesStatus}
+              perfumeName={hubPerfume.name}
+              perfumeBrand={hubPerfume.brand}
+              t={t}
+            />
+          )}
+
+          <div className="mt-4">
+            <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+              {t('referencePrice')}
+            </p>
+            {hubPerfume.price ? (
+              <div
+                className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
+              >
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="font-medium text-sm text-gray-900 dark:text-gray-100">
+                      السعر التقريبي
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      المصدر: Fragella
+                    </p>
+                  </div>
+                  <p className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                    ${hubPerfume.price}
+                  </p>
+                </div>
+
+                {hubPerfume.purchaseUrl && (
+                  <a
+                    href={hubPerfume.purchaseUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 block w-full text-center py-2.5 rounded-xl bg-amber-700 text-white font-medium hover:bg-amber-800 dark:bg-amber-600 dark:hover:bg-amber-700 transition shadow-sm"
+                  >
+                    🛒 اشتري الآن
+                  </a>
+                )}
+              </div>
+            ) : (
+              <div className="p-6 text-center text-gray-500 dark:text-gray-400">
+                <p className="text-sm">لا تتوفر معلومات سعر حالياً</p>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* FREE: Blurred stores + GatingOverlay (Crown + upgrade CTA) */}

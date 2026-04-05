@@ -439,7 +439,7 @@
           {
             "id": "q2-favorite-not-found",
             "question": "What if I can't find my favorite fragrance?",
-            "answer": "Several possibilities: 1️⃣ The fragrance exists but with lower compatibility: It may be outside the main results due to compatibility below 80%. 2️⃣ The fragrance isn't in the database: It may be very local or exclusive—email us at support@askseba.com and we'll add it! 3️⃣ Your preferences have changed: Maybe what you loved before isn't right for you now—try the new recommendations, you might discover something better!"
+            "answer": "Several possibilities: 1️⃣ The fragrance exists but with lower compatibility: It may be outside the main results due to compatibility below 80%. 2️⃣ The fragrance isn't in the database: It may be very local or exclusive—email us at info@askseba.com and we'll add it! 3️⃣ Your preferences have changed: Maybe what you loved before isn't right for you now—try the new recommendations, you might discover something better!"
           },
           {
             "id": "q3-selling",
@@ -454,12 +454,12 @@
           {
             "id": "q1-contact",
             "question": "How do I contact support?",
-            "answer": "Several easy ways: 📧 For general inquiries: Email: support@askseba.com, ⏱️ We typically respond within 24 hours, 💬 Support form: On the Profile page → Contact us. 🐛 Have a technical issue? Do the following: 1. Take a screenshot of the problem, 2. Explain the issue in detail (what were you doing? what happened? what device and browser?), 3. Email us at support@askseba.com with subject: Technical issue."
+            "answer": "Several easy ways: 📧 For general inquiries: Email: info@askseba.com, ⏱️ We typically respond within 24 hours, 💬 Support form: On the Profile page → Contact us. 🐛 Have a technical issue? Do the following: 1. Take a screenshot of the problem, 2. Explain the issue in detail (what were you doing? what happened? what device and browser?), 3. Email us at info@askseba.com with subject: Technical issue."
           },
           {
             "id": "q2-suggestions",
             "question": "Have a suggestion to improve the app?",
-            "answer": "We love new ideas! 🚀 Share your suggestion via: 📧 Email: support@askseba.com, 📝 Email subject: Improvement suggestion, 💬 Suggestions page in the app. What we're looking for: New features you'd like to see, Interface improvements, Fragrances or brands you'd like added, Anything that makes your experience better! 🎯 We promise: Careful review of every suggestion, Response within 48 hours, Implementing the most requested ideas."
+            "answer": "We love new ideas! 🚀 Share your suggestion via: 📧 Email: info@askseba.com, 📝 Email subject: Improvement suggestion, 💬 Suggestions page in the app. What we're looking for: New features you'd like to see, Interface improvements, Fragrances or brands you'd like added, Anything that makes your experience better! 🎯 We promise: Careful review of every suggestion, Response within 48 hours, Implementing the most requested ideas."
           }
         ]
       }
@@ -640,7 +640,7 @@
           "Immediate deletion: Delete your account entirely from dashboard → Delete account (data is permanently removed within 30 days)",
           "Objection: Stop use of your data for statistics",
           "Portability: Transfer your data in a readable format",
-          "Contact: support@askseba.com with subject: Privacy request"
+          "Contact: info@askseba.com with subject: Privacy request"
         ]
       },
       {
@@ -669,14 +669,14 @@
         "title": "7. Contact Us",
         "content": [
           "Questions about your privacy?",
-          "📧 support@askseba.com",
+          "📧 info@askseba.com",
           "⏱️ We typically respond within 24-48 hours",
           "We don't retain support correspondence for more than 90 days"
         ]
       }
     ],
     "contact": {
-      "email": "support@askseba.com",
+      "email": "info@askseba.com",
       "response_time": "24-48 hours"
     },
     "compliance": {
@@ -755,7 +755,18 @@
       "priceAlertSetting": "Setting...",
       "priceAlertSuccess": "Price alert set for {perfumeName}",
       "priceAlertError": "Failed to set price alert",
-      "priceAlertSubscribe": "Subscribe for price alerts (1 free)"
+      "priceAlertSubscribe": "Subscribe for price alerts (1 free)",
+      "localStores": "Available Stores",
+      "referencePrice": "Reference Price",
+      "copyCode": "Copy discount code",
+      "expiresSoon": "Expires soon",
+      "expiresOn": "Expires",
+      "pricesDisclaimer": "Prices are approximate and may change -  Updated weekly",
+      "notIndexedTitle": "Not in our price database",
+      "notIndexedBody": "This perfume is not yet indexed in our local price database.",
+      "noPricesTitle": "No local prices available",
+      "noPricesBody": "No local prices are currently available for this perfume.",
+      "searchDirectly": "Search directly in these stores:"
     },
     "errorMessage": "Failed to load results. Please try again.",
     "retry": "Retry",
@@ -812,6 +823,50 @@
       "hiddenPerfume": "Hidden perfume",
       "locked": "🔒 Blurred",
       "subscribeCta": "Subscribe to see result"
+    },
+    "ingredients": {
+      "pyramid": {
+        "title": "Scent Pyramid",
+        "top": "Top Notes",
+        "heart": "Heart Notes",
+        "base": "Base Notes"
+      },
+      "longevity": {
+        "veryWeak": "Very Weak",
+        "weak": "Weak",
+        "moderate": "Moderate",
+        "longLasting": "Long Lasting",
+        "veryLongLasting": "Very Long Lasting",
+        "eternal": "Eternal"
+      },
+      "sillage": {
+        "intimate": "Intimate",
+        "moderate": "Moderate",
+        "strong": "Strong",
+        "enormous": "Enormous"
+      },
+      "notes": {},
+      "families": {},
+      "ingredientsTitle": "Ingredients",
+      "familiesTitle": "Fragrance Families",
+      "safetyTitle": "Safety Assessment",
+      "safeLabel": "Safe for use",
+      "warningLabel": "Use with caution",
+      "ifraScore": "IFRA Score",
+      "warningsTitle": "Warnings",
+      "triggersTitle": "Triggers"
+    },
+    "match": {
+      "tasteLabel": "Taste Match",
+      "safetyLabel": "Safety Rating",
+      "overallLabel": "Overall Score",
+      "perfumeFamilies": "Fragrance Families in this perfume",
+      "statusDesc": {
+        "excellent": "Excellent match for your taste and completely safe",
+        "good": "Great perfume that suits your preferences with high compatibility",
+        "fair": "Acceptable — shares some of your preferred families",
+        "poor": "Low match — may not suit your taste"
+      }
     }
   },
   "dashboard": {
@@ -847,5 +902,37 @@
     "tip2": "Refresh the page (F5 or Cmd+R)",
     "tip3": "Clear your browser cache",
     "tip4": "Try a different browser"
+  },
+  "vault": {
+    "title": "My Vault",
+    "description": "Understand your collection and what's missing",
+    "premiumBadge": "Premium",
+    "states": {
+      "locked": "Premium feature",
+      "empty": "Start adding your perfumes",
+      "addToUnlock": "Add {remaining} to unlock the map",
+      "mapReady": "Map ready",
+      "diversityScore": "Diversity {score}/10"
+    },
+    "counts": {
+      "one": "1 perfume",
+      "two": "2 perfumes",
+      "few": "{count} perfumes",
+      "many": "{count} perfumes",
+      "other": "{count} perfumes"
+    },
+    "actions": {
+      "addPerfume": "Add perfume",
+      "viewAll": "View all",
+      "upgrade": "Subscribe now"
+    },
+    "errors": {
+      "unauthorized": "Please sign in",
+      "premiumRequired": "Premium subscription required",
+      "validationError": "Invalid data",
+      "duplicate": "Perfume already in vault",
+      "notFound": "Perfume not found",
+      "serverError": "An error occurred, please try again"
+    }
   }
 }
