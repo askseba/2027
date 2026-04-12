@@ -1,17 +1,15 @@
 "use client"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
-import { motion } from 'framer-motion'
 import {
   Heart,
   History,
   Settings,
   Sparkles,
   Zap,
-  ChevronLeft,
-  Star,
-  Clock
+  Clock,
+  Loader2,
 } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useSession } from 'next-auth/react'
@@ -23,28 +21,179 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 
 const RadarChart = dynamic(
   () => import('@/components/ui/RadarChart').then(mod => ({ default: mod.RadarChart })),
-  { ssr: false, loading: () => <div className="aspect-square bg-cream-bg animate-pulse rounded-3xl" /> }
+  { ssr: false, loading: () => <div className="aspect-square bg-cream-bg dark:bg-surface-muted animate-pulse rounded-3xl" /> }
 )
 
-const LATEST_RECOMMENDATIONS = [
-  { category: 'Perfume', brand: 'Dior', name: 'Sauvage Elixir', match: 95 },
-  { category: 'Perfume', brand: 'Dior', name: 'Sauvage Elixir', match: 95 }
-] as const
+// ─── Types ─────────────────────────────────────────────────────
+
+type TierData = {
+  tier: 'GUEST' | 'FREE' | 'PREMIUM'
+  hasActiveSubscription: boolean
+}
+
+type TestRecord = {
+  id: string
+  createdAt: string
+  totalMatches: number
+  topMatchId: string | null
+  topMatchScore: number | null
+}
+
+type CatalogPerfume = { id: string; name: string; brand: string; image: string }
+
+type FavoriteItem = {
+  id: string
+  name: string
+  brand: string
+  image: string
+  resolved: boolean
+}
+
+type RadarPoint = { name: string; score: number; color: string }
+
+// ─── Family → chart color ───────────────────────────────────────
+
+const FAMILY_COLORS: Record<string, string> = {
+  woody:    'var(--color-warning-amber)',
+  oriental: 'var(--color-accent-purple)',
+  fresh:    'var(--color-safe-green)',
+  floral:   'var(--color-accent-pink)',
+  citrus:   'var(--color-google-blue)',
+  aquatic:  'var(--color-primary)',
+  spicy:    'var(--color-danger-red)',
+  amber:    'var(--color-accent-pink)',
+}
+const FALLBACK_COLORS = [
+  'var(--color-safe-green)',
+  'var(--color-warning-amber)',
+  'var(--color-danger-red)',
+  'var(--color-google-blue)',
+  'var(--color-accent-purple)',
+  'var(--color-accent-pink)',
+]
+
+// ─── Page ───────────────────────────────────────────────────────
 
 export default function DashboardPage() {
-  const locale = useLocale()
+  const locale    = useLocale()
   const direction = locale === 'ar' ? 'rtl' : 'ltr'
-  const t = useTranslations('dashboard')
+  const t         = useTranslations('dashboard')
   const { data: session, status } = useSession()
-  const router = useRouter()
+  const router    = useRouter()
   const [activeTab, setActiveTab] = useState('overview')
 
-  if (status === 'loading') return <div className="min-h-screen flex items-center justify-center bg-cream-bg dark:!bg-surface"><LoadingSpinner size="lg" /></div>
-  if (status === 'unauthenticated') { router.push('/login'); return null; }
+  const [tierData,      setTierData]      = useState<TierData | null>(null)
+  const [testHistory,   setTestHistory]   = useState<TestRecord[] | null>(null)
+  const [favorites,     setFavorites]     = useState<FavoriteItem[] | null>(null)
+  const [radarData,     setRadarData]     = useState<RadarPoint[] | null>(null)
+
+  const [loadingTier,      setLoadingTier]      = useState(true)
+  const [loadingHistory,   setLoadingHistory]   = useState(true)
+  const [loadingFavorites, setLoadingFavorites] = useState(true)
+  const [loadingRadar,     setLoadingRadar]     = useState(false)
+
+  useEffect(() => {
+    if (status !== 'authenticated') return
+
+    // Tier — لا نفترض FREE عند فشل الشبكة (لا شارة بدل بيانات كاذبة)
+    fetch('/api/user/tier')
+      .then(r => (r.ok ? r.json() : null))
+      .then(d => {
+        if (d && (d.tier === 'GUEST' || d.tier === 'FREE' || d.tier === 'PREMIUM')) {
+          setTierData({
+            tier: d.tier,
+            hasActiveSubscription: Boolean(d.hasActiveSubscription),
+          })
+        } else {
+          setTierData(null)
+        }
+      })
+      .catch(() => setTierData(null))
+      .finally(() => setLoadingTier(false))
+
+    // Test history
+    fetch('/api/user/test-history')
+      .then(r => (r.ok ? r.json() : null))
+      .then(d => setTestHistory(Array.isArray(d?.data) ? d.data : []))
+      .catch(() => setTestHistory([]))
+      .finally(() => setLoadingHistory(false))
+
+    // Favorites + local catalog for name resolution
+    Promise.all([
+      fetch('/api/user/favorites').then(r => (r.ok ? r.json() : null)),
+      fetch('/api/perfumes').then(r => (r.ok ? r.json() : null)),
+    ])
+      .then(([favRes, perfumesRes]) => {
+        const ids: string[]             = Array.isArray(favRes?.data) ? favRes.data : []
+        const catalog: CatalogPerfume[] = Array.isArray(perfumesRes) ? perfumesRes : []
+        const map = new Map(catalog.map(p => [p.id, p]))
+        const items: FavoriteItem[] = ids.map(id => {
+          const p = map.get(id)
+          return p
+            ? { id, name: p.name, brand: p.brand, image: p.image, resolved: true }
+            : { id, name: '', brand: '', image: '', resolved: false }
+        })
+        setFavorites(items)
+      })
+      .catch(() => setFavorites([]))
+      .finally(() => setLoadingFavorites(false))
+  }, [status, locale])
+
+  // Vault analytics → RadarChart: فقط للمشترك PREMIUM (الـ API يرفض غير ذلك)
+  useEffect(() => {
+    if (status !== 'authenticated') return
+    if (loadingTier) return
+    if (tierData?.tier !== 'PREMIUM') {
+      setRadarData(null)
+      setLoadingRadar(false)
+      return
+    }
+
+    let cancelled = false
+    setLoadingRadar(true)
+    fetch('/api/vault/analytics')
+      .then(r => (r.ok ? r.json() : null))
+      .then(d => {
+        if (cancelled) return
+        const dist = d?.map?.familyDistribution
+        if (!dist || !Array.isArray(dist) || dist.length === 0) {
+          setRadarData(null)
+          return
+        }
+        const points: RadarPoint[] = dist.map(
+          (item: { family: string; familyAr: string; percentage: number }, i: number) => ({
+            name: item.familyAr,
+            score: item.percentage,
+            color: FAMILY_COLORS[item.family] ?? FALLBACK_COLORS[i % FALLBACK_COLORS.length],
+          })
+        )
+        setRadarData(points)
+      })
+      .catch(() => {
+        if (!cancelled) setRadarData(null)
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingRadar(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [status, loadingTier, tierData?.tier])
+
+  if (status === 'loading') return (
+    <div className="min-h-screen flex items-center justify-center bg-cream-bg dark:!bg-surface">
+      <LoadingSpinner size="lg" />
+    </div>
+  )
+  if (status === 'unauthenticated') { router.push('/login'); return null }
+
+  const showPremiumBadge = tierData?.tier === 'PREMIUM'
 
   return (
     <ErrorBoundary>
       <div className="min-h-screen bg-cream-bg dark:!bg-surface pb-20" dir={direction}>
+
+        {/* ── Header ── */}
         <header className="bg-white dark:bg-surface border-b border-primary/5 dark:border-border-subtle pt-12 pb-8 px-6">
           <div className="max-w-6xl mx-auto flex flex-col gap-4">
             <BackButton variant="link" className="mb-6" />
@@ -59,14 +208,14 @@ export default function DashboardPage() {
                   />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-black text-text-primary mb-1">أهلاً، {session?.user?.name?.split(' ')[0]} ✨</h1>
-                  <div className="flex items-center gap-2">
-                    <span className="bg-primary/10 text-primary text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest">عضو بريميوم</span>
-                    <span className="text-text-secondary text-xs flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      عضو منذ يناير 2024
+                  <h1 className="text-3xl font-black text-text-primary dark:text-text-primary mb-1">
+                    أهلاً، {session?.user?.name?.split(' ')[0]} ✨
+                  </h1>
+                  {!loadingTier && showPremiumBadge && (
+                    <span className="bg-primary/10 dark:bg-amber-500/20 text-primary dark:text-amber-500 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest">
+                      بريميوم
                     </span>
-                  </div>
+                  )}
                 </div>
               </div>
               <div className="flex gap-3">
@@ -74,7 +223,7 @@ export default function DashboardPage() {
                   <Settings className="w-4 h-4 ml-2" />
                   الإعدادات
                 </Button>
-                <Button size="sm" className="rounded-xl shadow-button" onClick={() => router.push('/results')}>
+                <Button size="sm" className="rounded-xl shadow-button" onClick={() => router.push('/quiz/step1-favorites')}>
                   <Sparkles className="w-4 h-4 ml-2" />
                   تحليل جديد
                 </Button>
@@ -83,38 +232,64 @@ export default function DashboardPage() {
           </div>
         </header>
 
+        {/* ── Main ── */}
         <main className="max-w-6xl mx-auto px-6 mt-10">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            {/* ── Left column ── */}
             <div className="lg:col-span-1 space-y-8">
-              <RadarChart className="shadow-elevation-2" />
-              <div className="bg-white rounded-3xl p-6 shadow-elevation-1 border border-primary/5">
-                <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-primary" />
-                  إحصائيات سريعة
+
+              {/* RadarChart — بيانات map.familyDistribution فقط؛ لا عرض أثناء التحميل أو بدون بيانات */}
+              {loadingRadar ? (
+                <div className="aspect-square bg-cream-bg dark:bg-surface-muted animate-pulse rounded-3xl border border-primary/5 dark:border-border-subtle" />
+              ) : null}
+              {!loadingRadar && radarData && radarData.length > 0 && (
+                <RadarChart data={radarData} className="shadow-elevation-2" />
+              )}
+
+              {/* Quick stats — only real data */}
+              <div className="bg-white dark:bg-surface rounded-3xl p-6 shadow-elevation-1 border border-primary/5 dark:border-border-subtle">
+                <h3 className="font-bold text-text-primary dark:text-text-primary mb-4 flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-primary dark:text-amber-500" />
+                  إحصائيات
                 </h3>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center p-3 bg-cream-bg rounded-2xl">
-                    <span className="text-sm text-text-secondary">عطور تم تحليلها</span>
-                    <span className="font-black text-text-primary">124</span>
+                {loadingHistory ? (
+                  <div className="flex justify-center py-4">
+                    <Loader2 className="w-5 h-5 animate-spin text-text-secondary dark:text-text-muted" />
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-cream-bg rounded-2xl">
-                    <span className="text-sm text-text-secondary">نسبة الدقة</span>
-                    <span className="font-black text-safe-green">98.2%</span>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center p-3 bg-cream-bg dark:bg-surface-muted rounded-2xl">
+                      <span className="text-sm text-text-secondary dark:text-text-muted">عدد الاختبارات</span>
+                      <span className="font-black text-text-primary dark:text-text-primary">
+                        {testHistory?.length ?? 0}
+                      </span>
+                    </div>
+                    {testHistory && testHistory.length > 0 && (
+                      <div className="flex justify-between items-center p-3 bg-cream-bg dark:bg-surface-muted rounded-2xl">
+                        <span className="text-sm text-text-secondary dark:text-text-muted flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          آخر اختبار
+                        </span>
+                        <span className="font-black text-text-primary dark:text-text-primary text-sm">
+                          {new Date(testHistory[0].createdAt).toLocaleDateString('ar-SA')}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-cream-bg rounded-2xl">
-                    <span className="text-sm text-text-secondary">توفير محتمل</span>
-                    <span className="font-black text-primary">450 ر.س</span>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
 
+            {/* ── Right column ── */}
             <div className="lg:col-span-2 space-y-8">
-              <div className="flex bg-white p-1.5 rounded-2xl shadow-sm border border-primary/5">
+
+              {/* Tab bar */}
+              <div className="flex bg-white dark:bg-surface p-1.5 rounded-2xl shadow-sm border border-primary/5 dark:border-border-subtle">
                 {[
-                  { id: 'overview', label: 'نظرة عامة', icon: Sparkles },
-                  { id: 'favorites', label: 'المفضلة', icon: Heart },
-                  { id: 'history', label: 'السجل', icon: History }
+                  { id: 'overview',  label: 'نظرة عامة', icon: Sparkles },
+                  { id: 'favorites', label: 'المفضلة',   icon: Heart    },
+                  { id: 'history',   label: 'السجل',     icon: History  },
                 ].map((tab) => (
                   <button
                     key={tab.id}
@@ -122,7 +297,7 @@ export default function DashboardPage() {
                     className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm transition-all ${
                       activeTab === tab.id
                         ? 'bg-primary text-white shadow-button'
-                        : 'text-text-secondary hover:bg-cream-bg'
+                        : 'text-text-secondary dark:text-text-muted hover:bg-cream-bg dark:hover:bg-surface-muted'
                     }`}
                   >
                     <tab.icon className="w-4 h-4" />
@@ -131,72 +306,161 @@ export default function DashboardPage() {
                 ))}
               </div>
 
+              {/* Tab content */}
               <div className="min-h-[400px]">
+
+                {/* ── Overview ── */}
                 {activeTab === 'overview' && (
-                  <div className="space-y-8">
-                    <section>
-                      <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-xl font-bold text-text-primary">أحدث التوصيات لك</h2>
-                        <Button variant="ghost" size="sm" className="text-primary font-bold">عرض الكل</Button>
-                      </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {LATEST_RECOMMENDATIONS.map((p, i) => (
-                          <div key={i} className="bg-white p-4 rounded-3xl border border-primary/5 flex items-center gap-4 hover:shadow-elevation-2 transition-all cursor-pointer group">
-                            <div className="relative w-20 h-20 bg-cream-bg rounded-2xl overflow-hidden">
-                              <Image src="/placeholder-perfume.svg" alt={p.name} fill className="object-contain p-2 group-hover:scale-110 transition-transform" />
-                            </div>
-                            <div className="flex-1">
-                              <p className="text-[10px] font-bold text-primary uppercase">{p.category}</p>
-                              <p className="text-[10px] font-bold text-primary uppercase">{p.brand}</p>
-                              <h4 className="font-bold text-text-primary">{p.name}</h4>
-                              <div className="flex items-center gap-1 mt-1">
-                                <Star className="w-3 h-3 text-warning-amber fill-current" />
-                                <span className="text-xs font-bold text-text-secondary">{t('matchFormat', { pct: p.match })}</span>
-                              </div>
-                            </div>
-                            <ChevronLeft className="w-5 h-5 text-text-secondary group-hover:text-primary transition-colors" />
-                          </div>
-                        ))}
-                      </div>
-                    </section>
-                    <section className="bg-gradient-to-br from-primary to-primary-light rounded-[2.5rem] p-8 text-white relative overflow-hidden shadow-elevation-3">
-                      <div className="relative z-10">
-                        <h3 className="text-2xl font-black mb-2">اكتشف عطر توقيعك القادم</h3>
-                        <p className="opacity-90 mb-6 text-sm max-w-md">لقد قمنا بتحديث خوارزمية التحليل الخاصة بك بناءً على آخر 5 عطور أعجبتك.</p>
-                        <Button variant="secondary" className="bg-white text-primary hover:bg-white/90 font-black px-8">ابدأ التحليل العميق</Button>
-                      </div>
-                      <Sparkles className="absolute top-1/2 right-8 -translate-y-1/2 w-32 h-32 opacity-10 rotate-12" />
-                    </section>
-                  </div>
-                )}
-
-                {activeTab === 'favorites' && (
-                  <div className="text-center py-20 bg-white rounded-[2.5rem] border border-dashed border-primary/20">
-                    <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Heart className="w-8 h-8 text-primary" />
+                  loadingHistory ? (
+                    <div className="flex justify-center py-20">
+                      <Loader2 className="w-6 h-6 animate-spin text-text-secondary dark:text-text-muted" />
                     </div>
-                    <h3 className="text-xl font-bold text-text-primary mb-2">قائمة مفضلاتك فارغة</h3>
-                    <p className="text-text-secondary text-sm mb-8">ابدأ باستكشاف العطور وأضف ما يعجبك هنا</p>
-                    <Button onClick={() => router.push('/results')}>استكشف العطور الآن</Button>
-                  </div>
+                  ) : testHistory && testHistory.length > 0 ? (
+                    <div className="bg-white dark:bg-surface rounded-[2.5rem] p-6 border border-primary/5 dark:border-border-subtle">
+                      <h2 className="text-lg font-bold text-text-primary dark:text-text-primary mb-4">
+                        آخر اختبار
+                      </h2>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center p-3 bg-cream-bg dark:bg-surface-muted rounded-2xl">
+                          <span className="text-sm text-text-secondary dark:text-text-muted">التاريخ</span>
+                          <span className="font-bold text-text-primary dark:text-text-primary text-sm">
+                            {new Date(testHistory[0].createdAt).toLocaleDateString('ar-SA')}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-cream-bg dark:bg-surface-muted rounded-2xl">
+                          <span className="text-sm text-text-secondary dark:text-text-muted">عدد النتائج</span>
+                          <span className="font-bold text-text-primary dark:text-text-primary text-sm">
+                            {testHistory[0].totalMatches}
+                          </span>
+                        </div>
+                        {testHistory[0].topMatchScore !== null && (
+                          <div className="flex justify-between items-center p-3 bg-cream-bg dark:bg-surface-muted rounded-2xl">
+                            <span className="text-sm text-text-secondary dark:text-text-muted">أعلى تطابق</span>
+                            <span className="font-bold text-primary dark:text-amber-500 text-sm">
+                              {t('matchFormat', { pct: Math.round(testHistory[0].topMatchScore) })}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <Button className="w-full mt-4 rounded-xl" onClick={() => router.push('/quiz/step1-favorites')}>
+                        <Sparkles className="w-4 h-4 ml-2" />
+                        ابدأ تحليلاً جديداً
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="text-center py-20 bg-white dark:bg-surface rounded-[2.5rem] border border-dashed border-primary/20 dark:border-border-subtle">
+                      <div className="bg-primary/10 dark:bg-amber-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Sparkles className="w-8 h-8 text-primary dark:text-amber-500" />
+                      </div>
+                      <h3 className="text-xl font-bold text-text-primary dark:text-text-primary mb-2">لا توجد نتائج بعد</h3>
+                      <p className="text-text-secondary dark:text-text-muted text-sm mb-8">أكمل اختباراً ليُحفظ سجلّك ونتائجك هنا</p>
+                      <Button onClick={() => router.push('/quiz/step1-favorites')}>ابدأ الاختبار</Button>
+                    </div>
+                  )
                 )}
 
-                {activeTab === 'history' && (
-                  <div className="space-y-4">
-                    {[1, 2, 3].map((i) => (
-                      <div key={i} className="bg-white p-4 rounded-2xl border border-primary/5 flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <div className="bg-cream-bg p-3 rounded-xl"><History className="w-5 h-5 text-text-secondary" /></div>
-                          <div>
-                            <p className="font-bold text-text-primary text-sm">تحليل ذوق متكامل</p>
-                            <p className="text-[10px] text-text-secondary">24 يناير 2024 • 12:30 م</p>
+                {/* ── Favorites ── */}
+                {activeTab === 'favorites' && (
+                  loadingFavorites ? (
+                    <div className="flex justify-center py-20">
+                      <Loader2 className="w-6 h-6 animate-spin text-text-secondary dark:text-text-muted" />
+                    </div>
+                  ) : favorites && favorites.length > 0 ? (
+                    <div className="grid grid-cols-1 gap-3">
+                      {favorites.map((item) => (
+                        <div key={item.id} className="flex items-center gap-4 p-4 bg-white dark:bg-surface rounded-2xl border border-primary/5 dark:border-border-subtle shadow-elevation-1">
+                          <div className="relative w-16 h-16 flex-shrink-0 bg-cream-bg dark:bg-surface-muted rounded-xl overflow-hidden flex items-center justify-center">
+                            {item.resolved && item.image ? (
+                              <Image
+                                src={item.image}
+                                alt={item.name}
+                                fill
+                                className="object-cover"
+                                onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder-perfume.svg' }}
+                              />
+                            ) : item.resolved ? (
+                              <Image
+                                src="/placeholder-perfume.svg"
+                                alt={item.name}
+                                fill
+                                className="object-cover"
+                              />
+                            ) : (
+                              <Heart className="w-6 h-6 text-text-secondary dark:text-text-muted" aria-hidden />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            {item.resolved ? (
+                              <>
+                                <p className="font-bold text-text-primary dark:text-text-primary truncate">{item.name}</p>
+                                {item.brand ? (
+                                  <p className="text-sm text-text-secondary dark:text-text-muted truncate">{item.brand}</p>
+                                ) : null}
+                              </>
+                            ) : (
+                              <>
+                                <p className="font-mono text-sm text-text-primary dark:text-text-primary break-all">
+                                  {item.id}
+                                </p>
+                                <p className="text-xs text-text-secondary dark:text-text-muted mt-0.5">
+                                  {locale === 'ar' ? 'غير متوفر في الكتالوج المحلي' : 'Not in local catalog'}
+                                </p>
+                              </>
+                            )}
                           </div>
                         </div>
-                        <Button variant="ghost" size="sm" className="text-xs font-bold">عرض النتائج</Button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-20 bg-white dark:bg-surface rounded-[2.5rem] border border-dashed border-primary/20 dark:border-border-subtle">
+                      <div className="bg-primary/10 dark:bg-amber-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Heart className="w-8 h-8 text-primary dark:text-amber-500" />
                       </div>
-                    ))}
-                  </div>
+                      <h3 className="text-xl font-bold text-text-primary dark:text-text-primary mb-2">قائمة مفضلاتك فارغة</h3>
+                      <p className="text-text-secondary dark:text-text-muted text-sm mb-8">ابدأ باستكشاف العطور وأضف ما يعجبك هنا</p>
+                      <Button onClick={() => router.push('/quiz/step1-favorites')}>استكشف العطور الآن</Button>
+                    </div>
+                  )
                 )}
+
+                {/* ── History ── */}
+                {activeTab === 'history' && (
+                  loadingHistory ? (
+                    <div className="flex justify-center py-20">
+                      <Loader2 className="w-6 h-6 animate-spin text-text-secondary dark:text-text-muted" />
+                    </div>
+                  ) : testHistory && testHistory.length > 0 ? (
+                    <div className="space-y-4">
+                      {testHistory.map((record) => (
+                        <div key={record.id} className="bg-white dark:bg-surface p-4 rounded-2xl border border-primary/5 dark:border-border-subtle flex items-center gap-4">
+                          <div className="bg-cream-bg dark:bg-surface-muted p-3 rounded-xl flex-shrink-0">
+                            <History className="w-5 h-5 text-text-secondary dark:text-text-muted" />
+                          </div>
+                          <div>
+                            <p className="font-bold text-text-primary dark:text-text-primary text-sm">
+                              {record.totalMatches} نتيجة
+                            </p>
+                            <p className="text-[10px] text-text-secondary dark:text-text-muted">
+                              {new Date(record.createdAt).toLocaleDateString('ar-SA')}
+                              {record.topMatchScore !== null &&
+                                ` • ${t('matchFormat', { pct: Math.round(record.topMatchScore) })}`}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-20 bg-white dark:bg-surface rounded-[2.5rem] border border-dashed border-primary/20 dark:border-border-subtle">
+                      <div className="bg-primary/10 dark:bg-amber-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <History className="w-8 h-8 text-primary dark:text-amber-500" />
+                      </div>
+                      <h3 className="text-xl font-bold text-text-primary dark:text-text-primary mb-2">لا يوجد سجل بعد</h3>
+                      <p className="text-text-secondary dark:text-text-muted text-sm mb-8">أجرِ اختباراً لتظهر نتائجه هنا</p>
+                      <Button onClick={() => router.push('/quiz/step1-favorites')}>ابدأ الاختبار</Button>
+                    </div>
+                  )
+                )}
+
               </div>
             </div>
           </div>

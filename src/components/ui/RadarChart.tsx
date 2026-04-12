@@ -16,22 +16,13 @@ interface RadarChartProps {
   title?: string
 }
 
-const DEFAULT_SAMPLE_DATA: RadarPoint[] = [
-  { name: "فلورال", score: 85, color: "var(--color-safe-green)" },
-  { name: "خشبي", score: 75, color: "var(--color-warning-amber)" },
-  { name: "حمضيات", score: 30, color: "var(--color-danger-red)" },
-  { name: "شرقي", score: 45, color: "var(--color-google-blue)" },
-  { name: "منعش", score: 60, color: "var(--color-accent-purple)" },
-  { name: "توابل", score: 70, color: "var(--color-accent-pink)" },
-]
-
 export function RadarChart({ data, size = 400, className = "", title = "بصمة ذوقك العطرية" }: RadarChartProps) {
   const points = useMemo(() => {
-    const dataset = data || DEFAULT_SAMPLE_DATA
+    if (!data || data.length === 0) return []
     const radius = size * 0.35
     const center = size / 2
-    return dataset.map((item, i) => {
-      const angle = (i / dataset.length) * 2 * Math.PI - Math.PI / 2
+    return data.map((item, i) => {
+      const angle = (i / data.length) * 2 * Math.PI - Math.PI / 2
       return {
         ...item,
         x: center + (item.score / 100) * radius * Math.cos(angle),
@@ -42,6 +33,8 @@ export function RadarChart({ data, size = 400, className = "", title = "بصمة
       }
     })
   }, [data, size])
+
+  if (!data || data.length === 0) return null
 
   const radius = size * 0.35
   const polygonPath = points.map(p => `${p.x},${p.y}`).join(" ")
@@ -60,7 +53,6 @@ export function RadarChart({ data, size = 400, className = "", title = "بصمة
 
       <div className="w-full aspect-square flex items-center justify-center">
         <svg width="100%" height="100%" viewBox={`0 0 ${size} ${size}`} className="overflow-visible">
-          {/* Grid - 5 levels */}
           {[0.2, 0.4, 0.6, 0.8, 1].map((level, idx) => (
             <circle
               key={`grid-${idx}`}
@@ -73,8 +65,6 @@ export function RadarChart({ data, size = 400, className = "", title = "بصمة
               strokeWidth="1"
             />
           ))}
-
-          {/* Axes */}
           {points.map((point, i) => (
             <line
               key={`axis-${i}`}
@@ -87,8 +77,6 @@ export function RadarChart({ data, size = 400, className = "", title = "بصمة
               strokeWidth="1"
             />
           ))}
-
-          {/* Main Polygon */}
           <motion.polygon
             points={polygonPath}
             fill="rgba(192, 132, 26, 0.15)"
@@ -100,51 +88,18 @@ export function RadarChart({ data, size = 400, className = "", title = "بصمة
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease: "easeOut" }}
           />
-
-          {/* Labels and Points */}
           {points.map((point, i) => (
             <g key={`point-${i}`}>
-              <circle
-                cx={point.x}
-                cy={point.y}
-                r="5"
-                fill="var(--color-primary)"
-                className="shadow-sm"
-              />
-              <text
-                x={point.labelX}
-                y={point.labelY}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fill="var(--color-text-primary)"
-                className="text-[14px] font-bold"
-              >
+              <circle cx={point.x} cy={point.y} r="5" fill="var(--color-primary)" className="shadow-sm" />
+              <text x={point.labelX} y={point.labelY} textAnchor="middle" dominantBaseline="middle" fill="var(--color-text-primary)" className="text-[14px] font-bold">
                 {point.name}
               </text>
-              <text
-                x={point.labelX}
-                y={point.labelY + 18}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fill={point.color}
-                className="text-[12px] font-black"
-              >
+              <text x={point.labelX} y={point.labelY + 18} textAnchor="middle" dominantBaseline="middle" fill={point.color} className="text-[12px] font-black">
                 {point.score}%
               </text>
             </g>
           ))}
         </svg>
-      </div>
-
-      <div className="mt-8 grid grid-cols-2 gap-4">
-        <div className="bg-cream-bg dark:bg-surface-muted p-4 rounded-2xl border border-primary/5 dark:border-border-subtle">
-          <p className="text-[10px] font-bold text-text-secondary dark:text-text-muted uppercase mb-1">العائلة المهيمنة</p>
-          <p className="text-lg font-black text-text-primary dark:text-text-primary">فلورال (85%)</p>
-        </div>
-        <div className="bg-cream-bg dark:bg-surface-muted p-4 rounded-2xl border border-primary/5 dark:border-border-subtle">
-          <p className="text-[10px] font-bold text-text-secondary dark:text-text-muted uppercase mb-1">توصية صبا</p>
-          <p className="text-lg font-black text-safe-green dark:text-green-400">تطابق مثالي</p>
-        </div>
       </div>
     </div>
   )
