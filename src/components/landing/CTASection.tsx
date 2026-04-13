@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { useTheme } from 'next-themes';
+import { useTheme } from '@/components/ThemeContext';
 
 export function CTASection() {
   const router = useRouter();

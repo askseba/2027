@@ -1,7 +1,7 @@
 "use client"
 import React, { useRef, useEffect } from 'react'
 import { X } from 'lucide-react'
-import { useTheme } from 'next-themes'
+import { useTheme } from '@/components/ThemeContext'
 import { CTAButton } from './CTAButton'
 import { type ResultsFilters } from '@/hooks/useResultsFilters'
 import { useFocusTrap } from '@/hooks/useFocusTrap'

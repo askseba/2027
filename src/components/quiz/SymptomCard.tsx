@@ -1,6 +1,6 @@
 "use client"
 import { motion } from 'framer-motion'
-import { useTheme } from 'next-themes'
+import { useTheme } from '@/components/ThemeContext'
 import { Symptom } from '@/lib/data/symptoms'
 import { getThemedColor } from '@/lib/utils/color-helpers'
 

@@ -1,7 +1,7 @@
 // src/components/DarkModeToggle.tsx
 "use client";
 
-import { useTheme } from "next-themes";
+import { useTheme } from "@/components/ThemeContext";
 import { useEffect, useState } from "react";
 
 const DarkModeToggle = () => {

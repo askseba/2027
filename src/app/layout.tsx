@@ -13,7 +13,7 @@ import { QuizProvider } from "@/contexts/QuizContext";
 import { ConditionalLayout } from "@/components/ConditionalLayout";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { NetworkStatusToast } from "@/components/NetworkStatusToast";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "@/components/ThemeContext";
 import { PostHogProviderWrapper } from "@/components/PostHogProviderWrapper";
 import { SentryLazyExtras } from "@/components/SentryLazyExtras";
 import { StructuredData } from "@/components/SEO/StructuredData";
@@ -155,6 +155,8 @@ export default async function RootLayout({
   return (
     <html lang={lang} dir={direction} suppressHydrationWarning>
       <head>
+        {/* No-flash theme script: runs before React hydration */}
+        <script dangerouslySetInnerHTML={{__html:`(function(){try{var t=localStorage.getItem('theme')||'system';var dark=t==='dark'||(t==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',dark)}catch(e){}})()`}} />
         <StructuredData />
         {/* Google Analytics */}
         {GA_ID && (
@@ -193,7 +195,7 @@ export default async function RootLayout({
         )}
       </head>
       <body className={`${notoSansArabic.variable} ${manrope.variable} ${cormorantGaramond.variable} ${notoSansArabic.className} antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="system" storageKey="theme" enableSystem>
+        <ThemeProvider>
           <PostHogProviderWrapper>
           <ErrorBoundary>
             <SessionProvider>
