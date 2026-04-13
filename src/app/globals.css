@@ -5,6 +5,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --_text-secondary: 107 114 128;
+  --_text-muted: 148 163 184;
 
   /* Landing / manus – Champagne Gold & Muted Bronze */
   --cream: #FAF8F5;
@@ -34,8 +36,8 @@
   --color-background: 255 255 255;
   --color-border-subtle: 228 228 231;
   --color-text-primary: 17 24 39;
-  --color-text-secondary: 107 114 128;
-  --color-text-muted: 148 163 184;
+  --color-text-secondary: var(--_text-secondary);
+  --color-text-muted: var(--_text-muted);
   --color-accent-primary: 218 168 79; /* gold */
   /* Brand gold for CTA gradient – required for from-gold / to-gold-dark (Tailwind v4) */
   --color-gold: #B39D7D;
@@ -55,8 +57,8 @@
   --color-background: 5 5 5;
   --color-border-subtle: 51 65 85;
   --color-text-primary: 241 245 249;
-  --color-text-secondary: 203 213 225;
-  --color-text-muted: 148 163 184;
+  --_text-secondary: 203 213 225;
+  --_text-muted: 148 163 184;
   --color-accent-primary: 251 191 36;
   --accent-warm: 251 191 36;
   --color-card-border: 51 65 85;
