@@ -40,7 +40,7 @@ export function RadarChart({ data, size = 400, className = "", title = "بصمة
   const polygonPath = points.map(p => `${p.x},${p.y}`).join(" ")
 
   return (
-    <div className={`relative bg-white dark:bg-surface rounded-3xl p-8 shadow-elevation-2 border border-primary/5 dark:border-border-subtle ${className}`} dir="rtl">
+    <div className={`relative bg-white dark:bg-zinc-900 rounded-3xl p-8 shadow-elevation-2 border border-primary/5 dark:border-border-subtle ${className}`} dir="rtl">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h3 className="text-xl font-bold text-text-primary dark:text-text-primary">{title}</h3>

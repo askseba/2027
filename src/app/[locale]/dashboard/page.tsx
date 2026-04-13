@@ -21,7 +21,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 
 const RadarChart = dynamic(
   () => import('@/components/ui/RadarChart').then(mod => ({ default: mod.RadarChart })),
-  { ssr: false, loading: () => <div className="aspect-square bg-cream-bg dark:!bg-surface-muted animate-pulse rounded-3xl" /> }
+  { ssr: false, loading: () => <div className="aspect-square bg-cream-bg dark:bg-zinc-900 animate-pulse rounded-3xl" /> }
 )
 
 // ─── Types ─────────────────────────────────────────────────────
@@ -194,7 +194,7 @@ export default function DashboardPage() {
       <div className="min-h-screen bg-cream-bg dark:!bg-surface pb-20" dir={direction}>
 
         {/* ── Header ── */}
-        <header className="bg-white dark:!bg-surface border-b border-primary/5 dark:border-border-subtle pt-12 pb-8 px-6">
+        <header className="bg-white dark:bg-zinc-900 border-b border-primary/5 dark:border-border-subtle pt-12 pb-8 px-6">
           <div className="max-w-6xl mx-auto flex flex-col gap-4">
             <BackButton variant="link" className="mb-6" />
             <div className="flex flex-col md:flex-row justify-between items-center gap-6">
@@ -241,14 +241,14 @@ export default function DashboardPage() {
 
               {/* RadarChart — بيانات map.familyDistribution فقط؛ لا عرض أثناء التحميل أو بدون بيانات */}
               {loadingRadar ? (
-                <div className="aspect-square bg-cream-bg dark:!bg-surface-muted animate-pulse rounded-3xl border border-primary/5 dark:border-border-subtle" />
+                <div className="aspect-square bg-cream-bg dark:bg-zinc-900 animate-pulse rounded-3xl border border-primary/5 dark:border-border-subtle" />
               ) : null}
               {!loadingRadar && radarData && radarData.length > 0 && (
                 <RadarChart data={radarData} className="shadow-elevation-2" />
               )}
 
               {/* Quick stats — only real data */}
-              <div className="bg-white dark:!bg-surface rounded-3xl p-6 shadow-elevation-1 border border-primary/5 dark:border-border-subtle">
+              <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 shadow-elevation-1 border border-primary/5 dark:border-border-subtle">
                 <h3 className="font-bold text-text-primary dark:text-text-primary mb-4 flex items-center gap-2">
                   <Zap className="w-5 h-5 text-primary dark:text-amber-500" />
                   إحصائيات
@@ -259,14 +259,14 @@ export default function DashboardPage() {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center p-3 bg-cream-bg dark:!bg-surface-muted rounded-2xl">
+                    <div className="flex justify-between items-center p-3 bg-cream-bg dark:bg-zinc-900 rounded-2xl">
                       <span className="text-sm text-slate-600 dark:text-slate-300">عدد الاختبارات</span>
                       <span className="font-black text-text-primary dark:text-text-primary">
                         {testHistory?.length ?? 0}
                       </span>
                     </div>
                     {testHistory && testHistory.length > 0 && (
-                      <div className="flex justify-between items-center p-3 bg-cream-bg dark:!bg-surface-muted rounded-2xl">
+                      <div className="flex justify-between items-center p-3 bg-cream-bg dark:bg-zinc-900 rounded-2xl">
                         <span className="text-sm text-slate-600 dark:text-slate-300 flex items-center gap-1">
                           <Clock className="w-3 h-3" />
                           آخر اختبار
@@ -285,7 +285,7 @@ export default function DashboardPage() {
             <div className="lg:col-span-2 space-y-8">
 
               {/* Tab bar */}
-              <div className="flex bg-white dark:!bg-surface p-1.5 rounded-2xl shadow-sm border border-primary/5 dark:border-border-subtle">
+              <div className="flex bg-white dark:bg-zinc-900 p-1.5 rounded-2xl shadow-sm border border-primary/5 dark:border-border-subtle">
                 {[
                   { id: 'overview',  label: 'نظرة عامة', icon: Sparkles },
                   { id: 'favorites', label: 'المفضلة',   icon: Heart    },
@@ -316,25 +316,25 @@ export default function DashboardPage() {
                       <Loader2 className="w-6 h-6 animate-spin text-slate-600 dark:text-slate-300" />
                     </div>
                   ) : testHistory && testHistory.length > 0 ? (
-                    <div className="bg-white dark:!bg-surface rounded-[2.5rem] p-6 border border-primary/5 dark:border-border-subtle">
+                    <div className="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-6 border border-primary/5 dark:border-border-subtle">
                       <h2 className="text-lg font-bold text-text-primary dark:text-text-primary mb-4">
                         آخر اختبار
                       </h2>
                       <div className="space-y-3">
-                        <div className="flex justify-between items-center p-3 bg-cream-bg dark:!bg-surface-muted rounded-2xl">
+                        <div className="flex justify-between items-center p-3 bg-cream-bg dark:bg-zinc-900 rounded-2xl">
                           <span className="text-sm text-slate-600 dark:text-slate-300">التاريخ</span>
                           <span className="font-bold text-text-primary dark:text-text-primary text-sm">
                             {new Date(testHistory[0].createdAt).toLocaleDateString('ar-SA')}
                           </span>
                         </div>
-                        <div className="flex justify-between items-center p-3 bg-cream-bg dark:!bg-surface-muted rounded-2xl">
+                        <div className="flex justify-between items-center p-3 bg-cream-bg dark:bg-zinc-900 rounded-2xl">
                           <span className="text-sm text-slate-600 dark:text-slate-300">عدد النتائج</span>
                           <span className="font-bold text-text-primary dark:text-text-primary text-sm">
                             {testHistory[0].totalMatches}
                           </span>
                         </div>
                         {testHistory[0].topMatchScore !== null && (
-                          <div className="flex justify-between items-center p-3 bg-cream-bg dark:!bg-surface-muted rounded-2xl">
+                          <div className="flex justify-between items-center p-3 bg-cream-bg dark:bg-zinc-900 rounded-2xl">
                             <span className="text-sm text-slate-600 dark:text-slate-300">أعلى تطابق</span>
                             <span className="font-bold text-primary dark:text-amber-500 text-sm">
                               {t('matchFormat', { pct: Math.round(testHistory[0].topMatchScore) })}
@@ -348,7 +348,7 @@ export default function DashboardPage() {
                       </Button>
                     </div>
                   ) : (
-                    <div className="text-center py-20 bg-white dark:!bg-surface rounded-[2.5rem] border border-dashed border-primary/20 dark:border-border-subtle">
+                    <div className="text-center py-20 bg-white dark:bg-zinc-900 rounded-[2.5rem] border border-dashed border-primary/20 dark:border-border-subtle">
                       <div className="bg-primary/10 dark:bg-amber-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                         <Sparkles className="w-8 h-8 text-primary dark:text-amber-500" />
                       </div>
@@ -368,8 +368,8 @@ export default function DashboardPage() {
                   ) : favorites && favorites.length > 0 ? (
                     <div className="grid grid-cols-1 gap-3">
                       {favorites.map((item) => (
-                        <div key={item.id} className="flex items-center gap-4 p-4 bg-white dark:!bg-surface rounded-2xl border border-primary/5 dark:border-border-subtle shadow-elevation-1">
-                          <div className="relative w-16 h-16 flex-shrink-0 bg-cream-bg dark:!bg-surface-muted rounded-xl overflow-hidden flex items-center justify-center">
+                        <div key={item.id} className="flex items-center gap-4 p-4 bg-white dark:bg-zinc-900 rounded-2xl border border-primary/5 dark:border-border-subtle shadow-elevation-1">
+                          <div className="relative w-16 h-16 flex-shrink-0 bg-cream-bg dark:bg-zinc-900 rounded-xl overflow-hidden flex items-center justify-center">
                             {item.resolved && item.image ? (
                               <Image
                                 src={item.image}
@@ -412,7 +412,7 @@ export default function DashboardPage() {
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-20 bg-white dark:!bg-surface rounded-[2.5rem] border border-dashed border-primary/20 dark:border-border-subtle">
+                    <div className="text-center py-20 bg-white dark:bg-zinc-900 rounded-[2.5rem] border border-dashed border-primary/20 dark:border-border-subtle">
                       <div className="bg-primary/10 dark:bg-amber-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                         <Heart className="w-8 h-8 text-primary dark:text-amber-500" />
                       </div>
@@ -432,8 +432,8 @@ export default function DashboardPage() {
                   ) : testHistory && testHistory.length > 0 ? (
                     <div className="space-y-4">
                       {testHistory.map((record) => (
-                        <div key={record.id} className="bg-white dark:!bg-surface p-4 rounded-2xl border border-primary/5 dark:border-border-subtle flex items-center gap-4">
-                          <div className="bg-cream-bg dark:!bg-surface-muted p-3 rounded-xl flex-shrink-0">
+                        <div key={record.id} className="bg-white dark:bg-zinc-900 p-4 rounded-2xl border border-primary/5 dark:border-border-subtle flex items-center gap-4">
+                          <div className="bg-cream-bg dark:bg-zinc-900 p-3 rounded-xl flex-shrink-0">
                             <History className="w-5 h-5 text-slate-600 dark:text-slate-300" />
                           </div>
                           <div>
@@ -450,7 +450,7 @@ export default function DashboardPage() {
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-20 bg-white dark:!bg-surface rounded-[2.5rem] border border-dashed border-primary/20 dark:border-border-subtle">
+                    <div className="text-center py-20 bg-white dark:bg-zinc-900 rounded-[2.5rem] border border-dashed border-primary/20 dark:border-border-subtle">
                       <div className="bg-primary/10 dark:bg-amber-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                         <History className="w-8 h-8 text-primary dark:text-amber-500" />
                       </div>
