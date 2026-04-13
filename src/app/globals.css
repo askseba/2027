@@ -55,8 +55,8 @@
   --color-background: 5 5 5;
   --color-border-subtle: 51 65 85;
   --color-text-primary: 241 245 249;
-  --color-text-secondary: 148 163 184;
-  --color-text-muted: 107 114 128;
+  --color-text-secondary: 203 213 225;
+  --color-text-muted: 148 163 184;
   --color-accent-primary: 251 191 36;
   --accent-warm: 251 191 36;
   --color-card-border: 51 65 85;
@@ -237,3 +237,4 @@ Landing CTA
     color: rgb(var(--color-text-primary));
   }
 }
+
