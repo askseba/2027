@@ -59,7 +59,7 @@ export const VoiceMicButton = ({
         )}
       </Button>
       {transcript && (
-        <span className="max-w-[200px] truncate text-xs text-text-secondary dark:text-text-muted" title={transcript}>
+        <span className="max-w-[200px] truncate text-xs text-slate-600 dark:text-slate-300" title={transcript}>
           {transcript}
         </span>
       )}

@@ -209,7 +209,7 @@ export default function FeedbackPage() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-12 text-brand-brown/60 dark:text-text-muted"
+              className="text-center py-12 text-brand-brown/60 dark:text-slate-300"
             >
               لا توجد اقتراحات حالياً. كن أول من يقترح تحسينًا!
             </motion.div>

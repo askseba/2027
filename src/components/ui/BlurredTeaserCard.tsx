@@ -66,7 +66,7 @@ export function BlurredTeaserCard({
           <div className="flex justify-center gap-3 mb-6">
             {items.slice(0, 3).map((item, idx) => (
               <div key={item.id ?? idx} className="rounded-lg border border-card-border dark:border-border-subtle bg-surface-muted dark:bg-surface-muted px-3 py-2 text-center">
-                <p className="text-xs text-text-muted">{item.brand}</p>
+                <p className="text-xs text-slate-600 dark:text-slate-300">{item.brand}</p>
                 <p className="truncate w-20 text-xs font-medium text-text-primary dark:text-text-primary">{item.name}</p>
                 <p className="text-xs text-accent-warm dark:text-amber-400 font-bold mt-0.5">{item.matchScore}%</p>
               </div>
@@ -75,9 +75,9 @@ export function BlurredTeaserCard({
           <h3 className="text-xl md:text-2xl font-bold text-text-primary dark:text-text-primary">
             {t('title', { count: items.length })}
           </h3>
-          <p className="text-sm text-text-secondary dark:text-text-muted">{message}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-300">{message}</p>
           <p className="text-4xl font-bold tracking-tight text-text-primary dark:text-text-primary tabular-nums">{matchRange || `${averageMatch}%`}</p>
-          <p className="text-xs text-text-muted">{t('avgMatchLabel')}</p>
+          <p className="text-xs text-slate-600 dark:text-slate-300">{t('avgMatchLabel')}</p>
           <button
             onClick={handleClick}
             className="w-full py-3 px-8 bg-primary dark:bg-amber-600 hover:bg-primary/90 dark:hover:bg-amber-700 text-white rounded-xl font-semibold text-sm shadow-sm transition-all"

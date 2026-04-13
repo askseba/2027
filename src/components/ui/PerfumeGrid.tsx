@@ -75,10 +75,10 @@ export function PerfumeGrid({
                 <h3 className="text-neutral-900 dark:text-text-primary text-xl md:text-2xl font-bold leading-tight truncate">
                   {perfume.name}
                 </h3>
-                <p className="text-neutral-500 dark:text-text-muted text-sm mt-1">{perfume.brand}</p>
+                <p className="text-neutral-500 dark:text-slate-300 text-sm mt-1">{perfume.brand}</p>
               </div>
               <button 
-                className="text-neutral-400 dark:text-text-muted hover:text-red-500 dark:hover:text-red-400 transition-colors ms-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-full p-1"
+                className="text-neutral-400 dark:text-slate-300 hover:text-red-500 dark:hover:text-red-400 transition-colors ms-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-full p-1"
                 aria-label={`إضافة ${perfume.name} إلى المفضلة`}
               >
                 <span className="material-symbols-outlined text-xl" aria-hidden="true">favorite_border</span>

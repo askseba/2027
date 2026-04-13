@@ -34,7 +34,7 @@ export function FilterTabs({
             className={`min-touch-target min-touch-target flex items-center gap-2 px-5 py-3 rounded-full font-medium text-sm whitespace-nowrap transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
               isActive
                 ? 'bg-primary text-white shadow-md shadow-primary/20'
-                : 'bg-white dark:bg-surface-dark border border-stone-200 dark:border-stone-800 text-slate-700 dark:text-text-muted hover:text-primary dark:hover:text-white active:bg-stone-100 dark:active:bg-stone-800'
+                : 'bg-white dark:bg-surface-dark border border-stone-200 dark:border-stone-800 text-slate-700 dark:text-slate-300 hover:text-primary dark:hover:text-white active:bg-stone-100 dark:active:bg-stone-800'
             }`}
           >
             {tab.icon && (

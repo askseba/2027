@@ -152,7 +152,7 @@ export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending
                         <h3 className="font-bold text-text-dark dark:text-text-primary dark:text-slate-100 text-xl md:text-2xl mb-1 leading-tight">
                           {title}
                         </h3>
-                        <p className="text-sm text-text-dark/70 dark:text-text-muted dark:text-slate-300">
+                        <p className="text-sm text-slate-600 dark:text-slate-300">
                           {desc}
                         </p>
                       </div>
@@ -163,7 +163,7 @@ export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending
                         <h3 className="font-bold text-text-dark dark:text-text-primary dark:text-slate-100 text-xl md:text-2xl mb-1 leading-tight">
                           {title}
                         </h3>
-                        <p className="text-sm text-text-dark/70 dark:text-text-muted dark:text-slate-300">
+                        <p className="text-sm text-slate-600 dark:text-slate-300">
                           {desc}
                         </p>
                       </div>
@@ -213,7 +213,7 @@ export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending
               >
                 <div className="text-3xl mb-2">{icon}</div>
                 <h3 className="font-bold text-text-dark dark:text-text-primary dark:text-slate-100 text-lg md:text-xl">{name}</h3>
-                <p className="text-xs text-text-dark/60 dark:text-text-muted dark:text-slate-300 mt-1">{examples}</p>
+                <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">{examples}</p>
               </motion.button>
             ))}
           </div>
@@ -226,7 +226,7 @@ export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending
           <h2 className="text-3xl font-bold text-text-dark dark:text-text-primary dark:text-slate-100 text-center">
             {t('level3Question')}
           </h2>
-          <p className="text-center text-text-dark/70 dark:text-text-muted mb-8">
+          <p className="text-center text-slate-600 dark:text-slate-300 mb-8">
             {t('level3Description')}
           </p>
           <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
@@ -274,7 +274,7 @@ export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending
           label={tCommon('back')}
           ariaLabel={tCommon('backToPreviousStep')}
           className="flex-none min-h-[44px] min-w-[44px] px-6 py-3 rounded-2xl font-bold
-            text-text-dark/70 dark:text-text-muted
+            text-slate-600 dark:text-slate-300
             bg-transparent border-0
             md:bg-white md:border-2 md:border-cream/50
             dark:md:bg-surface md:dark:border-border-subtle"
@@ -306,7 +306,7 @@ export function Step3Allergy({ allergy, updateAllergy, onNext, onBack, isPending
       </div>
 
       {/* Level Indicator */}
-      <div className="flex justify-center gap-3 text-sm text-text-dark/60 dark:text-text-muted">
+      <div className="flex justify-center gap-3 text-sm text-slate-600 dark:text-slate-300">
         <span className={currentLevel === 1 ? 'font-bold text-text-dark dark:text-text-primary' : ''}>{t('level1Title')}</span>
         <span>→</span>
         <span className={currentLevel === 2 ? 'font-bold text-text-dark dark:text-text-primary' : ''}>{t('level2Title')}</span>

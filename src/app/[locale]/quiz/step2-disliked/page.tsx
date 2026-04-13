@@ -155,7 +155,7 @@ export default function Step2DislikedPage() {
           <h1 className="text-3xl font-bold text-text-primary dark:text-text-primary mb-2 text-center">
             {t('step2.title')}
           </h1>
-          <p className="text-text-secondary dark:text-text-muted mb-8 text-center">
+          <p className="text-slate-600 dark:text-slate-300 mb-8 text-center">
             {t('step2.description')}
           </p>
 
@@ -182,7 +182,7 @@ export default function Step2DislikedPage() {
                     className="min-h-[44px] min-w-[44px] w-full text-right p-4 hover:bg-cream-bg dark:hover:bg-surface-muted transition-colors border-b dark:border-border-subtle last:border-b-0 flex flex-col touch-manipulation"
                   >
                     <span className="font-bold text-text-primary dark:text-text-primary">{perfume.name}</span>
-                    <span className="text-sm text-text-secondary dark:text-text-muted">{perfume.brand}</span>
+                    <span className="text-sm text-slate-600 dark:text-slate-300">{perfume.brand}</span>
                   </button>
                 ))}
               </div>
@@ -195,7 +195,7 @@ export default function Step2DislikedPage() {
             </h2>
 
             {selectedPerfumes.length === 0 ? (
-              <div className="text-center py-12 bg-white/50 dark:bg-surface/50 rounded-2xl border-2 border-dashed border-primary/20 dark:border-border-subtle text-text-secondary dark:text-text-muted">
+              <div className="text-center py-12 bg-white/50 dark:bg-surface/50 rounded-2xl border-2 border-dashed border-primary/20 dark:border-border-subtle text-slate-600 dark:text-slate-300">
                 <p>{t('step2.emptyStateTitle')}</p>
                 <p className="text-sm mt-1">{t('step2.emptyStateDescription')}</p>
               </div>
@@ -234,7 +234,7 @@ export default function Step2DislikedPage() {
             <button
               onClick={handleSkip}
               disabled={isPending}
-              className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center text-text-secondary dark:text-text-muted hover:text-primary dark:hover:text-amber-500 transition-colors text-sm underline disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
+              className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-amber-500 transition-colors text-sm underline disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
             >
               {t('step2.skipStepLabel')}
             </button>
@@ -262,7 +262,7 @@ function SelectedPerfumeCard({ perfume, onRemove, removeAriaLabel }: { perfume: 
       </div>
       <div className="flex-1 min-w-0">
         <h3 className="font-bold text-text-primary dark:text-text-primary truncate">{perfume.name}</h3>
-        <p className="text-sm text-text-secondary dark:text-text-muted truncate">{perfume.brand}</p>
+        <p className="text-sm text-slate-600 dark:text-slate-300 truncate">{perfume.brand}</p>
       </div>
       <button
         onClick={() => onRemove(perfume.id)}

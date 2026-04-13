@@ -169,7 +169,7 @@ export function RadarGauge({
         <div className="mt-4 w-full space-y-2">
           {/* الذوق */}
           <div className="flex items-center justify-between gap-2">
-            <span className="text-xs text-text-secondary dark:text-text-muted">
+            <span className="text-xs text-slate-600 dark:text-slate-300">
               {labels.taste}:
             </span>
             <div className="flex items-center gap-2 flex-1">
@@ -187,7 +187,7 @@ export function RadarGauge({
 
           {/* الأمان */}
           <div className="flex items-center justify-between gap-2">
-            <span className="text-xs text-text-secondary dark:text-text-muted">
+            <span className="text-xs text-slate-600 dark:text-slate-300">
               {labels.safety}:
             </span>
             <div className="flex items-center gap-2 flex-1">
@@ -217,7 +217,7 @@ export function RadarGauge({
 
           {/* الإجمالي */}
           <div className="flex items-center justify-between gap-2">
-            <span className="text-xs text-text-secondary dark:text-text-muted">
+            <span className="text-xs text-slate-600 dark:text-slate-300">
               {labels.overall}:
             </span>
             <div className="flex items-center gap-2 flex-1">

@@ -71,7 +71,7 @@ export function StatsGrid({
           </div>
 
           {/* Label */}
-          <div className="text-sm text-brown-text/70 dark:text-text-muted font-medium">
+          <div className="text-sm text-brown-text/70 dark:text-slate-300 font-medium">
             {stat.label}
           </div>
         </div>

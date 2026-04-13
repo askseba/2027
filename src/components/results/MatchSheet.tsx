@@ -75,7 +75,7 @@ export function MatchSheet({ perfume, onClose, locale = "ar" }: MatchSheetProps)
                   <h2 className="text-lg font-bold text-text-primary dark:text-text-primary">
                     {perfume.name}
                   </h2>
-                  <p className="text-sm text-text-muted dark:text-text-muted">{perfume.brand}</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-300">{perfume.brand}</p>
                 </div>
               </div>
               <button
@@ -83,7 +83,7 @@ export function MatchSheet({ perfume, onClose, locale = "ar" }: MatchSheetProps)
                 className="p-2 -m-2 rounded-xl hover:bg-surface-muted dark:hover:bg-surface-muted transition"
                 aria-label="إغلاق"
               >
-                <X className="w-5 h-5 text-text-muted dark:text-text-muted" />
+                <X className="w-5 h-5 text-slate-600 dark:text-slate-300" />
               </button>
             </div>
           </div>
@@ -105,7 +105,7 @@ export function MatchSheet({ perfume, onClose, locale = "ar" }: MatchSheetProps)
             {/* التصنيف (getMatchStatus) */}
             <div className={cn("mx-6 mb-6 p-4 rounded-2xl border", statusStyles[status])}>
               <p className="text-lg font-bold">{label}</p>
-              <p className="text-sm text-text-muted dark:text-text-muted mt-2">
+              <p className="text-sm text-slate-600 dark:text-slate-300 mt-2">
                 {t(`statusDesc.${status}`)}
               </p>
             </div>
@@ -115,7 +115,7 @@ export function MatchSheet({ perfume, onClose, locale = "ar" }: MatchSheetProps)
               {/* الذوق (80%) */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-text-secondary dark:text-text-muted">
+                  <span className="text-sm text-slate-600 dark:text-slate-300">
                     {t("tasteLabel")} (80%)
                   </span>
                   <span className="text-sm font-bold text-text-primary dark:text-text-primary">
@@ -133,7 +133,7 @@ export function MatchSheet({ perfume, onClose, locale = "ar" }: MatchSheetProps)
               {/* الأمان (20%) */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-text-secondary dark:text-text-muted">
+                  <span className="text-sm text-slate-600 dark:text-slate-300">
                     {t("safetyLabel")} (20%)
                   </span>
                   <span className="text-sm font-bold text-text-primary dark:text-text-primary">
@@ -174,7 +174,7 @@ export function MatchSheet({ perfume, onClose, locale = "ar" }: MatchSheetProps)
             {/* العائلات العطرية */}
             {perfume.families.length > 0 && (
               <div className="px-6 py-4 border-t border-primary/5 dark:border-border-subtle">
-                <p className="text-xs text-text-muted dark:text-text-muted mb-3">
+                <p className="text-xs text-slate-600 dark:text-slate-300 mb-3">
                   {t("perfumeFamilies")}
                 </p>
                 <div className="flex flex-wrap gap-1.5">

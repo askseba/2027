@@ -69,7 +69,7 @@ export default function SettingsPage() {
             className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-surface-muted dark:hover:bg-surface-muted transition-colors"
             aria-label={tCommon('backAriaLabel')}
           >
-            <BackArrow className="h-5 w-5 text-text-secondary" />
+            <BackArrow className="h-5 w-5 text-slate-600 dark:text-slate-300" />
           </button>
           <h1 className="flex-1 text-center text-lg font-bold text-text-primary">
             {t('title')}
@@ -88,18 +88,18 @@ export default function SettingsPage() {
             className="w-full flex items-center gap-4 px-5 py-4 bg-background dark:bg-surface-elevated rounded-2xl border border-border-subtle/50 dark:border-border-subtle/30 shadow-sm hover:shadow-md hover:border-border-subtle transition-all duration-200 group"
           >
             <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-surface-muted dark:bg-surface-muted">
-              <User className="h-5 w-5 text-text-secondary" />
+              <User className="h-5 w-5 text-slate-600 dark:text-slate-300" />
             </div>
             <span className="flex-1 text-start text-base font-medium text-text-primary">
               {t('updateName')}
             </span>
-            <Chevron className="h-4 w-4 text-text-muted group-hover:text-text-secondary transition-colors" />
+            <Chevron className="h-4 w-4 text-slate-600 dark:text-slate-300 group-hover:text-slate-800 dark:group-hover:text-slate-100 transition-colors" />
           </button>
         </div>
 
         {/* ── Section: Application ── */}
         <div className="mb-8">
-          <h2 className="text-xs font-semibold text-text-secondary uppercase tracking-widest px-5 mb-3">
+          <h2 className="text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-widest px-5 mb-3">
             {t('applicationSection')}
           </h2>
           <div className="bg-background dark:bg-surface-elevated rounded-2xl border border-border-subtle/50 dark:border-border-subtle/30 shadow-sm overflow-hidden">
@@ -108,7 +108,7 @@ export default function SettingsPage() {
               className="w-full flex items-center gap-4 px-5 py-4 hover:bg-surface-muted/50 dark:hover:bg-surface-muted/30 transition-colors group"
             >
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-surface-muted dark:bg-surface-muted">
-                <Bell className="h-5 w-5 text-text-secondary" />
+                <Bell className="h-5 w-5 text-slate-600 dark:text-slate-300" />
               </div>
               <span className="flex-1 text-start text-base font-medium text-text-primary">
                 {t('notifications')}
@@ -117,18 +117,18 @@ export default function SettingsPage() {
               <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
                 notificationsEnabled 
                   ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
-                  : 'bg-surface-muted text-text-muted'
+                  : 'bg-surface-muted text-slate-600 dark:text-slate-300'
               }`}>
                 {notificationsEnabled ? t('notifActive') : t('notifInactive')}
               </span>
-              <Chevron className="h-4 w-4 text-text-muted group-hover:text-text-secondary transition-colors" />
+              <Chevron className="h-4 w-4 text-slate-600 dark:text-slate-300 group-hover:text-slate-800 dark:group-hover:text-slate-100 transition-colors" />
             </button>
           </div>
         </div>
 
         {/* ── Section: Account ── */}
         <div className="mb-8">
-          <h2 className="text-xs font-semibold text-text-secondary uppercase tracking-widest px-5 mb-3">
+          <h2 className="text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-widest px-5 mb-3">
             {t('accountSection')}
           </h2>
           <div className="bg-background dark:bg-surface-elevated rounded-2xl border border-border-subtle/50 dark:border-border-subtle/30 shadow-sm overflow-hidden">
@@ -137,7 +137,7 @@ export default function SettingsPage() {
               className="w-full flex items-center gap-4 px-5 py-4 hover:bg-surface-muted/50 dark:hover:bg-surface-muted/30 transition-colors group"
             >
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-surface-muted dark:bg-surface-muted">
-                <LogOut className="h-5 w-5 text-text-secondary" />
+                <LogOut className="h-5 w-5 text-slate-600 dark:text-slate-300" />
               </div>
               <span className="flex-1 text-start text-base font-medium text-text-primary">
                 {t('signOut')}
@@ -179,7 +179,7 @@ export default function SettingsPage() {
               value={nameValue}
               onChange={(e) => setNameValue(e.target.value)}
               placeholder={t('namePlaceholder')}
-              className="w-full px-4 py-3.5 rounded-xl border border-border-subtle bg-surface-muted/50 dark:bg-surface-muted text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent text-base transition-all"
+              className="w-full px-4 py-3.5 rounded-xl border border-border-subtle bg-surface-muted/50 dark:bg-surface-muted text-text-primary placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent text-base transition-all"
               dir="auto"
               autoFocus
             />
@@ -208,20 +208,20 @@ export default function SettingsPage() {
                 <BellRing className="h-5 w-5 text-accent-primary" />
               </div>
               <div>
-                <p className="text-xs font-bold text-text-muted uppercase tracking-wider">Ask Seba</p>
+                <p className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Ask Seba</p>
                 <h3 className="text-base font-bold text-text-primary">{t('notifSmartTitle')}</h3>
               </div>
             </div>
 
             {/* Description */}
-            <p className="text-text-secondary text-sm mt-3 mb-5 leading-relaxed">
+            <p className="text-slate-600 dark:text-slate-300 text-sm mt-3 mb-5 leading-relaxed">
               {t('notificationsDescription')}
             </p>
 
             {/* Toggle Row */}
             <div className="flex items-center justify-between p-4 bg-surface-muted/50 dark:bg-surface-muted/30 rounded-xl mb-4">
               <div className="flex items-center gap-3">
-                <Bell className="h-4 w-4 text-text-secondary" />
+                <Bell className="h-4 w-4 text-slate-600 dark:text-slate-300" />
                 <span className="text-sm font-medium text-text-primary">{t('notifications')}</span>
               </div>
               <button
@@ -249,9 +249,9 @@ export default function SettingsPage() {
             <div className={`flex items-center gap-2 px-4 py-2.5 rounded-xl mb-4 text-sm font-medium ${
               notificationsEnabled
                 ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-                : 'bg-surface-muted/50 text-text-muted dark:bg-surface-muted/30'
+                : 'bg-surface-muted/50 text-slate-600 dark:text-slate-300 dark:bg-surface-muted/30'
             }`}>
-              <span className={`h-2 w-2 rounded-full ${notificationsEnabled ? 'bg-green-500' : 'bg-text-muted'}`} />
+              <span className={`h-2 w-2 rounded-full ${notificationsEnabled ? 'bg-green-500' : 'bg-slate-400'}`} />
               {notificationsEnabled ? t('notifActive') : t('notifInactive')}
             </div>
 
@@ -262,7 +262,7 @@ export default function SettingsPage() {
               className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 mb-3 ${
                 notificationsEnabled
                   ? 'bg-accent-primary/10 text-accent-primary hover:bg-accent-primary/20 dark:bg-accent-primary/20 dark:hover:bg-accent-primary/30'
-                  : 'bg-surface-muted/30 text-text-muted cursor-not-allowed'
+                  : 'bg-surface-muted/30 text-slate-400 dark:text-slate-500 cursor-not-allowed'
               }`}
             >
               <Send className="h-4 w-4" />
@@ -272,14 +272,14 @@ export default function SettingsPage() {
             {/* Permissions Guide */}
             <button
               onClick={() => setShowPermissionsGuide(!showPermissionsGuide)}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-xs text-text-muted hover:text-text-secondary transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-xs text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-100 transition-colors"
             >
               <ShieldCheck className="h-3.5 w-3.5" />
               {t('notifPermissionsHint')}
             </button>
 
             {showPermissionsGuide && (
-              <div className="mt-2 p-4 bg-surface-muted/50 dark:bg-surface-muted/30 rounded-xl text-xs text-text-secondary leading-relaxed space-y-1.5">
+              <div className="mt-2 p-4 bg-surface-muted/50 dark:bg-surface-muted/30 rounded-xl text-xs text-slate-600 dark:text-slate-300 leading-relaxed space-y-1.5">
                 <p className="font-semibold text-text-primary mb-2">{t('notifPermissionsTitle')}</p>
                 <p>• {t('notifPermStep1')}</p>
                 <p>• {t('notifPermStep2')}</p>
@@ -307,7 +307,7 @@ export default function SettingsPage() {
               <Trash2 className="h-7 w-7 text-red-600 dark:text-red-400" />
             </div>
             <h3 className="text-lg font-bold text-text-primary mb-2">{t('deleteConfirmTitle')}</h3>
-            <p className="text-text-secondary text-sm mb-6 leading-relaxed">{t('deleteConfirmDescription')}</p>
+            <p className="text-slate-600 dark:text-slate-300 text-sm mb-6 leading-relaxed">{t('deleteConfirmDescription')}</p>
             <div className="flex gap-3">
               <Button variant="ghost" onClick={() => setShowDeleteConfirm(false)} className="flex-1">
                 {tCommon('cancel')}

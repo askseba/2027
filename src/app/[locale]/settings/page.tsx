@@ -73,7 +73,7 @@ export default function SettingsPage() {
             className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-surface-muted dark:hover:bg-surface-muted transition-colors"
             aria-label={tCommon('backAriaLabel')}
           >
-            <BackArrow className="h-5 w-5 text-text-secondary" />
+            <BackArrow className="h-5 w-5 text-slate-600 dark:text-slate-300" />
           </button>
           <h1 className="flex-1 text-center text-base font-bold text-text-primary">
             {t('title')}
@@ -94,7 +94,7 @@ export default function SettingsPage() {
             <p className="text-sm font-semibold text-text-primary truncate">
               {session?.user?.name || t('updateName')}
             </p>
-            <p className="text-xs text-text-muted truncate">
+            <p className="text-xs text-slate-600 dark:text-slate-300 truncate">
               {session?.user?.email || ''}
             </p>
           </div>
@@ -105,7 +105,7 @@ export default function SettingsPage() {
 
         {/* ── Section: Profile ── */}
         <div className="mb-4">
-          <h2 className="text-[10px] font-bold text-text-muted uppercase tracking-widest px-1 mb-2">
+          <h2 className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-widest px-1 mb-2">
             {t('profileSection')}
           </h2>
           <div className="bg-background dark:bg-surface-elevated rounded-2xl border border-border-subtle/30 dark:border-border-subtle/30 shadow-sm overflow-hidden">
@@ -120,9 +120,9 @@ export default function SettingsPage() {
               </div>
               <div className="flex-1 text-start">
                 <p className="text-sm font-medium text-text-primary">{t('updateName')}</p>
-                <p className="text-xs text-text-muted">{session?.user?.name || '—'}</p>
+                <p className="text-xs text-slate-600 dark:text-slate-300">{session?.user?.name || '—'}</p>
               </div>
-              <Chevron className="h-3.5 w-3.5 text-text-muted group-hover:text-text-secondary transition-colors" />
+              <Chevron className="h-3.5 w-3.5 text-slate-600 dark:text-slate-300 group-hover:text-slate-800 dark:group-hover:text-slate-100 transition-colors" />
             </button>
 
             <div className="mx-4 border-t border-border-subtle/30" />
@@ -130,13 +130,13 @@ export default function SettingsPage() {
             {/* Email (display only) */}
             <div className="w-full flex items-center gap-3 px-4 py-3">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800/40">
-                <Mail className="h-4 w-4 text-text-secondary" />
+                <Mail className="h-4 w-4 text-slate-600 dark:text-slate-300" />
               </div>
               <div className="flex-1 text-start">
                 <p className="text-sm font-medium text-text-primary">
                   {t('email')}
                 </p>
-                <p className="text-xs text-text-muted">{session?.user?.email || '—'}</p>
+                <p className="text-xs text-slate-600 dark:text-slate-300">{session?.user?.email || '—'}</p>
               </div>
             </div>
           </div>
@@ -144,7 +144,7 @@ export default function SettingsPage() {
 
         {/* ── Section: Application ── */}
         <div className="mb-4">
-          <h2 className="text-[10px] font-bold text-text-muted uppercase tracking-widest px-1 mb-2">
+          <h2 className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-widest px-1 mb-2">
             {t('applicationSection')}
           </h2>
           <div className="bg-background dark:bg-surface-elevated rounded-2xl border border-border-subtle/30 dark:border-border-subtle/30 shadow-sm overflow-hidden">
@@ -159,11 +159,11 @@ export default function SettingsPage() {
               </div>
               <div className="flex-1 text-start">
                 <p className="text-sm font-medium text-text-primary">{t('notifications')}</p>
-                <p className="text-xs text-text-muted">
+                <p className="text-xs text-slate-600 dark:text-slate-300">
                   {t('notificationsManage')}
                 </p>
               </div>
-              <Chevron className="h-3.5 w-3.5 text-text-muted group-hover:text-text-secondary transition-colors" />
+              <Chevron className="h-3.5 w-3.5 text-slate-600 dark:text-slate-300 group-hover:text-slate-800 dark:group-hover:text-slate-100 transition-colors" />
             </button>
 
             <div className="mx-4 border-t border-border-subtle/30" />
@@ -177,16 +177,16 @@ export default function SettingsPage() {
                 <p className="text-sm font-medium text-text-primary">
                   {t('language')}
                 </p>
-                <p className="text-xs text-text-muted">{t('languageCurrent')}</p>
+                <p className="text-xs text-slate-600 dark:text-slate-300">{t('languageCurrent')}</p>
               </div>
-              <Chevron className="h-3.5 w-3.5 text-text-muted group-hover:text-text-secondary transition-colors" />
+              <Chevron className="h-3.5 w-3.5 text-slate-600 dark:text-slate-300 group-hover:text-slate-800 dark:group-hover:text-slate-100 transition-colors" />
             </button>
           </div>
         </div>
 
         {/* ── Section: Account ── */}
         <div className="mb-4">
-          <h2 className="text-[10px] font-bold text-text-muted uppercase tracking-widest px-1 mb-2">
+          <h2 className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-widest px-1 mb-2">
             {t('accountSection')}
           </h2>
           <div className="bg-background dark:bg-surface-elevated rounded-2xl border border-border-subtle/30 dark:border-border-subtle/30 shadow-sm overflow-hidden">
@@ -197,11 +197,11 @@ export default function SettingsPage() {
               className="w-full flex items-center gap-3 px-4 py-3 hover:bg-surface-muted/50 dark:hover:bg-surface-muted/30 transition-colors group"
             >
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800/40">
-                <LogOut className="h-4 w-4 text-text-secondary" />
+                <LogOut className="h-4 w-4 text-slate-600 dark:text-slate-300" />
               </div>
               <div className="flex-1 text-start">
                 <p className="text-sm font-medium text-text-primary">{t('signOut')}</p>
-                <p className="text-xs text-text-muted">
+                <p className="text-xs text-slate-600 dark:text-slate-300">
                   {t('signOutDescription')}
                 </p>
               </div>
@@ -228,7 +228,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Footer note */}
-        <p className="text-center text-[11px] text-text-muted py-4">
+        <p className="text-center text-[11px] text-slate-600 dark:text-slate-300 py-4">
           {t('securityNote')}
         </p>
 
@@ -255,7 +255,7 @@ export default function SettingsPage() {
               </div>
               <div>
                 <h3 className="text-base font-bold text-text-primary">{t('updateName')}</h3>
-                <p className="text-xs !text-text-secondary">
+                <p className="text-xs !text-slate-600 dark:!text-slate-300">
                   {t('nameVisibility')}
                 </p>
               </div>
@@ -263,7 +263,7 @@ export default function SettingsPage() {
 
             {/* modal body */}
             <div className="px-5 py-4">
-              <label className="block text-xs font-semibold text-text-secondary mb-1.5">
+              <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">
                 {t('fullName')}
               </label>
               <input
@@ -316,7 +316,7 @@ export default function SettingsPage() {
               </div>
               <div>
                 <h3 className="text-base font-bold !text-text-primary">{t('notifications')}</h3>
-                <p className="text-xs !text-text-secondary">
+                <p className="text-xs !text-slate-600 dark:!text-slate-300">
                   {t('notificationsPreferences')}
                 </p>
               </div>
@@ -332,7 +332,7 @@ export default function SettingsPage() {
                   <p className="text-sm font-medium !text-text-primary">
                     {t('notifOrders')}
                   </p>
-                  <p className="text-xs !text-text-secondary">
+                  <p className="text-xs !text-slate-600 dark:!text-slate-300">
                     {t('notifOrdersDesc')}
                   </p>
                 </div>
@@ -353,7 +353,7 @@ export default function SettingsPage() {
                   <p className="text-sm font-medium !text-text-primary">
                     {t('notifMessages')}
                   </p>
-                  <p className="text-xs !text-text-secondary">
+                  <p className="text-xs !text-slate-600 dark:!text-slate-300">
                     {t('notifMessagesDesc')}
                   </p>
                 </div>
@@ -374,7 +374,7 @@ export default function SettingsPage() {
                   <p className="text-sm font-medium !text-text-primary">
                     {t('notifUpdates')}
                   </p>
-                  <p className="text-xs !text-text-secondary">
+                  <p className="text-xs !text-slate-600 dark:!text-slate-300">
                     {t('notifUpdatesDesc')}
                   </p>
                 </div>
@@ -395,7 +395,7 @@ export default function SettingsPage() {
                   <p className="text-sm font-medium !text-text-primary">
                     {t('notifReminders')}
                   </p>
-                  <p className="text-xs !text-text-secondary">
+                  <p className="text-xs !text-slate-600 dark:!text-slate-300">
                     {t('notifRemindersDesc')}
                   </p>
                 </div>

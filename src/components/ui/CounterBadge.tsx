@@ -73,7 +73,7 @@ export function CounterBadge({
         <span className="text-2xl font-tajawal-bold block text-brown-text dark:text-text-primary">
           {count}
         </span>
-        {label && <span className="text-xs text-brown-text/75 dark:text-text-muted">{label}</span>}
+        {label && <span className="text-xs text-brown-text/75 dark:text-slate-300">{label}</span>}
       </div>
     </div>
   )

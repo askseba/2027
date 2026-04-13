@@ -48,7 +48,7 @@ export default function FAQPage() {
           <h1 className="text-3xl md:text-4xl font-bold mb-4 text-brand-brown dark:text-text-primary">
             {t('hero.title')}
           </h1>
-          <p className="text-xl font-bold text-brand-brown/80 dark:text-text-secondary">
+          <p className="text-xl font-bold text-brand-brown/80 dark:text-slate-300">
             {t('hero.subtitle')}
           </p>
         </motion.section>
@@ -70,7 +70,7 @@ export default function FAQPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               aria-label={t('searchAriaLabel')}
-              className="w-full pr-12 pl-4 py-3 rounded-3xl border border-brand-brown/20 dark:border-text-primary/20 bg-white/90 dark:bg-surface-elevated backdrop-blur-sm shadow-lg text-base text-brand-brown dark:text-text-primary placeholder:text-brand-brown/60 dark:placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand-gold/50 dark:focus:ring-accent-primary/50"
+              className="w-full pr-12 pl-4 py-3 rounded-3xl border border-brand-brown/20 dark:border-text-primary/20 bg-white/90 dark:bg-surface-elevated backdrop-blur-sm shadow-lg text-base text-brand-brown dark:text-text-primary placeholder:text-brand-brown/60 dark:placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-gold/50 dark:focus:ring-accent-primary/50"
             />
           </div>
         </motion.div>
@@ -103,7 +103,7 @@ export default function FAQPage() {
                         <span>{question.question}</span>
                       </Accordion.Trigger>
                     </Accordion.Header>
-                    <Accordion.Content className="px-6 pb-4 text-base text-brand-brown/80 dark:text-text-secondary overflow-hidden lg:text-justify">
+                    <Accordion.Content className="px-6 pb-4 text-base text-brand-brown/80 dark:text-slate-300 overflow-hidden lg:text-justify">
                       <div className="py-2">
                         <p className="whitespace-pre-line lg:text-justify">{question.answer}</p>
                       </div>
@@ -122,7 +122,7 @@ export default function FAQPage() {
             animate={{ opacity: 1 }}
             className="text-center py-12"
           >
-            <p className="text-base text-brand-brown/60 dark:text-text-muted">
+            <p className="text-base text-brand-brown/60 dark:text-slate-300">
               {t('noResults', { term: searchTerm })}
             </p>
           </motion.div>

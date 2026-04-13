@@ -157,7 +157,7 @@ export default function Step1FavoritesPage() {
           <h1 className="text-3xl font-bold text-text-primary dark:text-text-primary mb-2 text-center">
             {t('step1.title')}
           </h1>
-          <p className="text-text-secondary dark:text-text-muted mb-8 text-center">
+          <p className="text-slate-600 dark:text-slate-300 mb-8 text-center">
             {t('step1.description')}
           </p>
 
@@ -207,7 +207,7 @@ export default function Step1FavoritesPage() {
             </h2>
 
             {selectedPerfumes.length === 0 ? (
-              <div className="text-center py-12 bg-white/50 dark:bg-surface/50 rounded-2xl border-2 border-dashed border-primary/20 dark:border-border-subtle text-text-secondary dark:text-text-muted">
+              <div className="text-center py-12 bg-white/50 dark:bg-surface/50 rounded-2xl border-2 border-dashed border-primary/20 dark:border-border-subtle text-slate-600 dark:text-slate-300">
                 <p>{t('step1.emptyStateTitle')}</p>
                 <p className="text-sm mt-1">{t('step1.emptyStateDescription')}</p>
               </div>
@@ -236,7 +236,7 @@ export default function Step1FavoritesPage() {
               {t('step1.nextButtonWithCount', { count: selectedPerfumes.length, max: MAX_SELECTIONS })}
             </Button>
             {selectedPerfumes.length < MIN_SELECTIONS && (
-              <p className="text-sm text-center mt-3 text-text-secondary dark:text-text-muted">
+              <p className="text-sm text-center mt-3 text-slate-600 dark:text-slate-300">
                 {t('step1.minError')}
               </p>
             )}
@@ -264,7 +264,7 @@ function SelectedPerfumeCard({ perfume, onRemove, removeAriaLabel }: { perfume: 
       </div>
       <div className="flex-1 min-w-0">
         <h3 className="font-bold text-text-primary dark:text-text-primary dark:text-slate-100 truncate">{perfume.name}</h3>
-        <p className="text-sm text-text-secondary dark:text-text-muted truncate">{perfume.brand}</p>
+        <p className="text-sm text-slate-600 dark:text-slate-300 truncate">{perfume.brand}</p>
       </div>
       <button
         onClick={() => onRemove(perfume.id)}

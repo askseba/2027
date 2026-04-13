@@ -154,7 +154,7 @@ export function MobileFilterModal({
                         return (
                           <label 
                             key={childIdx}
-                            className="flex items-center gap-2 text-sm text-brown-text/85 dark:text-text-muted cursor-pointer"
+                            className="flex items-center gap-2 text-sm text-brown-text/85 dark:text-slate-300 cursor-pointer"
                           >
                             <input
                               type="checkbox"

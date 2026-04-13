@@ -136,7 +136,7 @@ export default function FeedbackCard({ suggestion, isTopVoted, onVote }: Feedbac
         </div>
 
         {/* Description */}
-        <p className="text-brand-brown/70 dark:text-text-muted text-sm leading-relaxed">
+        <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
           {suggestion.description}
         </p>
 
@@ -144,7 +144,7 @@ export default function FeedbackCard({ suggestion, isTopVoted, onVote }: Feedbac
         <div className="flex items-center justify-between pt-3 border-t border-brand-brown/10 dark:border-border-subtle">
           <div className="flex items-center gap-2">
             <span className="text-2xl font-bold text-brand-brown dark:text-text-primary">↑</span>
-            <span className="text-sm font-semibold text-brand-brown/80 dark:text-text-secondary">
+            <span className="text-sm font-semibold text-slate-600 dark:text-slate-300">
               {suggestion.votes} مهتم
             </span>
           </div>

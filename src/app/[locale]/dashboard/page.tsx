@@ -255,19 +255,19 @@ export default function DashboardPage() {
                 </h3>
                 {loadingHistory ? (
                   <div className="flex justify-center py-4">
-                    <Loader2 className="w-5 h-5 animate-spin text-text-secondary dark:text-text-muted" />
+                    <Loader2 className="w-5 h-5 animate-spin text-slate-600 dark:text-slate-300" />
                   </div>
                 ) : (
                   <div className="space-y-4">
                     <div className="flex justify-between items-center p-3 bg-cream-bg dark:!bg-surface-muted rounded-2xl">
-                      <span className="text-sm text-text-secondary dark:text-text-muted">عدد الاختبارات</span>
+                      <span className="text-sm text-slate-600 dark:text-slate-300">عدد الاختبارات</span>
                       <span className="font-black text-text-primary dark:text-text-primary">
                         {testHistory?.length ?? 0}
                       </span>
                     </div>
                     {testHistory && testHistory.length > 0 && (
                       <div className="flex justify-between items-center p-3 bg-cream-bg dark:!bg-surface-muted rounded-2xl">
-                        <span className="text-sm text-text-secondary dark:text-text-muted flex items-center gap-1">
+                        <span className="text-sm text-slate-600 dark:text-slate-300 flex items-center gap-1">
                           <Clock className="w-3 h-3" />
                           آخر اختبار
                         </span>
@@ -297,7 +297,7 @@ export default function DashboardPage() {
                     className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm transition-all ${
                       activeTab === tab.id
                         ? 'bg-primary text-white shadow-button'
-                        : 'text-text-secondary dark:text-text-muted hover:bg-cream-bg dark:hover:bg-surface-muted'
+                        : 'text-slate-600 dark:text-slate-300 hover:bg-cream-bg dark:hover:bg-surface-muted'
                     }`}
                   >
                     <tab.icon className="w-4 h-4" />
@@ -313,7 +313,7 @@ export default function DashboardPage() {
                 {activeTab === 'overview' && (
                   loadingHistory ? (
                     <div className="flex justify-center py-20">
-                      <Loader2 className="w-6 h-6 animate-spin text-text-secondary dark:text-text-muted" />
+                      <Loader2 className="w-6 h-6 animate-spin text-slate-600 dark:text-slate-300" />
                     </div>
                   ) : testHistory && testHistory.length > 0 ? (
                     <div className="bg-white dark:!bg-surface rounded-[2.5rem] p-6 border border-primary/5 dark:border-border-subtle">
@@ -322,20 +322,20 @@ export default function DashboardPage() {
                       </h2>
                       <div className="space-y-3">
                         <div className="flex justify-between items-center p-3 bg-cream-bg dark:!bg-surface-muted rounded-2xl">
-                          <span className="text-sm text-text-secondary dark:text-text-muted">التاريخ</span>
+                          <span className="text-sm text-slate-600 dark:text-slate-300">التاريخ</span>
                           <span className="font-bold text-text-primary dark:text-text-primary text-sm">
                             {new Date(testHistory[0].createdAt).toLocaleDateString('ar-SA')}
                           </span>
                         </div>
                         <div className="flex justify-between items-center p-3 bg-cream-bg dark:!bg-surface-muted rounded-2xl">
-                          <span className="text-sm text-text-secondary dark:text-text-muted">عدد النتائج</span>
+                          <span className="text-sm text-slate-600 dark:text-slate-300">عدد النتائج</span>
                           <span className="font-bold text-text-primary dark:text-text-primary text-sm">
                             {testHistory[0].totalMatches}
                           </span>
                         </div>
                         {testHistory[0].topMatchScore !== null && (
                           <div className="flex justify-between items-center p-3 bg-cream-bg dark:!bg-surface-muted rounded-2xl">
-                            <span className="text-sm text-text-secondary dark:text-text-muted">أعلى تطابق</span>
+                            <span className="text-sm text-slate-600 dark:text-slate-300">أعلى تطابق</span>
                             <span className="font-bold text-primary dark:text-amber-500 text-sm">
                               {t('matchFormat', { pct: Math.round(testHistory[0].topMatchScore) })}
                             </span>
@@ -353,7 +353,7 @@ export default function DashboardPage() {
                         <Sparkles className="w-8 h-8 text-primary dark:text-amber-500" />
                       </div>
                       <h3 className="text-xl font-bold text-text-primary dark:text-text-primary mb-2">لا توجد نتائج بعد</h3>
-                      <p className="text-text-secondary dark:text-text-muted text-sm mb-8">أكمل اختباراً ليُحفظ سجلّك ونتائجك هنا</p>
+                      <p className="text-slate-600 dark:text-slate-300 text-sm mb-8">أكمل اختباراً ليُحفظ سجلّك ونتائجك هنا</p>
                       <Button onClick={() => router.push('/quiz/step1-favorites')}>ابدأ الاختبار</Button>
                     </div>
                   )
@@ -363,7 +363,7 @@ export default function DashboardPage() {
                 {activeTab === 'favorites' && (
                   loadingFavorites ? (
                     <div className="flex justify-center py-20">
-                      <Loader2 className="w-6 h-6 animate-spin text-text-secondary dark:text-text-muted" />
+                      <Loader2 className="w-6 h-6 animate-spin text-slate-600 dark:text-slate-300" />
                     </div>
                   ) : favorites && favorites.length > 0 ? (
                     <div className="grid grid-cols-1 gap-3">
@@ -386,7 +386,7 @@ export default function DashboardPage() {
                                 className="object-cover"
                               />
                             ) : (
-                              <Heart className="w-6 h-6 text-text-secondary dark:text-text-muted" aria-hidden />
+                              <Heart className="w-6 h-6 text-slate-600 dark:text-slate-300" aria-hidden />
                             )}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -394,7 +394,7 @@ export default function DashboardPage() {
                               <>
                                 <p className="font-bold text-text-primary dark:text-text-primary truncate">{item.name}</p>
                                 {item.brand ? (
-                                  <p className="text-sm text-text-secondary dark:text-text-muted truncate">{item.brand}</p>
+                                  <p className="text-sm text-slate-600 dark:text-slate-300 truncate">{item.brand}</p>
                                 ) : null}
                               </>
                             ) : (
@@ -402,7 +402,7 @@ export default function DashboardPage() {
                                 <p className="font-mono text-sm text-text-primary dark:text-text-primary break-all">
                                   {item.id}
                                 </p>
-                                <p className="text-xs text-text-secondary dark:text-text-muted mt-0.5">
+                                <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
                                   {locale === 'ar' ? 'غير متوفر في الكتالوج المحلي' : 'Not in local catalog'}
                                 </p>
                               </>
@@ -417,7 +417,7 @@ export default function DashboardPage() {
                         <Heart className="w-8 h-8 text-primary dark:text-amber-500" />
                       </div>
                       <h3 className="text-xl font-bold text-text-primary dark:text-text-primary mb-2">قائمة مفضلاتك فارغة</h3>
-                      <p className="text-text-secondary dark:text-text-muted text-sm mb-8">ابدأ باستكشاف العطور وأضف ما يعجبك هنا</p>
+                      <p className="text-slate-600 dark:text-slate-300 text-sm mb-8">ابدأ باستكشاف العطور وأضف ما يعجبك هنا</p>
                       <Button onClick={() => router.push('/quiz/step1-favorites')}>استكشف العطور الآن</Button>
                     </div>
                   )
@@ -427,20 +427,20 @@ export default function DashboardPage() {
                 {activeTab === 'history' && (
                   loadingHistory ? (
                     <div className="flex justify-center py-20">
-                      <Loader2 className="w-6 h-6 animate-spin text-text-secondary dark:text-text-muted" />
+                      <Loader2 className="w-6 h-6 animate-spin text-slate-600 dark:text-slate-300" />
                     </div>
                   ) : testHistory && testHistory.length > 0 ? (
                     <div className="space-y-4">
                       {testHistory.map((record) => (
                         <div key={record.id} className="bg-white dark:!bg-surface p-4 rounded-2xl border border-primary/5 dark:border-border-subtle flex items-center gap-4">
                           <div className="bg-cream-bg dark:!bg-surface-muted p-3 rounded-xl flex-shrink-0">
-                            <History className="w-5 h-5 text-text-secondary dark:text-text-muted" />
+                            <History className="w-5 h-5 text-slate-600 dark:text-slate-300" />
                           </div>
                           <div>
                             <p className="font-bold text-text-primary dark:text-text-primary text-sm">
                               {record.totalMatches} نتيجة
                             </p>
-                            <p className="text-[10px] text-text-secondary dark:text-text-muted">
+                            <p className="text-[10px] text-slate-600 dark:text-slate-300">
                               {new Date(record.createdAt).toLocaleDateString('ar-SA')}
                               {record.topMatchScore !== null &&
                                 ` • ${t('matchFormat', { pct: Math.round(record.topMatchScore) })}`}
@@ -455,7 +455,7 @@ export default function DashboardPage() {
                         <History className="w-8 h-8 text-primary dark:text-amber-500" />
                       </div>
                       <h3 className="text-xl font-bold text-text-primary dark:text-text-primary mb-2">لا يوجد سجل بعد</h3>
-                      <p className="text-text-secondary dark:text-text-muted text-sm mb-8">أجرِ اختباراً لتظهر نتائجه هنا</p>
+                      <p className="text-slate-600 dark:text-slate-300 text-sm mb-8">أجرِ اختباراً لتظهر نتائجه هنا</p>
                       <Button onClick={() => router.push('/quiz/step1-favorites')}>ابدأ الاختبار</Button>
                     </div>
                   )

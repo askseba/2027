@@ -356,14 +356,14 @@ function PriceHubContent ({
               <h2 className="text-xl font-bold text-text-primary dark:text-text-primary truncate">
                 {perfume.name}
               </h2>
-              <p className="text-sm text-text-muted dark:text-text-muted">{perfume.brand}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-300">{perfume.brand}</p>
             </div>
             <button
               onClick={onClose}
               className="p-2 rounded-full hover:bg-primary/5 dark:hover:bg-surface-elevated transition flex-shrink-0"
               aria-label={t('close')}
             >
-              <X className="w-5 h-5 text-text-muted" />
+              <X className="w-5 h-5 text-slate-600 dark:text-slate-300" />
             </button>
           </div>
         </div>
@@ -562,7 +562,7 @@ function ProductCompareContent({
 
       {/* Row 1: Match Score */}
       <div className="space-y-2">
-        <p className="text-xs font-bold uppercase tracking-wider text-text-secondary dark:text-text-muted">
+        <p className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
           {t('matchLabel')}
         </p>
         <div className="flex flex-wrap gap-2">
@@ -586,7 +586,7 @@ function ProductCompareContent({
 
       {/* Row 2: Safe / Warning */}
       <div className="space-y-2">
-        <p className="text-xs font-bold uppercase tracking-wider text-text-secondary dark:text-text-muted">
+        <p className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
           {t('safeLabel')} / {t('warningLabel')}
         </p>
         <div className="flex flex-wrap gap-2">
@@ -613,7 +613,7 @@ function ProductCompareContent({
 
       {/* Row 3: Fragrance Families */}
       <div className="space-y-2">
-        <p className="text-xs font-bold uppercase tracking-wider text-text-secondary dark:text-text-muted">
+        <p className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
           {t('familiesLabel')}
         </p>
         <div className="space-y-2">
@@ -622,7 +622,7 @@ function ProductCompareContent({
               <span className="text-sm font-medium text-text-primary dark:text-text-primary shrink-0">
                 {p.name}:
               </span>
-              <span className="text-sm text-text-secondary dark:text-text-muted">
+              <span className="text-sm text-slate-600 dark:text-slate-300">
                 {p.families?.length
                   ? p.families.join(', ')
                   : '—'}
@@ -634,7 +634,7 @@ function ProductCompareContent({
 
       {/* Row 4: Key Ingredients */}
       <div className="space-y-2">
-        <p className="text-xs font-bold uppercase tracking-wider text-text-secondary dark:text-text-muted">
+        <p className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
           {t('ingredientsLabel')}
         </p>
         <div className="space-y-2">
@@ -643,7 +643,7 @@ function ProductCompareContent({
               <span className="text-sm font-medium text-text-primary dark:text-text-primary shrink-0">
                 {p.name}:
               </span>
-              <span className="text-sm text-text-secondary dark:text-text-muted line-clamp-2">
+              <span className="text-sm text-slate-600 dark:text-slate-300 line-clamp-2">
                 {p.ingredients?.length
                   ? p.ingredients.slice(0, 5).join(', ') +
                     (p.ingredients.length > 5 ? '…' : '')
@@ -712,7 +712,7 @@ export function CompareBottomSheet({
                     <ProductCompareContent perfumes={perfumes!} locale={locale} />
                   )}
                   {showPlaceholder && (
-                    <p className="text-text-secondary dark:text-text-muted text-sm">
+                    <p className="text-slate-600 dark:text-slate-300 text-sm">
                       {t('comingSoon')}
                     </p>
                   )}

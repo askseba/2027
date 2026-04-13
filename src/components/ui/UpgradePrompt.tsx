@@ -30,7 +30,7 @@ export function UpgradePrompt({ className = '' }: UpgradePromptProps) {
             <span className="text-primary dark:text-amber-500">لصبا بريميوم</span>
           </h2>
           
-          <p className="text-lg text-text-secondary dark:text-text-muted mb-8 leading-relaxed">
+          <p className="text-lg text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
             لا تكتفِ بالنتائج الأساسية. احصل على تحليل عميق، تنبيهات حصرية، وقائمة عطور لا تنتهي مخصصة لك وحدك.
           </p>
 
@@ -59,7 +59,7 @@ export function UpgradePrompt({ className = '' }: UpgradePromptProps) {
             </Button>
             <div className="flex flex-col justify-center">
               <p className="text-sm font-bold text-text-primary dark:text-text-primary">فقط 29 ريال / شهر</p>
-              <p className="text-xs text-text-secondary dark:text-text-muted text-right">يمكنك الإلغاء في أي وقت</p>
+              <p className="text-xs text-slate-600 dark:text-slate-300 text-right">يمكنك الإلغاء في أي وقت</p>
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@ export function UpgradePrompt({ className = '' }: UpgradePromptProps) {
               <Lock className="w-6 h-6 text-primary dark:text-amber-500" />
             </div>
             <h4 className="font-bold text-text-primary dark:text-text-primary mb-1">محتوى حصري</h4>
-            <p className="text-xs text-text-secondary dark:text-text-muted">تقارير مفصلة عن كل عطر</p>
+            <p className="text-xs text-slate-600 dark:text-slate-300">تقارير مفصلة عن كل عطر</p>
           </div>
           
           <div className="bg-primary/5 dark:bg-amber-500/10 p-6 rounded-3xl border border-primary/10 dark:border-border-subtle transform translate-y-8 hover:-translate-y-2 transition-transform">
@@ -79,7 +79,7 @@ export function UpgradePrompt({ className = '' }: UpgradePromptProps) {
               <Star className="w-6 h-6 text-primary dark:text-amber-500 fill-current" />
             </div>
             <h4 className="font-bold text-text-primary dark:text-text-primary mb-1">تقييمات الخبراء</h4>
-            <p className="text-xs text-text-secondary dark:text-text-muted">آراء حقيقية من خبراء العطور</p>
+            <p className="text-xs text-slate-600 dark:text-slate-300">آراء حقيقية من خبراء العطور</p>
           </div>
 
           <div className="bg-white dark:bg-surface p-6 rounded-3xl border border-primary/5 dark:border-border-subtle shadow-elevation-1 transform hover:-translate-y-2 transition-transform">
@@ -87,7 +87,7 @@ export function UpgradePrompt({ className = '' }: UpgradePromptProps) {
               <Sparkles className="w-6 h-6 text-primary dark:text-amber-500" />
             </div>
             <h4 className="font-bold text-text-primary dark:text-text-primary mb-1">ذكاء اصطناعي</h4>
-            <p className="text-xs text-text-secondary dark:text-text-muted">توصيات تتطور مع ذوقك</p>
+            <p className="text-xs text-slate-600 dark:text-slate-300">توصيات تتطور مع ذوقك</p>
           </div>
 
           <div className="bg-cream-bg dark:bg-surface-muted p-6 rounded-3xl border border-primary/5 dark:border-border-subtle transform translate-y-8 hover:-translate-y-2 transition-transform">
@@ -95,7 +95,7 @@ export function UpgradePrompt({ className = '' }: UpgradePromptProps) {
               <Zap className="w-6 h-6 text-primary dark:text-amber-500" />
             </div>
             <h4 className="font-bold text-text-primary dark:text-text-primary mb-1">سرعة فائقة</h4>
-            <p className="text-xs text-text-secondary dark:text-text-muted">نتائج فورية بدون انتظار</p>
+            <p className="text-xs text-slate-600 dark:text-slate-300">نتائج فورية بدون انتظار</p>
           </div>
         </div>
       </div>

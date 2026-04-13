@@ -14,7 +14,7 @@ export function ValuePropSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-xl md:text-2xl font-medium text-center text-medium-brown dark:text-text-secondary"
+          className="text-xl md:text-2xl font-medium text-center text-medium-brown dark:text-slate-300"
         >
           {t('valuePropTagline')}
         </motion.p>

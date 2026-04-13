@@ -39,7 +39,7 @@ export function FavoritesContent() {
           </div>
           <h1 className="text-2xl font-bold text-brand-brown dark:text-text-primary mb-2">{t('title')}</h1>
           <h2 className="text-xl font-bold text-brand-brown dark:text-text-primary mb-2">{t('emptyTitle')}</h2>
-          <p className="text-brand-brown/70 dark:text-text-secondary text-sm mb-8">{t('emptyDescription')}</p>
+          <p className="text-slate-600 dark:text-slate-300 text-sm mb-8">{t('emptyDescription')}</p>
           <Button onClick={() => router.push('/results')}>{t('exploreCta')}</Button>
         </div>
       </div>

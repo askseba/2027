@@ -24,7 +24,7 @@ export default function ResultsError({
         <h2 className="text-xl font-bold text-text-primary dark:text-text-primary mb-2">
           {t('errorMessage')}
         </h2>
-        <p className="text-text-secondary dark:text-text-muted mb-6">
+        <p className="text-slate-600 dark:text-slate-300 mb-6">
           {t('errorDefault')}
         </p>
         <div className="flex gap-3 justify-center">

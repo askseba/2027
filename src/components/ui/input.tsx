@@ -51,7 +51,7 @@ export const Input = ({
 
       <div className="relative">
         {hasStartIcon && (
-          <div className="absolute top-1/2 -translate-y-1/2 start-3 text-text-secondary pointer-events-none flex items-center justify-center z-10">
+          <div className="absolute top-1/2 -translate-y-1/2 start-3 text-slate-600 dark:text-slate-300 pointer-events-none flex items-center justify-center z-10">
             {startIcon ? (
               startIcon
             ) : StartIconLucide ? (
@@ -69,7 +69,7 @@ export const Input = ({
           className={cn(
             'w-full rounded-2xl border-2 border-border bg-background dark:bg-surface text-base transition-all',
             'px-4 py-3',
-            'placeholder:text-text-muted/80 dark:placeholder:text-slate-200/90 placeholder:opacity-100',
+            'placeholder:text-slate-500/80 dark:placeholder:text-slate-200/90 placeholder:opacity-100',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:bg-primary/5 focus-visible:border-primary',
             'dark:focus-visible:ring-accent-primary/70 dark:focus-visible:ring-offset-background dark:focus-visible:border-accent-primary',
             /* RTL-safe: ps=padding-inline-start, pe=padding-inline-end (match start-3/end-3 icon positions) */
@@ -88,7 +88,7 @@ export const Input = ({
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="p-2 rounded-full text-text-secondary hover:text-primary hover:bg-muted transition-colors min-touch-target flex items-center justify-center -me-1"
+              className="p-2 rounded-full text-slate-600 dark:text-slate-300 hover:text-primary hover:bg-muted transition-colors min-touch-target flex items-center justify-center -me-1"
               aria-label={showPassword ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'}
             >
               {showPassword ? (
@@ -99,7 +99,7 @@ export const Input = ({
             </button>
           ) : (
             endIcon && (
-              <div className="text-text-secondary flex items-center justify-center p-2">
+              <div className="text-slate-600 dark:text-slate-300 flex items-center justify-center p-2">
                 {endIcon}
               </div>
             )
@@ -115,7 +115,7 @@ export const Input = ({
       )}
 
       {helperText && !error && (
-        <p className="text-xs text-text-secondary dark:text-text-muted mt-1.5 ms-1">
+        <p className="text-xs text-slate-600 dark:text-slate-300 mt-1.5 ms-1">
           {helperText}
         </p>
       )}

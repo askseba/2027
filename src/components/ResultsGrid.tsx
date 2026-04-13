@@ -280,7 +280,7 @@ export default function ResultsPage() {
               </div>
             )}
             
-            <p className="text-xl text-brown-text/75 dark:text-text-muted mb-6">
+            <p className="text-xl text-brown-text/75 dark:text-slate-300 mb-6">
               {hasPreferences ? 'عطور مخصصة لك' : 'جميع العطور المتاحة'}
             </p>
           </motion.div>

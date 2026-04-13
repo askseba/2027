@@ -20,7 +20,7 @@ const buttonVariants = cva(
         danger: "bg-danger-red text-white hover:bg-danger-red/90 dark:bg-red-900 dark:hover:bg-red-800",
         tertiary: "text-text-primary hover:bg-cream-bg dark:text-text-primary dark:hover:bg-surface-muted",
         link: "text-primary underline-offset-4 hover:underline bg-transparent",
-        disabled: "bg-primary/20 text-primary/40 border border-primary/30 cursor-not-allowed dark:bg-surface-muted dark:text-text-muted dark:border-border-subtle",
+        disabled: "bg-primary/20 text-slate-400 border border-primary/30 cursor-not-allowed dark:bg-surface-muted dark:text-slate-300 dark:border-border-subtle",
       },
       size: {
         default: "px-6 py-3 text-base",

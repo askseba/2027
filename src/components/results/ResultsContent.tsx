@@ -115,7 +115,7 @@ export function ResultsContent() {
           <h2 className="text-xl font-bold text-text-primary dark:text-text-primary mb-2">
             {locale === 'ar' ? 'لا توجد نتائج محفوظة' : 'No results available'}
           </h2>
-          <p className="text-text-secondary dark:text-text-secondary mb-6">
+          <p className="text-slate-600 dark:text-slate-300 mb-6">
             {locale === 'ar'
               ? 'أكمل الاختبار للحصول على توصيات مخصصة لك'
               : 'Complete the quiz to get personalized recommendations'}
@@ -197,7 +197,7 @@ export function ResultsContent() {
                 )}
                 {good > 0 && (
                   <>
-                    <span className="text-text-muted dark:text-text-muted">·</span>
+                    <span className="text-slate-600 dark:text-slate-300">·</span>
                     <span className="text-sm font-bold text-primary dark:text-amber-500">
                       {locale === 'ar' ? `${good} عطور جيدة` : `${good} ${t('heroGood')}`}
                     </span>
@@ -205,7 +205,7 @@ export function ResultsContent() {
                 )}
                 {fair > 0 && (
                   <>
-                    <span className="text-text-muted dark:text-text-muted">·</span>
+                    <span className="text-slate-600 dark:text-slate-300">·</span>
                     <span className="text-sm font-medium text-amber-500 dark:text-amber-400">
                       {locale === 'ar' ? `${fair} عطور مقبولة` : `${fair} ${t('heroFair')}`}
                     </span>
@@ -221,7 +221,7 @@ export function ResultsContent() {
             const isFragellaMode = fragellaCount > 0 || scoredPerfumes.length > 19
             
             return (
-              <div className="text-xs text-text-muted dark:text-text-muted mt-2 mb-4">
+              <div className="text-xs text-slate-600 dark:text-slate-300 mt-2 mb-4">
                 {isFragellaMode 
                   ? '🟢 Fragella + IFRA'
                   : '🟡 Demo Mode (19 عطر)'
@@ -231,7 +231,7 @@ export function ResultsContent() {
           })()}
 
           {/* Description */}
-          <p className="text-text-secondary dark:text-text-muted max-w-2xl mx-auto text-lg">
+          <p className="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto text-lg">
             {t('hero.description')}
           </p>
         </motion.div>
@@ -248,7 +248,7 @@ export function ResultsContent() {
               <div className="bg-primary/10 dark:bg-amber-500/20 p-2 rounded-lg"><ArrowRightLeft className="w-5 h-5 text-primary dark:text-amber-500" /></div>
               <div>
                 <p className="font-bold text-text-primary dark:text-text-primary text-sm">{t('compare.title')} {t('compare.count', { count: compareIds.length })}</p>
-                <p className="text-xs text-text-secondary dark:text-text-muted">{t('compare.subtitle')}</p>
+                <p className="text-xs text-slate-600 dark:text-slate-300">{t('compare.subtitle')}</p>
               </div>
             </div>
             <div className="flex gap-2">

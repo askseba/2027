@@ -65,10 +65,10 @@ export default function PrivacyPage() {
           <h1 className="text-3xl md:text-4xl font-bold mb-4 text-brand-brown dark:text-text-primary">
             {t('hero.title')}
           </h1>
-          <p className="text-xl font-bold mb-2 text-brand-brown/80 dark:text-text-secondary">
+          <p className="text-xl font-bold mb-2 text-brand-brown/80 dark:text-slate-300">
             {t('hero.subtitle')}
           </p>
-          <p className="text-sm text-brand-brown/60 dark:text-text-muted">
+          <p className="text-sm text-brand-brown/60 dark:text-slate-300">
             {t('hero.lastUpdatedPrefix')} {t('hero.last_updated')}
           </p>
         </motion.section>
@@ -92,7 +92,7 @@ export default function PrivacyPage() {
                       direction === 'rtl' ? 'text-right' : 'text-left',
                       activeSection === section.id
                         ? 'bg-brand-gold/20 dark:bg-accent-primary/20 text-brand-gold dark:text-accent-primary font-bold'
-                        : 'text-brand-brown/70 dark:text-text-secondary hover:bg-brand-gold/10 dark:hover:bg-accent-primary/10 hover:text-brand-brown dark:hover:text-text-primary'
+                        : 'text-brand-brown/70 dark:text-slate-300 hover:bg-brand-gold/10 dark:hover:bg-accent-primary/10 hover:text-brand-brown dark:hover:text-text-primary'
                     )}
                   >
                     {section.title}
@@ -147,7 +147,7 @@ export default function PrivacyPage() {
                       </Accordion.Trigger>
                     </Accordion.Header>
                     <Accordion.Content className={cn(
-                      'px-6 pb-4 text-base text-brand-brown/80 dark:text-text-secondary overflow-hidden lg:text-justify',
+                      'px-6 pb-4 text-base text-brand-brown/80 dark:text-slate-300 overflow-hidden lg:text-justify',
                       direction === 'rtl' ? 'text-right' : 'text-left'
                     )}>
                       <div className="py-2 space-y-2">

@@ -108,7 +108,7 @@ export function VaultEntryCard() {
           </p>
         </div>
 
-        <p className="text-xs text-text-secondary dark:text-text-muted leading-snug mb-1">
+        <p className="text-xs text-slate-600 dark:text-slate-300 leading-snug mb-1">
           {t('description')}
         </p>
 

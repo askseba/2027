@@ -71,7 +71,7 @@ export default function ProfilePage() {
       <div className="flex min-h-screen items-center justify-center bg-cream-bg dark:!bg-surface" dir={direction}>
         <div className="text-center space-y-6 px-6">
           <h1 className="text-2xl font-bold text-text-primary">{t('auth.required')}</h1>
-          <p className="text-text-secondary">{t('auth.pleaseSignIn')}</p>
+          <p className="text-slate-600 dark:text-slate-300">{t('auth.pleaseSignIn')}</p>
           <Link href="/login">
             <Button>{t('auth.signInButton')}</Button>
           </Link>
@@ -121,7 +121,7 @@ export default function ProfilePage() {
             <input type="file" ref={fileInputRef} className="hidden" accept="image/*" />
           </div>
           <h2 className="text-3xl font-black text-text-primary mt-6">{session?.user?.name}</h2>
-          <p className="text-text-secondary text-sm">{session?.user?.email}</p>
+          <p className="text-slate-600 dark:text-slate-300 text-sm">{session?.user?.email}</p>
           {tierData && (
             <div className="mt-3 flex flex-wrap justify-center gap-2">
               {tierData.tier === 'PREMIUM' && tierData.hasActiveSubscription ? (
@@ -130,7 +130,7 @@ export default function ProfilePage() {
                   مميز
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1.5 bg-cream-bg text-text-secondary text-xs font-bold px-3 py-1.5 rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-cream-bg text-slate-600 dark:text-slate-300 text-xs font-bold px-3 py-1.5 rounded-full">
                   <Zap className="w-3.5 h-3.5" />
                   مجاني
                 </span>
@@ -152,17 +152,17 @@ export default function ProfilePage() {
                 <p className="text-text-primary font-medium">
                   الحالة: <span className="text-safe-green font-bold">نشط</span>
                 </p>
-                <p className="text-text-secondary text-sm">
+                <p className="text-slate-600 dark:text-slate-300 text-sm">
                   الخطة: {tierData.subscription.plan === 'yearly' ? 'سنوي' : 'شهري'} • ينتهي في{' '}
                   {new Date(tierData.subscription.endDate).toLocaleDateString('ar-SA')}
                 </p>
-                <p className="text-text-secondary text-sm">
+                <p className="text-slate-600 dark:text-slate-300 text-sm">
                   {tierData.subscription.amount} {tierData.subscription.currency}
                 </p>
               </div>
             ) : (
               <div className="space-y-3">
-                <p className="text-text-secondary text-sm">خطتك الحالية: مجاني</p>
+                <p className="text-slate-600 dark:text-slate-300 text-sm">خطتك الحالية: مجاني</p>
                 <Button
                   variant="outline"
                   className="rounded-xl"
@@ -182,11 +182,11 @@ export default function ProfilePage() {
           </h3>
           <div className="space-y-4">
             <div>
-              <label className="text-xs font-bold text-text-secondary mb-1.5 block mr-1">{t('personalInfo.fullName')}</label>
+              <label className="text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 block mr-1">{t('personalInfo.fullName')}</label>
               <Input defaultValue={session?.user?.name || ''} className="rounded-xl py-6" />
             </div>
             <div>
-              <label className="text-xs font-bold text-text-secondary mb-1.5 block mr-1">{t('personalInfo.email')}</label>
+              <label className="text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 block mr-1">{t('personalInfo.email')}</label>
               <Input defaultValue={session?.user?.email || ''} disabled className="rounded-xl py-6 bg-cream-bg/50" title={t('personalInfo.emailReadonly')} />
             </div>
             <Button className="w-full py-6 rounded-xl mt-2">{t('personalInfo.save')}</Button>
@@ -205,7 +205,7 @@ export default function ProfilePage() {
             <div className="flex items-center justify-between p-4 bg-cream-bg rounded-2xl">
               <div>
                 <p className="font-bold text-text-primary text-sm">{t('sensitivity.strictMode')}</p>
-                <p className="text-[10px] text-text-secondary">{t('sensitivity.strictDesc')}</p>
+                <p className="text-[10px] text-slate-600 dark:text-slate-300">{t('sensitivity.strictDesc')}</p>
               </div>
               <button
                 onClick={() => handleToggle('strictMode')}
@@ -217,7 +217,7 @@ export default function ProfilePage() {
             <div className="flex items-center justify-between p-4 bg-cream-bg rounded-2xl">
               <div>
                 <p className="font-bold text-text-primary text-sm">{t('sensitivity.ingredientAlerts')}</p>
-                <p className="text-[10px] text-text-secondary">{t('sensitivity.ingredientAlertsDesc')}</p>
+                <p className="text-[10px] text-slate-600 dark:text-slate-300">{t('sensitivity.ingredientAlertsDesc')}</p>
               </div>
               <button
                 onClick={() => handleToggle('notifyOnAllergen')}

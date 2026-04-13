@@ -138,7 +138,7 @@ export function IngredientsSheet({ perfume, onClose, locale = "ar" }: Ingredient
                 <h2 className="text-lg font-bold text-text-primary dark:text-text-primary line-clamp-1">
                   {perfume.name}
                 </h2>
-                <p className="text-xs text-text-muted dark:text-text-muted">{perfume.brand}</p>
+                <p className="text-xs text-slate-600 dark:text-slate-300">{perfume.brand}</p>
               </div>
 
               {/* Close button */}
@@ -156,7 +156,7 @@ export function IngredientsSheet({ perfume, onClose, locale = "ar" }: Ingredient
               {/* القسم 1: هرم النوتات أو المكونات */}
               {hasPyramid ? (
                 <div className="px-6 py-4">
-                  <h3 className="text-sm font-bold text-text-secondary dark:text-text-muted mb-3">
+                  <h3 className="text-sm font-bold text-slate-600 dark:text-slate-300 mb-3">
                     {t("pyramid.title")}
                   </h3>
 
@@ -173,7 +173,7 @@ export function IngredientsSheet({ perfume, onClose, locale = "ar" }: Ingredient
 
                       return (
                         <div key={stage} style={{ ["--pyramid-color" as any]: color }}>
-                          <p className="text-xs font-bold text-text-muted dark:text-text-muted mb-2 flex items-center gap-1.5">
+                          <p className="text-xs font-bold text-slate-600 dark:text-slate-300 mb-2 flex items-center gap-1.5">
                             <span className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
                             {stageAr}
                           </p>
@@ -237,7 +237,7 @@ export function IngredientsSheet({ perfume, onClose, locale = "ar" }: Ingredient
                         return field.map((ing, i) => (
                           <span
                             key={i}
-                            className="text-xs bg-cream-bg dark:bg-surface-muted text-text-secondary dark:text-text-muted px-2.5 py-1 rounded-full"
+                            className="text-xs bg-cream-bg dark:bg-surface-muted text-slate-600 dark:text-slate-300 px-2.5 py-1 rounded-full"
                           >
                             {ing}
                           </span>
@@ -251,7 +251,7 @@ export function IngredientsSheet({ perfume, onClose, locale = "ar" }: Ingredient
               {/* القسم 2: العائلات العطرية */}
               {uniqueFamilies.length > 0 && (
                 <div className="px-6 py-4 border-t border-primary/5 dark:border-border-subtle">
-                  <h3 className="text-sm font-bold text-text-secondary dark:text-text-muted mb-3">
+                  <h3 className="text-sm font-bold text-slate-600 dark:text-slate-300 mb-3">
                     {t("familiesTitle")}
                   </h3>
                   <div className="flex flex-wrap gap-1.5">
@@ -273,7 +273,7 @@ export function IngredientsSheet({ perfume, onClose, locale = "ar" }: Ingredient
 
               {/* القسم 3: حالة الأمان */}
               <div className="px-6 py-4 border-t border-primary/5 dark:border-border-subtle">
-                <h3 className="text-sm font-bold text-text-secondary dark:text-text-muted mb-3">
+                <h3 className="text-sm font-bold text-slate-600 dark:text-slate-300 mb-3">
                   {t("safetyTitle")}
                 </h3>
 
@@ -296,7 +296,7 @@ export function IngredientsSheet({ perfume, onClose, locale = "ar" }: Ingredient
                       <p className="text-sm font-medium text-text-primary dark:text-text-primary">
                         {perfume.isSafe ? t("safeLabel") : t("warningLabel")}
                       </p>
-                      <p className="text-xs text-text-muted">
+                      <p className="text-xs text-slate-600 dark:text-slate-300">
                         {t("ifraScore")}: {perfume.ifraScore}/100
                       </p>
                     </div>

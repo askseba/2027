@@ -210,7 +210,7 @@ export default function AboutPage() {
                 className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-lg rounded-3xl p-6 border border-brand-brown/20 hover:bg-accent-primary/10 dark:hover:bg-slate-700/80 transition-colors"
               >
                 <h3 className="about-h3 font-bold mb-2 text-brand-brown dark:text-text-primary lg:text-justify">{value.title}</h3>
-                <p className="text-base text-brand-brown/80 dark:text-text-muted lg:text-justify">{value.description}</p>
+                <p className="text-base text-brand-brown/80 dark:text-slate-300 lg:text-justify">{value.description}</p>
               </motion.div>
             ))}
           </div>

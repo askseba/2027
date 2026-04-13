@@ -44,7 +44,7 @@ export function RadarChart({ data, size = 400, className = "", title = "بصمة
       <div className="flex items-center justify-between mb-8">
         <div>
           <h3 className="text-xl font-bold text-text-primary dark:text-text-primary">{title}</h3>
-          <p className="text-xs text-text-secondary dark:text-text-muted">تحليل دقيق لتوزيع العائلات العطرية في ذوقك</p>
+          <p className="text-xs text-slate-600 dark:text-slate-300">تحليل دقيق لتوزيع العائلات العطرية في ذوقك</p>
         </div>
         <div className="bg-primary/10 dark:bg-amber-500/20 p-2 rounded-full">
           <Info className="w-5 h-5 text-primary dark:text-amber-500" />

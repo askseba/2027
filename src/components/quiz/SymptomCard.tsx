@@ -51,7 +51,7 @@ export function SymptomCard({ symptom, isSelected, onClick }: SymptomCardProps) 
         <h3 className="font-tajawal-bold text-lg mb-2 leading-tight text-dark-brown dark:text-text-primary">
           {symptom.name}
         </h3>
-        <p className="text-sm text-dark-brown/85 dark:text-text-muted leading-relaxed">
+        <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
           {symptom.description}
         </p>
       </div>

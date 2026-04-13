@@ -129,7 +129,7 @@ export default function FeedbackModal({ onClose, onSubmit }: FeedbackModalProps)
                     "px-3 py-2 rounded-xl text-xs font-medium border transition-all flex items-center gap-1.5",
                     category === cat.id
                       ? "bg-brand-gold dark:bg-amber-600 text-white border-brand-gold dark:border-amber-600 shadow-md"
-                      : "bg-white dark:bg-surface text-brand-brown/70 dark:text-text-muted border-brand-brown/10 dark:border-border-subtle hover:border-brand-gold/30 dark:hover:border-amber-500/50"
+                      : "bg-white dark:bg-surface text-brand-brown/70 dark:text-slate-300 border-brand-brown/10 dark:border-border-subtle hover:border-brand-gold/30 dark:hover:border-amber-500/50"
                   )}
                 >
                   <span>{cat.icon}</span>
@@ -175,7 +175,7 @@ export default function FeedbackModal({ onClose, onSubmit }: FeedbackModalProps)
 
         {/* Footer Note */}
         <div className="px-6 pb-6 text-center">
-          <p className="text-xs text-brand-brown/40 dark:text-text-muted">
+          <p className="text-xs text-brand-brown/40 dark:text-slate-300">
             بإرسالك لهذا الاقتراح، فإنك توافق على أن يتم مراجعته ونشره للعامة للتصويت عليه.
           </p>
         </div>
