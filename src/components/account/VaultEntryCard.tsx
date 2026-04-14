@@ -103,17 +103,17 @@ export function VaultEntryCard() {
               {t('premiumBadge')}
             </span>
           )}
-          <p className="text-sm font-bold text-text-primary dark:text-text-primary leading-tight">
+          <p className="text-sm font-bold text-[#0EA5A4] leading-tight">
             {t('title')}
           </p>
         </div>
 
-        <p className="text-xs text-slate-600 dark:text-slate-300 leading-snug mb-1">
+        <p className="text-xs text-[#0EA5A4] leading-snug mb-1">
           {t('description')}
         </p>
 
         {!loading && (
-          <p className="text-xs font-medium text-primary dark:text-amber-400">
+          <p className="text-xs font-medium text-[#0EA5A4]">
             {statusText}
           </p>
         )}
