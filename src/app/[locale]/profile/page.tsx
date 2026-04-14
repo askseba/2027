@@ -59,8 +59,8 @@ export default function ProfilePage() {
     return (
       <div className="container mx-auto py-8" dir={direction}>
         <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-gray-200 dark:bg-surface-muted rounded w-1/4" />
-          <div className="h-64 bg-gray-200 dark:bg-surface-muted rounded" />
+          <div className="h-8 bg-gray-200 dark:bg-zinc-800 rounded w-1/4" />
+          <div className="h-64 bg-gray-200 dark:bg-zinc-800 rounded" />
         </div>
       </div>
     )
@@ -68,7 +68,7 @@ export default function ProfilePage() {
 
   if (status === 'unauthenticated') {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-cream-bg dark:!bg-surface" dir={direction}>
+      <div className="flex min-h-screen items-center justify-center bg-cream-bg dark:!bg-zinc-900" dir={direction}>
         <div className="text-center space-y-6 px-6">
           <h1 className="text-2xl font-bold text-text-primary">{t('auth.required')}</h1>
           <p className="text-slate-600 dark:text-slate-300">{t('auth.pleaseSignIn')}</p>
@@ -93,7 +93,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream-bg dark:!bg-surface pb-20" dir={direction}>
+    <div className="min-h-screen bg-cream-bg dark:!bg-zinc-900 pb-20" dir={direction}>
       <div className="bg-white border-b border-primary/5 pt-12 pb-8 px-6 text-center">
         <div className="max-w-2xl mx-auto">
           <BackButton href="/" label={tCommon('backToHome')} className="mb-6" />

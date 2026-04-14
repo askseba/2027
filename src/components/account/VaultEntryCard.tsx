@@ -84,7 +84,7 @@ export function VaultEntryCard() {
       disabled={loading}
       className={[
         'w-full flex items-start gap-4 p-4 rounded-2xl text-right',
-        'bg-white dark:bg-surface',
+        'bg-white dark:bg-zinc-900',
         'border border-primary/10 dark:border-border-subtle',
         'transition-opacity',
         loading ? 'opacity-60 cursor-default' : 'cursor-pointer',
