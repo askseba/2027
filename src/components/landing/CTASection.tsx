@@ -76,12 +76,12 @@ export function CTASection() {
             delay: 0.4,
             type: 'spring' 
           }}
-          className="opacity-100 flex justify-center"
+          className="opacity-100 flex justify-center items-center"
         >
           <motion.button
             onClick={handleClick}
             disabled={isClicked}
-            className="landing-cta-quiz group relative w-[90%] max-w-[300px] overflow-hidden rounded-full bg-gradient-to-r from-gold to-gold-dark dark:from-amber-600 dark:to-amber-800 px-12 py-[18px] text-lg font-semibold text-white shadow-lg dark:shadow-amber-900/30 transition-all duration-300 disabled:opacity-70 md:w-auto"
+            className="landing-cta-quiz group relative mx-auto w-[90%] max-w-[300px] overflow-hidden rounded-full bg-gradient-to-r from-gold to-gold-dark dark:from-amber-600 dark:to-amber-800 px-12 py-[18px] text-lg font-semibold text-white shadow-lg dark:shadow-amber-900/30 transition-all duration-300 disabled:opacity-70 md:w-auto"
             
             // ✅ Breathing animation (theme-aware shadows)
             animate={{
